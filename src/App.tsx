@@ -1,41 +1,48 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import TopBar from "./components/TopBar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SignIn from "./components/user/SignIn";
+
 import HomePage from "./components/pages/HomePage";
 import Register from "./components/pages/Register";
-import Dashboard from "./components/user/Dashboard";
+
 import BikeDetails from "./components/bike/BikeDetails";
 import NotFound from "./components/pages/NotFound";
+import ServiceReport from "./components/pages/ServiceReport";
+import UserProfile from "./components/pages/UserProfile";
+import SignIn from "./components/pages/SignIn";
+import Dashboard from "./components/pages/Dashboard";
 
 const App = () => {
   const isUserLoggedIn = true;
-  if (!isUserLoggedIn) {
-    return (
-      <Router>
+
+  return (
+    <Router>
+      {!isUserLoggedIn ? (
         <Routes>
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<SignIn />} />
         </Routes>
-      </Router>
-    );
-  }
-  return (
-    <div className="flex w-full">
-      <Navigation />
-      <div className="flex flex-col w-full">
-        <TopBar />
-        <Router>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/motorcycle/:id" element={<BikeDetails />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Router>
-      </div>
-    </div>
+      ) : (
+        <div className="flex w-full">
+          <Navigation />
+          <div className="flex flex-col w-full">
+            <TopBar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/user/:id" element={<UserProfile />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/motorcycle/:id" element={<BikeDetails />} />
+              <Route
+                path="/motorcycle/:id/:serviceId"
+                element={<ServiceReport />}
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
+        </div>
+      )}
+    </Router>
   );
 };
 
