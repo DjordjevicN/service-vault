@@ -11,6 +11,7 @@ import ServiceReport from "./components/pages/ServiceReport";
 import UserProfile from "./components/pages/UserProfile";
 import SignIn from "./components/pages/SignIn";
 import Dashboard from "./components/pages/Dashboard";
+import NewBikeForm from "./components/forms/NewBikeForm";
 
 const App = () => {
   const isUserLoggedIn = true;
@@ -33,6 +34,7 @@ const App = () => {
               <Route path="/user/:id" element={<UserProfile />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/motorcycle/:id" element={<BikeDetails />} />
+              <Route path="/new-bike" element={<NewBikeForm />} />
               <Route
                 path="/motorcycle/:id/:serviceId"
                 element={<ServiceReport />}
