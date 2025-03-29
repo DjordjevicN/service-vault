@@ -15,7 +15,7 @@ const UserProfile = () => {
   };
   return (
     <div className="p-5">
-      <div className="flex gap-3">
+      <div className="flex gap-3 border p-5 rounded-lg shadow-md">
         <div>
           <img src={user.photoURL} alt="" className="rounded w-30 h-30" />
         </div>
@@ -26,6 +26,17 @@ const UserProfile = () => {
           <Button onClick={handleLogout} className="mt-3 cursor-pointer">
             Logout
           </Button>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
+        <div className="rounded-lg shadow-md p-5 mt-5">
+          <h1>Next Service</h1>
+        </div>
+        <div className="rounded-lg shadow-md p-5 mt-5">
+          <h1>Next Service</h1>
+        </div>
+        <div className="rounded-lg shadow-md p-5 mt-5">
+          <h1>Next Service</h1>
         </div>
       </div>
     </div>

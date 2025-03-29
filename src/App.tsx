@@ -1,10 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navigation from "./components/Navigation";
 import TopBar from "./components/TopBar";
-
-import HomePage from "./components/pages/HomePage";
 import Register from "./components/pages/Register";
-
 import BikeDetails from "./components/bike/BikeDetails";
 import NotFound from "./components/pages/NotFound";
 import ServiceReport from "./components/pages/ServiceReport";
@@ -32,9 +29,9 @@ const App = () => {
           <div className="flex flex-col w-full">
             <TopBar />
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route path="/" element={<Dashboard />} />
               <Route path="/user/:id" element={<UserProfile />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              {/* <Route path="/dashboard" element={<Dashboard />} /> */}
               <Route path="/motorcycle/:id" element={<BikeDetails />} />
               <Route path="/new-bike" element={<NewBikeForm />} />
               <Route
