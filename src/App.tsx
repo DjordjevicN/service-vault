@@ -12,13 +12,15 @@ import UserProfile from "./components/pages/UserProfile";
 import SignIn from "./components/pages/SignIn";
 import Dashboard from "./components/pages/Dashboard";
 import NewBikeForm from "./components/forms/NewBikeForm";
+import { useUser } from "./context/AuthContext";
 
 const App = () => {
-  const isUserLoggedIn = false;
+  const { user } = useUser();
+  console.log(user);
 
   return (
     <Router>
-      {!isUserLoggedIn ? (
+      {!user ? (
         <Routes>
           <Route path="/login" element={<SignIn />} />
           <Route path="/register" element={<Register />} />

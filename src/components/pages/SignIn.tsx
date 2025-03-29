@@ -1,12 +1,31 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../../firebase/FirebaseConfig";
+
+import google from "../../assets/google.svg";
+import { useUser } from "@/context/AuthContext";
 
 const SignIn = () => {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { setUser } = useUser();
+
+  const handleGoogle = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    console.log(formData.get("email"));
-    console.log(formData.get("password"));
+    const googleProvider = await new GoogleAuthProvider();
+    const { user } = await signInWithPopup(auth, googleProvider);
+
+    if (user) {
+      const newUser = {
+        email: user.email,
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+          ? `${user.photoURL.split("=")[0]}?sz=200`
+          : null,
+      };
+      setUser(newUser);
+    }
+
+    return user;
   };
 
   return (
@@ -19,27 +38,10 @@ const SignIn = () => {
         />
       </div>
       <div className="flex flex-col justify-center items-center w-[70%] min-w-[310px] max-w-[300px]  mx-auto px-5">
-        <h1>Sign In</h1>
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col space-y-2 w-full"
-        >
-          <Input
-            className="mt-5"
-            type="email"
-            name="email"
-            placeholder="Email"
-          />
-          <Input
-            className="mt-3"
-            type="password"
-            name="password"
-            placeholder="Password"
-          />
-          <Button className="cursor-pointer mt-3" type="submit">
-            Sign In
-          </Button>
-        </form>
+        <Button onClick={handleGoogle} className="cursor-pointer mt-3 w-full">
+          <img className="w-5 h-5" src={google} alt="google" />
+          <p>Sign In with Google</p>
+        </Button>
       </div>
     </div>
   );
