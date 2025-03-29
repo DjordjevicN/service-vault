@@ -14,7 +14,7 @@ import Dashboard from "./components/pages/Dashboard";
 import NewBikeForm from "./components/forms/NewBikeForm";
 
 const App = () => {
-  const isUserLoggedIn = true;
+  const isUserLoggedIn = false;
 
   return (
     <Router>

@@ -1,10 +1,12 @@
 import BikeCard from "../bike/BikeCard";
 import { BIKE_MOCK_DATA } from "../mockData/bikeInformation";
 import addSvg from "../../assets/svgs/close-circle.svg";
+// import { useBikes } from "@/api/bikes";
 const myBikes = BIKE_MOCK_DATA;
-console.log(myBikes);
 
 const Dashboard = () => {
+  // const { data: bikes, isLoading, error } = useBikes();
+
   return (
     <div className="p-5">
       <h1 className="text-2xl font-bold mb-2">My Motorcycles</h1>
