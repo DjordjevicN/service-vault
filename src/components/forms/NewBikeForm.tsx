@@ -1,7 +1,10 @@
 import React from "react";
 import { Input } from "../ui/input";
+import { addMotorcycle } from "@/api/motorcycles";
+import { useUser } from "@/context/AuthContext";
 
-const NewBikeForm = () => {
+const NewBikeForm = ({ close }: { close: () => void }) => {
+  const { user } = useUser();
   const [newBike, setNewBike] = React.useState({
     make: "",
     model: "",
@@ -12,17 +15,33 @@ const NewBikeForm = () => {
     vinNumber: "",
     engineNumber: "",
     image: "",
+    location: "",
+    owners: [],
+    regNumber: "",
+    status: "",
   });
   const handleChange = (key: string, value: string | number) => {
     setNewBike((prev) => ({ ...prev, [key]: value }));
   };
-  const handleNewBike = (event: React.FormEvent) => {
+  const handleNewBike = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log(newBike);
+    const newBikeData = {
+      ...newBike,
+      currentOwner: user?.uid,
+      bikeAddedDate: new Date(),
+    };
+    await addMotorcycle(newBikeData);
+    close();
   };
   const labelStyle = "text-gray-500";
   return (
     <div className="pb-10">
+      <div
+        className="absolute top-20 right-20 cursor-pointer"
+        onClick={() => close()}
+      >
+        Close
+      </div>
       <h1 className="text-2xl text-center mb-20 mt-20">Add new motorcycle</h1>
       <div className="max-w-[500px] mx-auto">
         <form onSubmit={handleNewBike}>
@@ -34,6 +53,7 @@ const NewBikeForm = () => {
               type="text"
               id="make"
               onChange={(value) => handleChange("make", value.target.value)}
+              placeholder="Kawasaki"
             />
           </div>
           <div className="mb-4">
@@ -44,6 +64,7 @@ const NewBikeForm = () => {
               type="text"
               id="model"
               onChange={(value) => handleChange("model", value.target.value)}
+              placeholder="Ninja"
             />
           </div>
           <div className="mb-4">
@@ -54,6 +75,7 @@ const NewBikeForm = () => {
               type="number"
               id="year"
               onChange={(value) => handleChange("year", value.target.value)}
+              placeholder="2022"
             />
           </div>
           <div className="mb-4">
@@ -64,6 +86,7 @@ const NewBikeForm = () => {
               type="text"
               id="color"
               onChange={(value) => handleChange("color", value.target.value)}
+              placeholder="Green"
             />
           </div>
           <div className="mb-4">
@@ -74,6 +97,7 @@ const NewBikeForm = () => {
               type="number"
               id="mileage"
               onChange={(value) => handleChange("mileage", value.target.value)}
+              placeholder="1000"
             />
           </div>
           <div className="mb-4">
@@ -86,6 +110,7 @@ const NewBikeForm = () => {
               onChange={(value) =>
                 handleChange("engineSize", value.target.value)
               }
+              placeholder="1000"
             />
           </div>
           <div className="mb-4">
@@ -98,6 +123,7 @@ const NewBikeForm = () => {
               onChange={(value) =>
                 handleChange("vinNumber", value.target.value)
               }
+              placeholder="JKAEXKH18KDA12345"
             />
           </div>
           <div className="mb-4">
@@ -110,6 +136,7 @@ const NewBikeForm = () => {
               onChange={(value) =>
                 handleChange("engineNumber", value.target.value)
               }
+              placeholder="ZX100AE012345"
             />
           </div>
           <div className="mb-4">

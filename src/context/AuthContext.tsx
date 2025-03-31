@@ -1,4 +1,4 @@
-import { User } from "@/types/bikeTypes";
+import { User } from "../types/projectTypes";
 import {
   createContext,
   useContext,

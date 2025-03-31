@@ -2,9 +2,15 @@ import { useState } from "react";
 import BikeServices from "./BikeServices";
 import InformationField from "./InformationField";
 import OwnerInformation from "./OwnerInformation";
+import { useParams } from "react-router-dom";
+import { useMotorcycle } from "@/hooks/useMotorcycles";
 
 const BikeDetails = () => {
+  const { id } = useParams();
   const [showAllOwners, setShowAllOwners] = useState(false);
+  const { data: bike } = useMotorcycle(id as string);
+  console.log(bike);
+
   const owners = [1, 2, 3, 4, 5];
   const currentOwner = owners[0];
   const restOfTheOwners = owners.slice(1);
@@ -43,13 +49,16 @@ const BikeDetails = () => {
             />
           ))}
       </div>
-      <div>
-        <InformationField label="Marka vozila" value="Kawasaki" />
-        <InformationField label="Model" value="Z900" />
-        <InformationField label="Broj motora" value="SC59E-1234567" />
-        <InformationField label="Broj šasije" value="JH2SC5901EK123456" />
-        <InformationField label="Godina proizvodnje" value="2014" />
-      </div>
+      {bike && (
+        <div>
+          <InformationField label="Marka vozila" value={bike.make} />
+          <InformationField label="Model" value={bike.model} />
+          <InformationField label="Broj motora" value={bike.engineNumber} />
+          <InformationField label="Broj šasije" value={bike.vinNumber} />
+          <InformationField label="Godina proizvodnje" value={bike.year} />
+        </div>
+      )}
+
       <div className="mt-10">
         <BikeServices />
       </div>

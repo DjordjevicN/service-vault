@@ -1,3 +1,4 @@
+import { collectionNames } from "./constants";
 import {
   getDocument,
   addDocument,
@@ -7,24 +8,29 @@ import {
 } from "./firestore";
 
 export const getMotorcycle = async (id: string) => {
-  return getDocument("motorcycles", id);
+  const motorcycle = await getDocument(collectionNames.motorcycles, id);
+
+  if (!motorcycle) {
+    throw new Error("Motorcycle not found");
+  }
+  return motorcycle;
 };
 
 export const addMotorcycle = async (data: object) => {
-  return addDocument("motorcycles", data);
+  return addDocument(collectionNames.motorcycles, data);
 };
 
 export const updateMotorcycle = async (id: string, data: object) => {
-  return updateDocument("motorcycles", id, data);
+  return updateDocument(collectionNames.motorcycles, id, data);
 };
 
 export const deleteMotorcycle = async (id: string) => {
-  return deleteDocument("motorcycles", id);
+  return deleteDocument(collectionNames.motorcycles, id);
 };
 
 export const getMotorcyclesByOwnerId = async (id: string) => {
   const motorcycles = await getDocumentByField(
-    "motorcycle",
+    collectionNames.motorcycles,
     "currentOwner",
     id
   );

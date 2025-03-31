@@ -1,4 +1,4 @@
-import { Bike } from "@/types/bikeTypes";
+import { Bike } from "../../types/projectTypes";
 import { useNavigate } from "react-router-dom";
 
 type BikeCardProps = {
