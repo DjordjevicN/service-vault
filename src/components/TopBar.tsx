@@ -4,13 +4,16 @@ import { useState } from "react";
 import useOutsideClick from "@/hooks/useOutsideClick";
 
 const TopBar = () => {
-  const { user } = useUser();
+  const { user, setUser } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const ref = useOutsideClick(() => setIsOpen(!isOpen));
+
   const handleLogout = () => {
     localStorage.removeItem("user");
+    setUser(null);
     window.location.reload();
   };
+
   return (
     <div className="border-b w-full flex items-center  p-4">
       <h1>Dashboard</h1>

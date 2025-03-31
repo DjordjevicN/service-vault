@@ -1,12 +1,45 @@
 import { Button } from "@/components/ui/button";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/FirebaseConfig";
-
 import google from "../../assets/google.svg";
 import { useUser } from "@/context/AuthContext";
+import { addUser, getUserByUID } from "@/api/users";
 
+type GoogleUser = {
+  email: string;
+  uid: string;
+  displayName: string;
+  photoURL?: string;
+};
 const SignIn = () => {
   const { setUser } = useUser();
+
+  const checkBabylonForUser = async (user: GoogleUser) => {
+    const userInDatabase = await getUserByUID(user.uid);
+
+    if (!userInDatabase) {
+      const newUser = {
+        email: user.email,
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        address: "",
+        city: "",
+        country: "",
+        motorcyclesInThePast: [],
+        motorcyclesOwned: [],
+        phoneNumber: "",
+        role: "user",
+        status: "active",
+        zipCode: "",
+      };
+      const addedUser = await addUser(newUser);
+      console.log("addedUser", addedUser);
+      setUser(addedUser);
+    } else {
+      setUser(userInDatabase[0]);
+    }
+  };
 
   const handleGoogle = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -14,18 +47,8 @@ const SignIn = () => {
     const { user } = await signInWithPopup(auth, googleProvider);
 
     if (user) {
-      const newUser = {
-        email: user.email,
-        uid: user.uid,
-        displayName: user.displayName,
-        photoURL: user.photoURL
-          ? `${user.photoURL.split("=")[0]}?sz=200`
-          : null,
-      };
-      setUser(newUser);
+      checkBabylonForUser(user as GoogleUser);
     }
-
-    return user;
   };
 
   return (

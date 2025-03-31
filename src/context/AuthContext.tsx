@@ -1,3 +1,4 @@
+import { User } from "@/types/bikeTypes";
 import {
   createContext,
   useContext,
@@ -6,12 +7,6 @@ import {
   useEffect,
 } from "react";
 
-type User = {
-  email: string | null;
-  uid: string;
-  displayName: string | null;
-  photoURL: string | null;
-};
 type AuthContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -20,9 +15,10 @@ type AuthContextType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const storedUser = localStorage.getItem("user");
-  const initialUser = storedUser ? JSON.parse(storedUser) : null;
-  const [user, setUser] = useState<User | null>(initialUser);
+  const [user, setUser] = useState<User | null>(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
   useEffect(() => {
     if (user) {
@@ -31,6 +27,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       localStorage.removeItem("user");
     }
   }, [user]);
+
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

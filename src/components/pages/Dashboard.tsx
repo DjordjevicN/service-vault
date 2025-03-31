@@ -1,17 +1,19 @@
 import BikeCard from "../bike/BikeCard";
-import { BIKE_MOCK_DATA } from "../mockData/bikeInformation";
 import addSvg from "../../assets/svgs/close-circle.svg";
-// import { useBikes } from "@/api/bikes";
-const myBikes = BIKE_MOCK_DATA;
+import { useMotorcyclesByCurrentOwner } from "@/hooks/useMotorcycles";
+import { useUser } from "@/context/AuthContext";
 
 const Dashboard = () => {
-  // const { data: bikes, isLoading, error } = useBikes();
+  const { user } = useUser();
+  const { data: motorcycles } = useMotorcyclesByCurrentOwner(
+    user?.uid as string
+  );
 
   return (
     <div className="p-5">
       <h1 className="text-2xl font-bold mb-2">My Motorcycles</h1>
       <div className="flex flex-wrap gap-5 items-center">
-        {myBikes.map((bike) => {
+        {motorcycles?.map((bike) => {
           return <BikeCard owner bike={bike} key={bike.id} />;
         })}
 
@@ -21,7 +23,7 @@ const Dashboard = () => {
       </div>
       <h1 className="text-2xl font-bold mt-10">My Ex Motorcycles</h1>
       <div className="flex flex-wrap gap-5 items-center">
-        {myBikes.map((bike) => {
+        {motorcycles?.map((bike) => {
           return <BikeCard bike={bike} key={bike.id} />;
         })}
       </div>
