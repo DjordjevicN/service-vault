@@ -1,42 +1,70 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navigation from "./components/Navigation";
-import TopBar from "./components/TopBar";
-import BikeDetails from "./components/bike/BikeDetails";
-import NotFound from "./components/pages/NotFound";
-import ServiceReport from "./components/pages/ServiceReport";
-import SignIn from "./components/pages/SignIn";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import HomePage from "./components/pages/HomePage";
 import Dashboard from "./components/pages/Dashboard";
-import NewBikeForm from "./components/forms/NewBikeForm";
-import { useUser } from "./context/AuthContext";
+import MeetDetails from "./components/pages/MeetDetails";
+import { ReactNode } from "react";
+import Navigation from "./components/navigation/Navigation";
+import TopBar from "./components/TopBar";
+import Meets from "./components/pages/Meets";
+import Trips from "./components/pages/Trips";
+const isAuthenticated = true;
+const isHomePage = window.location.pathname === "/";
+
+const PrivateRoute = ({ children }: { children: ReactNode }) => {
+  return isAuthenticated ? children : <Navigate to="/" />;
+};
 
 const App = () => {
-  const { user } = useUser();
-
   return (
     <Router>
-      {!user ? (
-        <Routes>
-          <Route path="/login" element={<SignIn />} />
-          <Route path="*" element={<SignIn />} />
-        </Routes>
-      ) : (
-        <div className="flex w-full">
-          <Navigation />
-          <div className="flex flex-col w-full">
-            <TopBar />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/motorcycle/:id" element={<BikeDetails />} />
-              <Route path="/new-bike" element={<NewBikeForm />} />
-              <Route
-                path="/motorcycle/:id/:serviceId"
-                element={<ServiceReport />}
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+      {!isHomePage && <TopBar />}
+      <div className="grid" style={{ gridTemplateColumns: "240px 1fr" }}>
+        {!isHomePage && <Navigation />}
+        <div>
+          <Routes>
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/meets"
+              element={
+                <PrivateRoute>
+                  <Meets />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/meet/:meetId"
+              element={
+                <PrivateRoute>
+                  <MeetDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/trips"
+              element={
+                <PrivateRoute>
+                  <Trips />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
         </div>
-      )}
+      </div>
     </Router>
   );
 };
