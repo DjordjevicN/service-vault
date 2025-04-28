@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
+
 const HomePage = () => {
   return (
     <div>
-      <p>hero</p>
-      <p>what we offer</p>
-      <p>Partners</p>
-      <p>how app works</p>
-      <p>footer</p>
+      <h1>HOME PAGE</h1>
+      <Link to="/register" className="text-blue-500 hover:underline">
+        Register
+      </Link>
     </div>
   );
 };

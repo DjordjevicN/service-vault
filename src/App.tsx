@@ -12,8 +12,9 @@ import Navigation from "./components/navigation/Navigation";
 import TopBar from "./components/TopBar";
 import Meets from "./components/pages/Meets";
 import Trips from "./components/pages/Trips";
-const isAuthenticated = true;
-const isHomePage = window.location.pathname === "/";
+import UserProfile from "./components/pages/UserProfile";
+import Register from "./components/pages/Register";
+const isAuthenticated = false;
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   return isAuthenticated ? children : <Navigate to="/" />;
@@ -22,49 +23,30 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-      {!isHomePage && <TopBar />}
-      <div className="grid" style={{ gridTemplateColumns: "240px 1fr" }}>
-        {!isHomePage && <Navigation />}
-        <div>
-          <Routes>
-            <Route
-              path="/dashboard"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/meets"
-              element={
-                <PrivateRoute>
-                  <Meets />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/meet/:meetId"
-              element={
-                <PrivateRoute>
-                  <MeetDetails />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/trips"
-              element={
-                <PrivateRoute>
-                  <Trips />
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-        </div>
-      </div>
+      {!isAuthenticated ? (
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      ) : (
+        <>
+          <TopBar />
+          <div className="grid" style={{ gridTemplateColumns: "240px 1fr" }}>
+            <Navigation />
+            <div>
+              <PrivateRoute>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/meets" element={<Meets />} />
+                  <Route path="/meet/:meetId" element={<MeetDetails />} />
+                  <Route path="/trips" element={<Trips />} />
+                  <Route path="/profile" element={<UserProfile />} />
+                </Routes>
+              </PrivateRoute>
+            </div>
+          </div>
+        </>
+      )}
     </Router>
   );
 };
