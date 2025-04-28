@@ -1,4 +1,5 @@
 import React from "react";
+
 const MeetCard = ({ meet }) => {
   console.log(meet);
 
@@ -12,6 +13,7 @@ const MeetCard = ({ meet }) => {
     </div>
   );
 };
+
 const Meets = () => {
   const meets = [
     {
