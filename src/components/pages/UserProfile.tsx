@@ -1,11 +1,13 @@
 import { RootState } from "@/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { updateUser } from "@/api/userApi";
+import { storeUser } from "@/store/userSlice";
 
 const UserProfile = () => {
+  const dispatch = useDispatch();
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
@@ -16,6 +18,7 @@ const UserProfile = () => {
     mutationFn: (formData: USER_TYPES) => updateUser(formData),
     onSuccess: (data) => {
       console.log("User updated successfully", data);
+      dispatch(storeUser(data.user));
     },
   });
   const handleUserUpdate = (event: React.FormEvent<HTMLFormElement>): void => {
