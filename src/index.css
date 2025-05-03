@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -36,6 +35,13 @@
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
+  --mainbg: #2c2f33;
+  --gray80: #303539;
+  --gray70: #4c4e54;
+  --gray60: #53575c;
+  --gray55: #9ca8b7;
+  --gray50: #d2d3d9;
+  --white: #fbfbfb;
 }
 
 .dark {
@@ -70,6 +76,14 @@
   --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+
+  --mainbg: "#23272A";
+  --gray80: "#2C2F33";
+  --gray70: "#23272A";
+  --gray60: "#23272A";
+  --gray55: "#23272A";
+  --gray50: "#23272A";
+  --white: "#23272A";
 }
 
 @theme inline {
@@ -108,6 +122,13 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-mainbg: var(--mainbg);
+  --color-gray80: var(--gray80);
+  --color-gray70: var(--gray70);
+  --color-gray60: var(--gray60);
+  --color-gray55: var(--gray55);
+  --color-gray50: var(--gray50);
+  --color-white: var(--white);
 }
 
 @layer base {
@@ -116,5 +137,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-color: var(--mainbg);
   }
 }

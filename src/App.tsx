@@ -17,32 +17,34 @@ const App = () => {
   const user = useSelector((state: RootState) => state.user);
   const isAuthenticated = !!user;
   return (
-    <Router>
-      {!isAuthenticated ? (
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      ) : (
-        <>
-          <TopBar />
-          <div className="grid" style={{ gridTemplateColumns: "240px 1fr" }}>
-            <Navigation />
+    <div className="max-w-[1440px] mx-auto">
+      <Router>
+        {!isAuthenticated ? (
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        ) : (
+          <>
+            <TopBar />
             <div>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/meets" element={<Meets />} />
-                <Route path="/meet/:meetId" element={<MeetDetails />} />
-                <Route path="/trips" element={<Trips />} />
-                <Route path="/profile" element={<UserProfile />} />
-                <Route path="/superadmin" element={<SuperAdmin />} />
-              </Routes>
+              <Navigation />
+              <div>
+                <Routes>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/meets" element={<Meets />} />
+                  <Route path="/meet/:meetId" element={<MeetDetails />} />
+                  <Route path="/trips" element={<Trips />} />
+                  <Route path="/profile" element={<UserProfile />} />
+                  <Route path="/superadmin" element={<SuperAdmin />} />
+                </Routes>
+              </div>
             </div>
-          </div>
-        </>
-      )}
-    </Router>
+          </>
+        )}
+      </Router>
+    </div>
   );
 };
 

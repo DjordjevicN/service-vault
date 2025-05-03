@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
+import TopBar from "../TopBar";
+import Hero from "../Hero";
+import HomeMeets from "../HomeMeets";
+import Footer from "../Footer";
 
 const HomePage = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1>HOME PAGE</h1>
+    <div className="">
+      <TopBar />
+      <Hero />
+      <HomeMeets />
+      <Footer />
       <Link to="/register" className="text-blue-500 hover:underline">
         Register
       </Link>
