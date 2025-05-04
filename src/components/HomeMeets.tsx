@@ -1,23 +1,14 @@
 import React from "react";
 import MeetHomeCard from "./MeetHomeCard";
+import { meets } from "@/data/meetData";
 
 const HomeMeets = () => {
-  const meets = [
-    { id: "1", name: "Meet 1" },
-    { id: "2", name: "Meet 2" },
-    { id: "3", name: "Meet 3" },
-    { id: "4", name: "Meet 4" },
-    { id: "5", name: "Meet 5" },
-    { id: "6", name: "Meet 6" },
-    { id: "7", name: "Meet 7" },
-    { id: "8", name: "Meet 8" },
-  ];
   return (
-    <div>
-      <h1>Upcoming events</h1>
-      <div>
+    <div className="px-6">
+      <h1 className="text-2xl text-white mb-6">Upcoming events</h1>
+      <div className="flex flex-wrap gap-4 gap-y-10 w-full justify-between">
         {meets.map((meet) => {
-          return <MeetHomeCard meet={meet} />;
+          return <MeetHomeCard key={meet.id} meetDetails={meet} />;
         })}
       </div>
     </div>

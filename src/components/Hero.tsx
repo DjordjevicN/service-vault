@@ -1,4 +1,4 @@
-import bg from "../assets/bg.png?url";
+import bg from "../assets/bgtrans.png?url";
 import LoginBox from "./LoginBox";
 const Hero = () => {
   return (

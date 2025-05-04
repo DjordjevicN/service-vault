@@ -42,6 +42,13 @@
   --gray55: #9ca8b7;
   --gray50: #d2d3d9;
   --white: #fbfbfb;
+  --red90: #eb2865;
+  --orange90: #ed8c2b;
+  --green90: #2be8a0;
+  --blue90: #2b8ced;
+  --purple90: #8c2bed;
+  --pink90: #d02b8c;
+  --yellow90: #e8d02b;
 }
 
 .dark {
@@ -84,6 +91,13 @@
   --gray55: "#23272A";
   --gray50: "#23272A";
   --white: "#23272A";
+  --red90: "#EB2865";
+  --orange90: "#ED8C2B";
+  --green90: "#2BE8A0";
+  --blue90: "#2B8CED";
+  --purple90: "#8C2BED";
+  --pink90: "#D02B8C";
+  --yellow90: "#E8D02B";
 }
 
 @theme inline {
@@ -129,6 +143,13 @@
   --color-gray55: var(--gray55);
   --color-gray50: var(--gray50);
   --color-white: var(--white);
+  --color-red90: var(--red90);
+  --color-orange90: var(--orange90);
+  --color-green90: var(--green90);
+  --color-blue90: var(--blue90);
+  --color-purple90: var(--purple90);
+  --color-pink90: var(--pink90);
+  --color-yellow90: var(--yellow90);
 }
 
 @layer base {
@@ -139,4 +160,10 @@
     @apply bg-background text-foreground;
     background-color: var(--mainbg);
   }
+}
+.text-gradient {
+  @apply text-transparent bg-clip-text bg-[linear-gradient(45deg,_#EB2865,_#ED8C2B)];
+}
+.div-gradient {
+  @apply text-white bg-[linear-gradient(45deg,_#EB2865,_#ED8C2B)];
 }

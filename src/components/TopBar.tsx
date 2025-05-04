@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Input from "./UI/Input";
-import { useDebounce } from "./hooks/useDebounce";
+import { useDebounce } from "../hooks/useDebounce";
 
 const TopBar = () => {
   const [searchValue, setSearchValue] = React.useState("");

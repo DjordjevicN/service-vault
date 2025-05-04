@@ -15,7 +15,7 @@ const LoginBox = () => {
               className="flex gap-2 px-4 py-2 bg-mainbg rounded cursor-pointer"
               onClick={handleGoogleLogin}
             >
-              <img src={google} alt="google" />
+              <img src={google} alt="google" className="w-[24px] h-[24px]" />
               <p className="text-white">Signup with Google</p>
             </button>
           </div>
