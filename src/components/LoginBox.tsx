@@ -1,11 +1,10 @@
+import { Link } from "react-router-dom";
 import google from "../assets/googleIcon.png";
 const LoginBox = () => {
   const handleGoogleLogin = () => {
     console.log("Google login");
   };
-  const handleEmailLogin = () => {
-    console.log("Email login");
-  };
+
   return (
     <div>
       <div className="w-full flex justify-center">
@@ -24,12 +23,10 @@ const LoginBox = () => {
             <p className="my-6 text-white">or</p>
             <div className="full bg-gray60 w-full h-[1px]"></div>
           </div>
-          <button
-            className="text-gray55 cursor-pointer"
-            onClick={handleEmailLogin}
-          >
+
+          <Link to="/login" className="text-gray55 cursor-pointer">
             Continue with email
-          </button>
+          </Link>
         </div>
       </div>
     </div>

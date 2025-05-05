@@ -22,12 +22,12 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className={`flex flex-col ${WrapperClassName}`}>
       {label && (
-        <label id={label} className="text-gray-700 text-sm font-bold mb-2">
+        <label id={label} className="text-gray70 text-sm font-bold mb-2">
           {label}
         </label>
       )}
       <input
-        className={`border border-gray-300 h-10 rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 ${InputClassName}`}
+        className={`border border-gray55 placeholder:text-gray55 text-white h-10 rounded-lg px-4 focus:outline-none  ${InputClassName}`}
         placeholder={placeholder}
         type={type}
         onChange={(e) => onChange(e.target.value)}

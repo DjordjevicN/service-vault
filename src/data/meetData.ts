@@ -6,12 +6,13 @@ export const meets = [
     location: "Belgrade, Serbia",
     description:
       "Join us for a ride through the beautiful streets of Belgrade.",
+    favorite: true, // Added favorite status
     participants: [
       {
         id: 1,
         name: "Nikola",
         status: "confirmed",
-        motorcycle: "KawasakiZ 1000",
+        motorcycle: "Kawasaki Z 1000",
       },
       {
         id: 2,
@@ -80,5 +81,190 @@ export const meets = [
         motorcycle: "Kawasaki Z 1000",
       },
     ],
+  },
+  {
+    id: 2,
+    name: "Zlatibor Kawasaki Z Meetup",
+    date: "2023-10-10",
+    location: "Zlatibor, Serbia",
+    description: "A scenic ride through the mountains of Zlatibor.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 3,
+    name: "Novi Sad Kawasaki Z Meetup",
+    date: "2023-10-15",
+    location: "Novi Sad, Serbia",
+    description:
+      "Join us for a relaxing ride along the Danube River in Novi Sad.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 4,
+    name: "Subotica Kawasaki Z Meetup",
+    date: "2023-10-20",
+    location: "Subotica, Serbia",
+    description:
+      "A fun ride around the city of Subotica and surrounding countryside.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 5,
+    name: "Nis Kawasaki Z Meetup",
+    date: "2023-10-25",
+    location: "Nis, Serbia",
+    description:
+      "A ride through the historic city of Nis and its surroundings.",
+    favorite: true, // Added favorite status
+    participants: [],
+  },
+  {
+    id: 6,
+    name: "Kopaonik Kawasaki Z Meetup",
+    date: "2023-11-01",
+    location: "Kopaonik, Serbia",
+    description:
+      "A thrilling ride through the Kopaonik mountains and ski resort.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 7,
+    name: "Belgrade Night Ride",
+    date: "2023-11-05",
+    location: "Belgrade, Serbia",
+    description:
+      "Join us for a night ride around Belgrade, experiencing the city lights.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 8,
+    name: "Vrnjacka Banja Kawasaki Z Meetup",
+    date: "2023-11-10",
+    location: "Vrnjacka Banja, Serbia",
+    description: "Relaxing ride through the famous spa town of Vrnjacka Banja.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 9,
+    name: "Srem Kawasaki Z Meetup",
+    date: "2023-11-15",
+    location: "Srem, Serbia",
+    description:
+      "A scenic route through the plains of Srem, perfect for a long ride.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 10,
+    name: "Palić Lake Kawasaki Z Meetup",
+    date: "2023-11-20",
+    location: "Palić Lake, Serbia",
+    description: "Join us for a ride around the beautiful Palić Lake.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 11,
+    name: "Tara National Park Kawasaki Z Meetup",
+    date: "2023-12-01",
+    location: "Tara National Park, Serbia",
+    description:
+      "A ride through the stunning landscapes of Tara National Park.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 12,
+    name: "Vrsac Kawasaki Z Meetup",
+    date: "2023-12-05",
+    location: "Vrsac, Serbia",
+    description:
+      "Join us for a ride around the hills of Vrsac and its vineyards.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 13,
+    name: "Pirot Kawasaki Z Meetup",
+    date: "2023-12-10",
+    location: "Pirot, Serbia",
+    description:
+      "A ride through the historic city of Pirot and its surroundings.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 14,
+    name: "Banja Koviljaca Kawasaki Z Meetup",
+    date: "2023-12-15",
+    location: "Banja Koviljaca, Serbia",
+    description:
+      "Join us for a peaceful ride through the picturesque Banja Koviljaca.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 15,
+    name: "Zrenjanin Kawasaki Z Meetup",
+    date: "2024-01-05",
+    location: "Zrenjanin, Serbia",
+    description:
+      "A ride through the city of Zrenjanin and the surrounding area.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 16,
+    name: "Senta Kawasaki Z Meetup",
+    date: "2024-01-10",
+    location: "Senta, Serbia",
+    description:
+      "A ride through the historical town of Senta and its beautiful countryside.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 17,
+    name: "Kikinda Kawasaki Z Meetup",
+    date: "2024-01-15",
+    location: "Kikinda, Serbia",
+    description:
+      "A ride through the city of Kikinda and its surrounding areas.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 18,
+    name: "Kraljevo Kawasaki Z Meetup",
+    date: "2024-01-20",
+    location: "Kraljevo, Serbia",
+    description:
+      "Join us for a scenic ride around Kraljevo and its surrounding villages.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 19,
+    name: "Novi Becej Kawasaki Z Meetup",
+    date: "2024-01-25",
+    location: "Novi Becej, Serbia",
+    description: "A ride through the quaint town of Novi Becej.",
+    favorite: false,
+    participants: [],
+  },
+  {
+    id: 20,
+    name: "Smederevo Kawasaki Z Meetup",
+    date: "2024-02-01",
+    location: "Smederevo, Serbia",
+    description: "Join us for a historical ride around the city of Smederevo.",
+    favorite: false,
+    participants: [],
   },
 ];

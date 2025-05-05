@@ -11,7 +11,7 @@ import SuperAdmin from "./components/pages/SuperAdmin";
 import Login from "./components/pages/Login";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
-import Navigation from "./components/navigation/Navigation";
+import OrganizationPage from "./components/pages/OrganizationPage";
 
 const App = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -30,13 +30,14 @@ const App = () => {
         ) : (
           <>
             <div>
-              <Navigation />
+              {/* <Navigation /> */}
               <div>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/meets" element={<Meets />} />
                   <Route path="/trips" element={<Trips />} />
                   <Route path="/profile" element={<UserProfile />} />
+                  <Route path="/org/:id" element={<OrganizationPage />} />
                   <Route path="/superadmin" element={<SuperAdmin />} />
                 </Routes>
               </div>

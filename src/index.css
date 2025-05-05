@@ -167,3 +167,29 @@
 .div-gradient {
   @apply text-white bg-[linear-gradient(45deg,_#EB2865,_#ED8C2B)];
 }
+
+.react-calendar {
+  background-color: var(--gray80) !important;
+  border: none !important;
+  color: white;
+  width: 100% !important;
+}
+.react-calendar__month-view__weekdays {
+  background-color: var(--gray70);
+}
+.react-calendar__tile--now {
+  background-color: var(--gray55) !important;
+}
+.react-calendar__tile {
+  background-color: black;
+  color: var(--gray40);
+}
+.react-calendar__tile:hover {
+  background-color: black;
+  color: var(--gray40);
+}
+.react-calendar__tile:hover {
+  background-color: var(--gray70) !important;
+  color: white;
+  transition: all 0.2s ease;
+}
