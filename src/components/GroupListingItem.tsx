@@ -2,20 +2,56 @@ import placeholder from "@/assets/placeholder.png";
 import favoriteOn from "@/assets/favoriteOn.svg";
 import favoriteOff from "@/assets/favoriteOff.svg";
 import share from "@/assets/share.svg";
+import { MeetType } from "@/constants/meetTypes";
+import gps from "@/assets/gps.svg";
+import { useNavigate } from "react-router-dom";
+import { USER_TYPES } from "@/constants/userTypes";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { googleMapsPinLink } from "@/constants/helperFunctions";
 
-const GroupListingItem = ({ meet }) => {
+const GroupListingItem = ({ meet }: { meet: MeetType }) => {
+  const navigate = useNavigate();
+  const user = useSelector(
+    (state: RootState) => state.user as USER_TYPES | null
+  );
+
+  if (!meet || !user) return null;
+
+  const handleNavigate = (id: string) => {
+    navigate(`/meet/${id}`);
+  };
+
+  const isUsersFavorite = () => {
+    return user.favoriteMeets?.includes(meet.id);
+  };
+
   return (
-    <div className="grid grid-cols-[1fr_2fr] mb-4 gap-4">
+    <div
+      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer"
+      onClick={() => handleNavigate(meet.id)}
+    >
       <div>
         <img src={placeholder} alt="" />
       </div>
       <div className="flex flex-col justify-between">
         <div>
-          <p className="text-gray55 uppercase text-sm">
-            Wed, {meet.date}- 7:15 PM CEST
-          </p>
+          <p className="text-gray55 uppercase text-sm">{meet.startTime}</p>
           <p className="text-white">{meet.name}</p>
-          <p className="text-gray55 text-sm">{meet.location}</p>
+          <a
+            onClick={(e) => e.stopPropagation()}
+            target="_blank"
+            href={googleMapsPinLink(
+              meet.location.latitude,
+              meet.location.longitude
+            )}
+            className="flex items-center gap-2 mt-2"
+          >
+            <img src={gps} alt="" />
+            <p className="text-gray55 text-sm">
+              {meet.address} {meet.city}, {meet.country}
+            </p>
+          </a>
         </div>
         <div className="flex justify-between">
           <p className="text-sm text-gray55">
@@ -29,7 +65,7 @@ const GroupListingItem = ({ meet }) => {
               <img src={share} alt="share" />
             </div>
             <div className="cursor-pointer" onClick={() => console.log("fav")}>
-              {meet.favorite ? (
+              {isUsersFavorite() ? (
                 <img src={favoriteOn} alt="favorite on" />
               ) : (
                 <img src={favoriteOff} alt="favorite off" />

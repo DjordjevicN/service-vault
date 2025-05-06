@@ -1,13 +1,7 @@
-import DashboardGroupItem from "./DashboardGroupItem";
+import { USER_TYPES } from "@/constants/userTypes";
 
-const DashboardGroups = () => {
-  const groups = [
-    { id: "1", name: "Kawasaki Belgrade" },
-    { id: "2", name: "Arhangeli" },
-    { id: "3", name: "Crusers" },
-    { id: "4", name: "Srbi" },
-    { id: "5", name: "BRD Riders" },
-  ];
+const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
+  if (!user) return null;
   return (
     <div className="mt-6 bg-gray80 rounded p-6">
       <div className="flex items-center justify-between">
@@ -15,9 +9,14 @@ const DashboardGroups = () => {
         <p className="text-gray55 cursor-pointer">See all your groups</p>
       </div>
       <div className="mt-4">
-        {groups.map((group) => {
+        {user?.orgsIFollow?.length === 0 && (
+          <p className="text-gray55">
+            You are not part of any groups yet. Join a group to see events.
+          </p>
+        )}
+        {/* {groups.map((group) => {
           return <DashboardGroupItem key={group.id} group={group} />;
-        })}
+        })} */}
       </div>
     </div>
   );

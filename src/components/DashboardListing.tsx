@@ -1,24 +1,15 @@
-import React from "react";
-import { meets } from "@/data/meetData";
+import { MeetType } from "@/constants/meetTypes";
 import GroupListingItem from "./GroupListingItem";
-import Switch from "./UI/Switch";
 
-const DashboardListing = () => {
+const DashboardListing = ({ meets }: { meets: MeetType[] | null }) => {
+  if (!meets || meets.length === 0) {
+    return <div className="text-white">No events available</div>;
+  }
   return (
     <div>
-      <div className="h-9 mb-4 flex items-center justify-between">
-        <div></div>
-        <div className="flex items-center gap-3">
-          <p className="text-gray55">Favorite</p>
-          <Switch />
-        </div>
-      </div>
-
-      <div>
-        {meets.map((meet) => {
-          return <GroupListingItem key={meet.id} meet={meet} />;
-        })}
-      </div>
+      {meets.map((meet) => {
+        return <GroupListingItem key={meet.id} meet={meet} />;
+      })}
     </div>
   );
 };

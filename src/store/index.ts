@@ -4,15 +4,18 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage
 import { persistReducer, persistStore } from "redux-persist";
 import userReducer from "./userSlice";
 import appReducer from "./appSlice";
+import meetReducer from "./meetSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "app"],
+  whitelist: ["user", "app"], // Can change to blacklist if needed
+  blacklist: [], // Example: Don't persist sensitive fields
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
+  meets: meetReducer,
   app: appReducer,
 });
 

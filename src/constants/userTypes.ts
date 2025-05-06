@@ -3,11 +3,23 @@ export type USER_TYPES = {
   username: string;
   email: string;
   password: string;
-  role: "admin" | "user" | "guest" | "moderator" | "superadmin";
-  motorcycle: string;
-  trips: string[];
-  meets: string[];
-  image: string;
+  createdAt: string;
+  updatedAt: string;
+  orgId?: string;
+  role: "superadmin" | "admin" | "user";
+  motorcycle?: string;
+  followers?: string[];
+  myMeets?: string[];
+  attendingMeets?: string[];
+  favoriteMeets?: string[];
+  myTrips?: string[];
+  favoriteTrips?: string[];
+  attendingTrips?: string[];
+  orgsIFollow?: string[];
+  image?: string;
+  city?: string;
+  country?: string;
+  bio?: string;
 };
 export type NEW_USER_TYPES = {
   username: string;

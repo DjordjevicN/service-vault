@@ -34,16 +34,16 @@ const OrganizationPage = () => {
         </div>
         <div className="flex items-center justify-between gap-4 p-6 mt-6 bg-gray80">
           <div className="text-center">
-            <p>6</p>
-            <p>Meets</p>
+            <p className="text-gray50 text-2xl">6</p>
+            <p className="text-gray55">Meets</p>
           </div>
           <div className="text-center">
-            <p>30</p>
-            <p>Members</p>
+            <p className="text-gray50 text-2xl">30</p>
+            <p className="text-gray55">Members</p>
           </div>
           <div className="text-center">
-            <p>30k</p>
-            <p>Followers</p>
+            <p className="text-gray50 text-2xl">30k</p>
+            <p className="text-gray55">Followers</p>
           </div>
         </div>
         <div className="grid grid-cols-[1fr_5fr] p-6 text-white bg-gray80 mt-6">
@@ -67,7 +67,6 @@ const OrganizationPage = () => {
         <div className="bg-gray80 rounded p-6">
           <h2 className="text-xl text-white font-bold">Members</h2>
           <div className="grid grid-cols-4 gap-4 mt-6">
-            {/* <div className="flex flex-wrap gap-4 mt-6"> */}
             {sortUsersByRank(users).map((user) => {
               return <OrgMember user={user} />;
             })}

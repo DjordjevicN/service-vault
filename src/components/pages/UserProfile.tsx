@@ -1,87 +1,72 @@
 import { RootState } from "@/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { USER_TYPES } from "@/constants/userTypes";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { updateUser } from "@/api/userApi";
-import { storeUser } from "@/store/userSlice";
+
+import Avatar from "../Avatar";
+import { meets } from "@/data/meetData";
+import GroupListingItem from "../GroupListingItem";
+import DashboardGroups from "../DashboardGroups";
 
 const UserProfile = () => {
-  const dispatch = useDispatch();
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
 
-  const [formData, setFormData] = useState<USER_TYPES | null>(user);
-
-  const { mutate } = useMutation({
-    mutationFn: (formData: USER_TYPES) => updateUser(formData),
-    onSuccess: (data) => {
-      console.log("User updated successfully", data);
-      dispatch(storeUser(data.user));
-    },
-  });
-  const handleUserUpdate = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    if (!formData) return;
-    mutate(formData);
-  };
-  if (!formData) return;
-
   return (
-    <div className="p-6">
-      <h1 className="text-3xl">User Profile</h1>
-      <form onSubmit={handleUserUpdate} className="">
-        <div className="mb-4 flex flex-col">
-          <label htmlFor="username">username</label>
-          <input
-            value={formData.username}
-            className="border"
-            type="text"
-            id="username"
-            onChange={(e) =>
-              setFormData({ ...formData, username: e.target.value })
-            }
+    <div className="grid grid-cols-[1fr_2fr] gap-4 mt-14">
+      <div className="">
+        <div className="bg-gray70">
+          <img
+            className="w-full h-[400px] object-cover"
+            src={user?.image}
+            alt=""
           />
         </div>
-        <div className="mb-4 flex flex-col">
-          <label htmlFor="email">email</label>
-          <input
-            value={formData.email}
-            className="border"
-            type="text"
-            id="email"
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-          />
+        <div className="flex items-center justify-between gap-4 p-6 mt-6 bg-gray80">
+          <div className="text-center">
+            <p className="text-gray50 text-2xl">{user?.myMeets.length}</p>
+            <p className="text-gray55">Meets</p>
+          </div>
+          <div className="text-center">
+            <p className="text-gray50 text-2xl">30</p>
+            <p className="text-gray55">Members</p>
+          </div>
+          <div className="text-center">
+            <p className="text-gray50 text-2xl">30k</p>
+            <p className="text-gray55">Followers</p>
+          </div>
         </div>
-        <div className="mb-4 flex flex-col">
-          <label htmlFor="password">password</label>
-          <input
-            value={formData.password}
-            className="border"
-            type="text"
-            id="password"
-            onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
-            }
-          />
+        <div className="grid grid-cols-[1fr_5fr] p-6 text-white bg-gray80 mt-6">
+          <div>
+            <Avatar />
+          </div>
+          <div className="">
+            <div className="flex justify-between items-center">
+              <p className="text-xl">{user?.username}</p>
+              <button className="text-gradient text-sm">Edit profile</button>
+            </div>
+            <div className="text-gray55 mt-3 text-sm">
+              <p>{user?.email}</p>
+              <p>{user?.motorcycle}</p>
+              <p>Belgrade, RS</p>
+              <p>Joined Rider Meets on Jan 2018</p>
+            </div>
+          </div>
         </div>
-        <div className="mb-4 flex flex-col">
-          <label htmlFor="motorcycle">Motorcycle</label>
-          <input
-            value={formData.motorcycle}
-            className="border"
-            type="text"
-            id="motorcycle"
-            onChange={(e) =>
-              setFormData({ ...formData, motorcycle: e.target.value })
-            }
-          />
+
+        <DashboardGroups />
+        <DashboardGroups />
+      </div>
+      <div className="">
+        <div className="bg-gray80 rounded p-6">
+          <h2 className="text-xl text-white font-bold mb-6">Events</h2>
+          <div>
+            {meets.map((meet) => {
+              return <GroupListingItem meet={meet} />;
+            })}
+          </div>
         </div>
-        <button type="submit">Update profile</button>
-      </form>
+      </div>
     </div>
   );
 };
