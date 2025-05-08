@@ -20,9 +20,9 @@ const Input: React.FC<InputProps> = ({
   InputClassName = "",
 }) => {
   return (
-    <div className={`flex flex-col ${WrapperClassName}`}>
+    <div className={`flex flex-col mt-4 ${WrapperClassName}`}>
       {label && (
-        <label id={label} className="text-gray70 text-sm font-bold mb-2">
+        <label id={label} className="text-white capitalize font-bold mb-2">
           {label}
         </label>
       )}

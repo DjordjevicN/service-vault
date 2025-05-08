@@ -22,7 +22,7 @@ export type USER_TYPES = {
   bio?: string;
 };
 export type NEW_USER_TYPES = {
-  username: string;
+  username?: string;
   email: string;
   password: string;
 };
