@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import OrganizationPage from "./components/pages/OrganizationPage";
 import PrivateRoute from "./api/PrivateRoute";
+import EditUser from "./components/pages/EditUser";
 
 const App = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -55,6 +56,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <UserProfile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-profile"
+            element={
+              <PrivateRoute>
+                <EditUser />
               </PrivateRoute>
             }
           />

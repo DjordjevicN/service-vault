@@ -6,6 +6,7 @@ import Avatar from "../Avatar";
 import { meets } from "@/data/meetData";
 import GroupListingItem from "../GroupListingItem";
 import DashboardGroups from "../DashboardGroups";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
   const user = useSelector(
@@ -43,7 +44,9 @@ const UserProfile = () => {
           <div className="">
             <div className="flex justify-between items-center">
               <p className="text-xl">{user?.username}</p>
-              <button className="text-gradient text-sm">Edit profile</button>
+              <Link to={"/edit-profile"} className="text-gradient text-sm">
+                Edit profile
+              </Link>
             </div>
             <div className="text-gray55 mt-3 text-sm">
               <p>{user?.email}</p>

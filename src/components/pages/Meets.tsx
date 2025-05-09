@@ -1,5 +1,5 @@
-import { meets } from "@/data/meetData";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const MeetCard = ({ meet }) => {
   return (

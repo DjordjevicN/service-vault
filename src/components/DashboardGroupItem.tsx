@@ -2,7 +2,6 @@ import React from "react";
 import placeholder from "../assets/placeholder.png";
 
 const DashboardGroupItem = ({ group }) => {
-  console.log("group", group);
   const handleRedirect = (id: string) => {
     console.log("Redirecting to group with id:", id);
   };

@@ -6,8 +6,8 @@ type InputProps = {
   label?: string;
   type?: string;
   placeholder?: string;
-  WrapperClassName?: string;
-  InputClassName?: string;
+  wrapperClassName?: string;
+  inputClassName?: string;
 };
 
 const Input: React.FC<InputProps> = ({
@@ -16,18 +16,18 @@ const Input: React.FC<InputProps> = ({
   label,
   type = "text",
   placeholder = "",
-  WrapperClassName = "",
-  InputClassName = "",
+  wrapperClassName = "",
+  inputClassName = "",
 }) => {
   return (
-    <div className={`flex flex-col mt-4 ${WrapperClassName}`}>
+    <div className={`flex flex-col mt-4 ${wrapperClassName}`}>
       {label && (
         <label id={label} className="text-white capitalize font-bold mb-2">
           {label}
         </label>
       )}
       <input
-        className={`border border-gray55 placeholder:text-gray55 text-white h-10 rounded-lg px-4 focus:outline-none  ${InputClassName}`}
+        className={`border border-gray70 placeholder:text-gray55 text-white h-10 rounded-lg px-4 focus:outline-none bg-mainbg  ${inputClassName}`}
         placeholder={placeholder}
         type={type}
         onChange={(e) => onChange(e.target.value)}

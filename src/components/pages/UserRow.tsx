@@ -1,9 +1,8 @@
 import Avatar from "../Avatar";
 import { getStatusColor } from "../utils/getStatusColor";
+import { userRowType } from "./MeetDetails";
 
-const UserRow = ({ user }: { user: any }) => {
-  console.log(user);
-
+const UserRow = ({ user }: { user: userRowType }) => {
   return (
     <div className="flex items-center mb-3 p-2 gap-6 bg-gray80 rounded">
       <Avatar size={32} />

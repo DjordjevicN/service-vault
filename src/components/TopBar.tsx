@@ -17,12 +17,13 @@ const TopBar = () => {
   }, [debounceSearch]);
 
   return (
-    <div className="h-16 flex items-center justify-between px-6 border-b border-gray55">
+    <div className="flex items-center justify-between p-4 border-b border-gray55">
       <Logo />
       <Input
         value={searchValue}
         onChange={(value) => setSearchValue(value)}
         placeholder="Search"
+        wrapperClassName="mt-0!"
       />
       <AvatarDropdown />
     </div>

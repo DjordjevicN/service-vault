@@ -5,8 +5,6 @@ const MeetHomeCard = ({ meetDetails }) => {
   const navigate = useNavigate();
 
   const navigateToMeetDetails = (id: string) => {
-    console.log("meet id", id);
-
     return navigate(`/meet/${id}`);
   };
 

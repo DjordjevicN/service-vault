@@ -7,3 +7,9 @@ export const fetchMeets = async (ids: string[], dispatch: any) => {
   dispatch(storeUserMeets(res.data));
   return res.data;
 };
+
+export const fetchMeetById = async (id: string) => {
+  const res = await axios.get(`http://localhost:3000/meets/meet/${id}`);
+  if (!res.data) throw new Error("No data found");
+  return res.data;
+};

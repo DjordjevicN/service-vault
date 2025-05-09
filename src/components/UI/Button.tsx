@@ -5,6 +5,7 @@ type ButtonProps = {
   classname?: string;
   variant?: "primary" | "secondary" | "text";
   icon?: React.ReactNode;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -13,6 +14,7 @@ const Button: React.FC<ButtonProps> = ({
   classname,
   variant = "primary",
   icon,
+  onClick,
 }) => {
   const variantClasses = {
     primary: "div-gradient text-white",
@@ -21,7 +23,8 @@ const Button: React.FC<ButtonProps> = ({
   };
   return (
     <button
-      className={`${classname} ${variantClasses[variant]} py-3 px-4 rounded font-semibold flex items-center gap-2`}
+      onClick={onClick}
+      className={`${classname} ${variantClasses[variant]} py-3 px-4 rounded font-semibold flex items-center justify-center gap-2 cursor-pointer`}
       type={type || "button"}
     >
       {icon && icon} {children}

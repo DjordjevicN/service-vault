@@ -17,7 +17,6 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const [value, onChange] = useState<Value>(new Date());
   const [fetchOnlyFavorites, setFetchOnlyFavorites] = useState<boolean>(false);
-  console.log("fetchOnlyFavorites", fetchOnlyFavorites);
 
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
@@ -45,7 +44,6 @@ const Dashboard = () => {
     queryFn: () => fetchMeets(meetIds, dispatch),
     enabled: !!user && meetIds.length > 0,
   });
-  console.log("storedMeets", storedMeets);
 
   return (
     <div className="p-6">
