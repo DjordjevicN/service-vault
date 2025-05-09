@@ -1,4 +1,3 @@
-import { users } from "@/data/userData";
 import UserRow from "./UserRow";
 import HostedByCard from "../HostedByCard";
 import map from "../../assets/map.png";
@@ -13,6 +12,8 @@ import DivideLine from "../UI/DivideLine";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMeetById } from "@/api/fetchers/fetchMeets";
 import LoadingModal from "../LoadingModal";
+import { getDate, getTime } from "../utils/getDates";
+import MyMap from "../map/MyMap";
 export type userRowType = {
   id: string;
   name: string;
@@ -34,6 +35,9 @@ const MeetDetails = () => {
     console.log("Attend button clicked");
   };
   if (isLoading) return <LoadingModal show={isLoading} />;
+  const addToCalendar = () => {
+    console.log("Add to calendar clicked");
+  };
 
   return (
     <div className="p-6 ">
@@ -81,9 +85,14 @@ const MeetDetails = () => {
             <div className="flex items-start gap-3">
               <img src={clock} alt="clock" className="" />
               <div>
-                <p className="text-white">Thursday, May 1, 2025</p>
-                <p className="text-white">{meet.startTime}</p>
-                <p className="text-gray55">Add to calendar</p>
+                <p className="text-white">{getDate(meet.startDate)}</p>
+                <p className="text-white">{getTime(meet.startTime)}</p>
+                <p
+                  className="text-gray55 cursor-pointer text-gradient w-fit"
+                  onClick={addToCalendar}
+                >
+                  Add to calendar
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3 ">
@@ -92,15 +101,25 @@ const MeetDetails = () => {
                 <p className="text-white">
                   {meet.location.latitude}-{meet.location.longitude}
                 </p>
-                <p className="text-gray55">{meet.startLocation}</p>
+                <p className="text-gray55">{meet.address}</p>
               </div>
             </div>
             <div>
-              <p className="text-gray55">Max riders {`${12}`}</p>
+              <p className="text-white text-xl capitalize">Rules:</p>
+            </div>
+            <div>
+              <p className="text-gray55 capitalize">
+                Max riders: {meet.maxRiders}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray55 capitalize">
+                Ride style: {meet.rideType}
+              </p>
             </div>
           </div>
           <div className="w-full bg-gray80 rounded">
-            <img src={map} alt="" />
+            <MyMap />
           </div>
         </div>
       </div>

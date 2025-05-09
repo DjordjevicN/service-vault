@@ -19,8 +19,8 @@ export type Organization = {
   image: string;
   city: string;
   country: string;
-  createdAt: string; // or Date
-  updatedAt: string; // or Date
+  createdAt: number; // or Date
+  updatedAt: number; // or Date
   location: Location;
   members: OrgMember[];
   followers: string[];

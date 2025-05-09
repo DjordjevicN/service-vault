@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -192,4 +193,7 @@
   background-color: var(--gray70) !important;
   color: white;
   transition: all 0.2s ease;
+}
+.leaflet-control-attribution a {
+  display: none;
 }

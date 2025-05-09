@@ -8,7 +8,7 @@ export type RideParticipant = {
 export type RideComment = {
   userId: string;
   comment: string;
-  createdAt: string; // or Date
+  createdAt: number; // or Date
 };
 
 export type RideLocation = {
@@ -26,8 +26,8 @@ export type MeetType = {
   rideType: "relaxed" | "spirited" | "mixed"; // Extend based on app logic
   participants: RideParticipant[];
   image: string;
-  createdAt: string; // or Date
-  updatedAt: string; // or Date
+  createdAt: number; // or Date
+  updatedAt: number; // or Date
   location: RideLocation;
   address?: string;
   city: string;

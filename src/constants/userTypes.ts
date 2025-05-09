@@ -3,8 +3,8 @@ export type USER_TYPES = {
   username: string;
   email: string;
   password: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: number;
+  updatedAt: number;
   orgId?: string;
   role: "superadmin" | "admin" | "user";
   motorcycle?: string;
