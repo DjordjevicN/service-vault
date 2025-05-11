@@ -1,6 +1,5 @@
 import UserRow from "./UserRow";
 import HostedByCard from "../HostedByCard";
-import map from "../../assets/map.png";
 import banner from "../../assets/banner.png";
 import clock from "../../assets/clock.svg";
 import location from "../../assets/gps.svg";
@@ -14,6 +13,8 @@ import { fetchMeetById } from "@/api/fetchers/fetchMeets";
 import LoadingModal from "../LoadingModal";
 import { getDate, getTime } from "../utils/getDates";
 import MyMap from "../map/MyMap";
+import { googleMapsPinLink } from "@/constants/helperFunctions";
+
 export type userRowType = {
   id: string;
   name: string;
@@ -23,41 +24,59 @@ export type userRowType = {
 };
 const MeetDetails = () => {
   const { id } = useParams();
-
   const { data: meet, isLoading } = useQuery({
     queryKey: ["meet", id],
     queryFn: () => fetchMeetById(id as string),
     enabled: !!id,
   });
-  console.log("meet", meet);
+  // const participantsIds = meet?.participants.map(
+  //   (user: userRowType) => user.id
+  // );
+
+  // const { data: users } = useQuery({
+  //   queryKey: ["users", participantsIds],
+  //   queryFn: () => getUsersByIds(participantsIds),
+  //   enabled: !!participantsIds && meet.participants.length > 0,
+  // });
 
   const handleAttend = () => {
     console.log("Attend button clicked");
   };
-  if (isLoading) return <LoadingModal show={isLoading} />;
   const addToCalendar = () => {
     console.log("Add to calendar clicked");
   };
 
+  const totalParticipants = meet?.participants.length;
+  const totalConfirmed = meet?.participants.filter(
+    (user: userRowType) => user.status === "confirmed"
+  ).length;
+  const totalPending = meet?.participants.filter(
+    (user: userRowType) => user.status === "pending"
+  ).length;
+  const isMaxRidersReached = meet?.maxRiders === totalParticipants;
+
+  if (isLoading) return <LoadingModal show={isLoading} />;
   return (
     <div className="p-6 ">
       <div className="flex justify-between items-baseline">
         <h1 className="text-4xl mb-15 text-white">{meet.name}</h1>
-        <Button onClick={handleAttend}>Attend</Button>
+        <Button onClick={handleAttend} disabled={isMaxRidersReached}>
+          {isMaxRidersReached ? "Full" : "Attend"}
+        </Button>
       </div>
-      <HostedByCard organisedBy={meet.organizerId} />
+      <HostedByCard organizedBy={meet?.organizerId} />
       <DivideLine className="mt-6" />
       <div className="grid grid-cols-[2fr_1fr] gap-4 mt-14">
         <div>
           <MeetDetailsAbout title="Details" description={meet.description} />
 
           <div className="flex gap-9 mt-10">
-            <Counter label="total" count={10} />
-            <Counter label="pending" count={10} />
-            <Counter label="confirmed" count={10} />
+            <Counter label="total" count={totalParticipants} />
+            <Counter label="pending" count={totalPending} />
+            <Counter label="confirmed" count={totalConfirmed} />
           </div>
           <div className="h-96 overflow-auto mt-6">
-            {meet.participants.map((user: userRowType) => (
+            {meet?.participants.map((user: userRowType) => (
               <UserRow key={user.id} user={user} />
             ))}
           </div>
@@ -98,10 +117,17 @@ const MeetDetails = () => {
             <div className="flex items-start gap-3 ">
               <img src={location} alt="location" />
               <div>
-                <p className="text-white">
-                  {meet.location.latitude}-{meet.location.longitude}
-                </p>
-                <p className="text-gray55">{meet.address}</p>
+                <a
+                  onClick={(e) => e.stopPropagation()}
+                  target="_blank"
+                  href={googleMapsPinLink(
+                    meet.location.latitude,
+                    meet.location.longitude
+                  )}
+                  className="flex items-center gap-2"
+                >
+                  <p className="text-gray55">{meet.address}</p>
+                </a>
               </div>
             </div>
             <div>
@@ -109,17 +135,22 @@ const MeetDetails = () => {
             </div>
             <div>
               <p className="text-gray55 capitalize">
-                Max riders: {meet.maxRiders}
+                Max riders:{" "}
+                <span className="text-white">{meet?.maxRiders}</span>
               </p>
             </div>
             <div>
               <p className="text-gray55 capitalize">
-                Ride style: {meet.rideType}
+                Ride style: <span className="text-white">{meet?.rideType}</span>
               </p>
             </div>
           </div>
           <div className="w-full bg-gray80 rounded">
-            <MyMap />
+            <MyMap
+              long={meet.location.longitude}
+              lat={meet.location.latitude}
+              disableMarker
+            />
           </div>
         </div>
       </div>

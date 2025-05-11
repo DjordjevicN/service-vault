@@ -1,13 +1,14 @@
 import React from "react";
 
 type InputProps = {
-  value?: string;
-  onChange: (value: string) => void;
+  value?: string | number;
+  onChange: (value: string | number) => void;
   label?: string;
   type?: string;
-  placeholder?: string;
+  placeholder?: string | number;
   wrapperClassName?: string;
   inputClassName?: string;
+  description?: string;
 };
 
 const Input: React.FC<InputProps> = ({
@@ -15,9 +16,10 @@ const Input: React.FC<InputProps> = ({
   onChange,
   label,
   type = "text",
-  placeholder = "",
+  placeholder = "placeholder",
   wrapperClassName = "",
   inputClassName = "",
+  description,
 }) => {
   return (
     <div className={`flex flex-col mt-4 ${wrapperClassName}`}>
@@ -28,11 +30,12 @@ const Input: React.FC<InputProps> = ({
       )}
       <input
         className={`border border-gray70 placeholder:text-gray55 text-white h-10 rounded-lg px-4 focus:outline-none bg-mainbg  ${inputClassName}`}
-        placeholder={placeholder}
+        placeholder={String(placeholder)}
         type={type}
         onChange={(e) => onChange(e.target.value)}
         value={value}
       />
+      {description && <p className="text-sm text-gray55 mt-2">{description}</p>}
     </div>
   );
 };

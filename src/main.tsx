@@ -7,6 +7,10 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PersistGate } from "redux-persist/integration/react";
 import "leaflet/dist/leaflet.css";
+import "react-calendar/dist/Calendar.css";
+
+import "react-time-picker/dist/TimePicker.css"; // ← Required for time picker
+import "react-clock/dist/Clock.css";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(

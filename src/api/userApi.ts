@@ -27,3 +27,14 @@ export const updateUser = async (user: USER_TYPES) => {
   );
   return response.data;
 };
+export const getUserById = async (id: string) => {
+  const response = await axios.get(`http://localhost:3000/users/user/${id}`);
+  return response.data;
+};
+export const getUsersByIds = async (ids: string[]) => {
+  const response = await axios.post(
+    `http://localhost:3000/users/users-by-ids`,
+    ids
+  );
+  return response.data;
+};

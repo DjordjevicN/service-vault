@@ -19,7 +19,7 @@ const Counter = ({
   };
   return (
     <div>
-      <div>
+      <div className="text-center">
         {getLabel()}
         <p className="text-white">{count}</p>
       </div>

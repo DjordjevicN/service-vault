@@ -12,8 +12,10 @@ import Login from "./components/pages/Login";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import OrganizationPage from "./components/pages/OrganizationPage";
-import PrivateRoute from "./api/PrivateRoute";
+
 import EditUser from "./components/pages/EditUser";
+import PrivateRoute from "./PrivateRoute";
+import MeetConfiguration from "./components/pages/MeetConfiguration";
 
 const App = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -44,6 +46,14 @@ const App = () => {
             }
           />
           <Route
+            path="/meet-config"
+            element={
+              <PrivateRoute>
+                <MeetConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/trips"
             element={
               <PrivateRoute>
@@ -59,6 +69,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+
           <Route
             path="/edit-profile"
             element={

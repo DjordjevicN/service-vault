@@ -78,7 +78,10 @@ const UserProfileForm = () => {
               setEditedUser((prev) => ({ ...prev, motorcycle: value }))
             }
           />
-          <Button onClick={(e) => handleSubmit(e)} classname="mt-6 w-full">
+          <Button
+            onClick={(e) => handleSubmit(e)}
+            wrapperClassName="mt-6 w-full"
+          >
             Save
           </Button>
         </form>

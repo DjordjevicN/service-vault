@@ -197,3 +197,13 @@
 .leaflet-control-attribution a {
   display: none;
 }
+.react-time-picker__wrapper {
+  border-color: #53575c !important;
+  color: white !important;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+.react-time-picker__clear-button__icon {
+  background-color: white !important;
+  border-radius: 100% !important;
+}

@@ -1,7 +1,10 @@
 import { USER_TYPES } from "@/constants/userTypes";
+import Button from "./UI/Button";
+import { Link } from "react-router-dom";
 
 const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
   if (!user) return null;
+
   return (
     <div className="mt-6 bg-gray80 rounded p-6">
       <div className="flex items-center justify-between">
@@ -18,6 +21,10 @@ const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
           return <DashboardGroupItem key={group.id} group={group} />;
         })} */}
       </div>
+
+      <Link to="/meet-config">
+        <Button wrapperClassName="mt-6 w-full">Create a Group</Button>
+      </Link>
     </div>
   );
 };
