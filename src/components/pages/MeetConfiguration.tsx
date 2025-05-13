@@ -1,5 +1,4 @@
 import BasicInfoSection from "@/forms/MeetForms/BasicInfoSection";
-
 import LocationSection from "@/forms/MeetForms/LocationSection";
 import TimeAndDateSection from "@/forms/MeetForms/TimeAndDateSection";
 import RulesSection from "@/forms/MeetForms/RulesSection";
@@ -10,8 +9,7 @@ import MeetFormFinish from "@/forms/MeetForms/MeetFormFinish";
 import Button from "../UI/Button";
 
 const MeetConfiguration = () => {
-  const [section, setSection] = useState(0);
-  console.log(section);
+  const [section, setSection] = useState(6);
 
   const handleNext = () => {
     if (section === 6) {

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const ParticipantsSection = () => {
   const [userSearch, setUserSearch] = useState("");
-  console.log(userSearch);
+
   // const foundUsers = [
   //   "John Doe",
   //   "Jane Smith",
@@ -45,10 +45,10 @@ const ParticipantsSection = () => {
                 className="p-4 rounded-lg flex items-center border border-gray70"
               >
                 <Avatar />
-                <p className="ml-4">{user}</p>
-                <p className="ml-4">Motorcycle</p>
+                <p className="ml-4 text-white">{user}</p>
+                <p className="ml-4 text-white">Motorcycle</p>
                 <button className="text-gradient w-fit px-4 py-2 rounded-lg ml-auto">
-                  Invite
+                  Send Invite
                 </button>
               </div>
             ))}
