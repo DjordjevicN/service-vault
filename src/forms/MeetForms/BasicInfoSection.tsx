@@ -1,13 +1,18 @@
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+
 import Input from "@/components/UI/Input";
 import Select from "@/components/UI/Select";
 import Textarea from "@/components/UI/Textarea";
-import { useState } from "react";
+import { updateMeetForm } from "@/store/formsSlice";
 
 const BasicInfoSection = () => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [type, setType] = useState("show-off");
-  const [numberOfRiders, setNumberOfRiders] = useState<number>();
+  const dispatch = useDispatch();
+  const { name, description, rideType, participants } = useSelector(
+    (state: RootState) => state.meetForm
+  );
+  console.log("BasicInfoSection", name, description, rideType, participants);
+
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4">
       <div>
@@ -22,7 +27,7 @@ const BasicInfoSection = () => {
         <Input
           type="text"
           placeholder="Meet name"
-          onChange={(value) => setName(value as string)}
+          onChange={(value) => dispatch(updateMeetForm({ key: "name", value }))}
           value={name}
           label="Name"
         />
@@ -35,19 +40,32 @@ const BasicInfoSection = () => {
             { label: "Spirit", value: "spirit" },
             { label: "Reckless", value: "reckless" },
           ]}
-          onChange={(value) => setType(value)}
-          value={type}
+          onChange={(value) =>
+            dispatch(updateMeetForm({ key: "rideType", value }))
+          }
+          value={rideType}
         />
+
         <Input
           type="number"
           placeholder="Number of riders"
           label="Number of riders"
-          onChange={(value) => setNumberOfRiders(Number(value))}
-          value={numberOfRiders}
+          onChange={(value) =>
+            dispatch(
+              updateMeetForm({
+                key: "maxRiders",
+                value: value,
+              })
+            )
+          }
+          value={participants.length}
           description="If you set number of riders to 0, it will be unlimited"
         />
+
         <Textarea
-          onChange={(value) => setDescription(value)}
+          onChange={(value) =>
+            dispatch(updateMeetForm({ key: "description", value }))
+          }
           value={description}
           label="Description"
           rows={5}

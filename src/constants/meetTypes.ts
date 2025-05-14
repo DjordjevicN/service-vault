@@ -1,19 +1,20 @@
+// Types
 export type RideParticipant = {
   userId: string;
   motorcycle: string;
   name: string;
-  status: "pending" | "confirmed" | "declined"; // Extend as needed
+  status: "pending" | "confirmed" | "declined";
 };
 
 export type RideComment = {
   userId: string;
   comment: string;
-  createdAt: number; // or Date
+  createdAt: number | null;
 };
 
 export type RideLocation = {
-  latitude: number;
-  longitude: number;
+  latitude: number | null;
+  longitude: number | null;
 };
 
 export type MeetType = {
@@ -22,14 +23,16 @@ export type MeetType = {
   description: string;
   rules: string[];
   startLocation: string;
-  startTime: string; // or Date
-  rideType: "relaxed" | "spirited" | "mixed"; // Extend based on app logic
+  startTime: string;
+  startDate: string;
+  rideType: "relaxed" | "spirited" | "mixed" | "";
   participants: RideParticipant[];
+  maxRiders: number;
   image: string;
-  createdAt: number; // or Date
-  updatedAt: number; // or Date
+  createdAt: number | null;
+  updatedAt: number | null;
   location: RideLocation;
-  address?: string;
+  address: string;
   city: string;
   country: string;
   tags: string[];

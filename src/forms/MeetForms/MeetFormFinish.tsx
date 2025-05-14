@@ -3,7 +3,16 @@ import gps from "@/assets/map.png";
 import Button from "@/components/UI/Button";
 import DivideLine from "@/components/UI/DivideLine";
 import { useNavigate } from "react-router-dom";
-const TextRow = ({ label, details }: { label: string; details: string }) => {
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import MyMap from "@/components/map/MyMap";
+const TextRow = ({
+  label,
+  details,
+}: {
+  label: string;
+  details: string | number;
+}) => {
   return (
     <div className="text-[18px]">
       <p className="text-white font-bold">
@@ -28,6 +37,8 @@ const RuleRow = ({
 };
 
 const MeetFormFinish = () => {
+  const meetForm = useSelector((state: RootState) => state.meetForm);
+  console.log("meetForm", meetForm);
   const navigate = useNavigate();
   const handlePublish = () => {
     return navigate("/meet/56454654654");
@@ -47,66 +58,42 @@ const MeetFormFinish = () => {
           <div className="mt-6 flex gap-4">
             <div className="w-[200px] h-[200px] rounded-lg overflow-hidden bg-gray55">
               <img
-                src={placeholder}
+                src={meetForm?.image || placeholder}
                 alt=""
                 className="object-cover h-full w-full"
               />
             </div>
             <div>
-              <TextRow label="Meet name" details="Kawasaki z900 meet" />
-              <TextRow label="Max number of participants" details="Unlimited" />
-              <TextRow label="Meet type" details="Bleja" />
-              <TextRow label="Date" details="15.6.2025" />
-              <TextRow label="Time" details="15:30" />
+              <TextRow
+                label="Meet name"
+                details={meetForm?.name || "No Meet Name"}
+              />
+              <TextRow
+                label="Max riders"
+                details={meetForm.maxRiders || "Unlimited"}
+              />
+              <TextRow label="Meet type" details={meetForm.rideType} />
+              <TextRow label="Date" details={meetForm.startDate} />
+              <TextRow label="Time" details={meetForm.startTime} />
             </div>
           </div>
           <div className="mt-6">
             <h2 className="text-gradient text-2xl w-fit">Description</h2>
             <p className="text-white mt-6">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel,
-              atque. Porro libero neque molestiae qui in cum accusantium
-              molestias officia minus eos, illum omnis, ea quas aliquid sequi
-              sit itaque.Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit. Vel, atque. Porro libero neque molestiae qui in cum
-              accusantium molestias officia minus eos, illum omnis, ea quas
-              aliquid sequi sit itaque.Lorem ipsum dolor sit amet, consectetur
-              adipisicing elit. Vel, atque. Porro libero neque molestiae qui in
-              cum accusantium molestias officia minus eos, illum omnis, ea quas
-              aliquid sequi sit itaque.
+              {meetForm.description || "No description"}
             </p>
           </div>
           <div className="mt-6">
             <h2 className="text-gradient text-2xl w-fit mb-6">Rules</h2>
-            <RuleRow
-              ruleNumber="Rule #1"
-              rule="Vel, atque. Porro libero neque molestiae qui in cum accusantium
-            molestias officia minus eos, illum omnis, ea quas aliquid sequi sit
-            itaque."
-            />
-            <RuleRow
-              ruleNumber="Rule #1"
-              rule="Vel, atque. Porro libero neque molestiae qui in cum accusantium
-            molestias officia minus eos, illum omnis, ea quas aliquid sequi sit
-            itaque."
-            />
-            <RuleRow
-              ruleNumber="Rule #1"
-              rule="Vel, atque. Porro libero neque molestiae qui in cum accusantium
-            molestias officia minus eos, illum omnis, ea quas aliquid sequi sit
-            itaque."
-            />
-            <RuleRow
-              ruleNumber="Rule #1"
-              rule="Vel, atque. Porro libero neque molestiae qui in cum accusantium
-            molestias officia minus eos, illum omnis, ea quas aliquid sequi sit
-            itaque."
-            />
-            <RuleRow
-              ruleNumber="Rule #1"
-              rule="Vel, atque. Porro libero neque molestiae qui in cum accusantium
-            molestias officia minus eos, illum omnis, ea quas aliquid sequi sit
-            itaque."
-            />
+            {meetForm.rules.map((rule, index) => {
+              return (
+                <RuleRow
+                  ruleNumber={`Rule #${index + 1}`}
+                  key={index}
+                  rule={rule}
+                />
+              );
+            })}
           </div>
         </div>
         <div className="flex flex-col gap-4">
@@ -114,14 +101,22 @@ const MeetFormFinish = () => {
             <h2 className="text-gradient text-2xl w-fit">Location</h2>
             <div className="mt-6">
               <div>
-                <TextRow label="GPS Location" details="44.3254 , 22.6549" />
-                <TextRow label="Address" details="Bulevar zorana djindjica" />
-                <TextRow label="City" details="Belgrade" />
-                <TextRow label="Country" details="Serbia" />
+                {meetForm.location.latitude && (
+                  <TextRow
+                    label="GPS Location"
+                    details={`${meetForm.location.latitude}.${meetForm.location.longitude}`}
+                  />
+                )}
+                <TextRow label="Address" details={meetForm.address} />
+                <TextRow label="City" details={meetForm.city} />
+                <TextRow label="Country" details={meetForm.country} />
               </div>
             </div>
             <div className="w-[300px] h-[300px] overflow-hidden bg-gray55 mt-4">
-              <img src={gps} alt="" />
+              <MyMap
+                lat={meetForm.location.latitude || 44.7866}
+                long={meetForm.location.longitude || 20.4489}
+              />
             </div>
           </div>
         </div>

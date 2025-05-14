@@ -1,10 +1,17 @@
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { updateMeetForm } from "@/store/formsSlice";
 import Button from "@/components/UI/Button";
 import getCroppedImg from "@/components/utils/cropImage";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Cropper from "react-easy-crop";
+
 const MediaSection = () => {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { image } = useSelector((state: RootState) => state.meetForm);
+
+  const [imageSrc, setImageSrc] = useState<string | null>(image || null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
@@ -30,15 +37,17 @@ const MediaSection = () => {
     try {
       const cropped = await getCroppedImg(imageSrc!, croppedAreaPixels);
       setCroppedImage(cropped);
+      // Update Redux store with cropped image
+      dispatch(updateMeetForm({ key: "image", value: cropped }));
     } catch (e) {
       console.error(e);
     }
-  }, [imageSrc, croppedAreaPixels]);
+  }, [imageSrc, croppedAreaPixels, dispatch]);
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4">
       <div>
-        <h2 className="text-gradient text-2xl w-fit">Add Riders</h2>
+        <h2 className="text-gradient text-2xl w-fit">Add Rider Image</h2>
         <p className="text-gray55 mt-6">Upload and crop rider image.</p>
       </div>
       <div>

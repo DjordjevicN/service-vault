@@ -26,8 +26,8 @@ const MyMap = ({
   onChange,
   disableMarker = false,
 }: {
-  long: number;
-  lat: number;
+  long?: number;
+  lat?: number;
   onChange?: (lat: number, lng: number) => void;
   disableMarker?: boolean;
 }) => {

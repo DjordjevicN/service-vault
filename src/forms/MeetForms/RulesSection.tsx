@@ -1,23 +1,26 @@
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+
 import Textarea from "@/components/UI/Textarea";
-import { useState } from "react";
+import { addRule, deleteRule, updateRule } from "@/store/formsSlice";
 
 const RulesSection = () => {
-  const [rules, setRules] = useState<string[]>([""]);
-  console.log(rules);
+  const dispatch = useDispatch();
+  const rules = useSelector((state: RootState) => state.meetForm.rules);
 
+  // Handle rule changes
   const handleRuleChange = (value: string, index: number) => {
-    const updatedRules = [...rules];
-    updatedRules[index] = value;
-    setRules(updatedRules);
+    dispatch(updateRule({ value, index }));
   };
 
+  // Add a new rule
   const handleAddRule = () => {
-    setRules([...rules, ""]);
+    dispatch(addRule());
   };
 
+  // Delete a rule
   const handleDeleteRule = (index: number) => {
-    const updatedRules = rules.filter((_, i) => i !== index);
-    setRules(updatedRules);
+    dispatch(deleteRule(index));
   };
 
   return (

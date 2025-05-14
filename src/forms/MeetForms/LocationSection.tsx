@@ -1,15 +1,15 @@
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { updateMeetForm } from "@/store/formsSlice";
+
 import MyMap from "@/components/map/MyMap";
 import Input from "@/components/UI/Input";
 
-import { useState } from "react";
-
 const LocationSection = () => {
-  const [startLocation, setStartLocation] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [latitude, setLatitude] = useState(44.7866);
-  const [longitude, setLongitude] = useState(20.4489);
+  const dispatch = useDispatch();
+  const { startLocation, address, city, country, location } = useSelector(
+    (state: RootState) => state.meetForm
+  );
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4">
@@ -25,34 +25,44 @@ const LocationSection = () => {
       </div>
       <div className="flex flex-col gap-4">
         <MyMap
-          lat={latitude}
-          long={longitude}
+          lat={location.latitude || 44.7866}
+          long={location.longitude || 20.4489}
           onChange={(lat, lng) => {
-            setLatitude(lat);
-            setLongitude(lng);
+            dispatch(
+              updateMeetForm({
+                key: "location",
+                value: { latitude: lat, longitude: lng },
+              })
+            );
           }}
         />
         <Input
-          onChange={(value) => setStartLocation(String(value))}
+          onChange={(value) =>
+            dispatch(updateMeetForm({ key: "startLocation", value }))
+          }
           value={startLocation}
           label="Location"
           placeholder="Enter the location"
           description="Explain closely where the meet will be held"
         />
         <Input
-          onChange={(value) => setAddress(String(value))}
+          onChange={(value) =>
+            dispatch(updateMeetForm({ key: "address", value }))
+          }
           value={address}
           label="Address"
           placeholder="Enter the address"
         />
         <Input
-          onChange={(value) => setCity(String(value))}
+          onChange={(value) => dispatch(updateMeetForm({ key: "city", value }))}
           value={city}
           label="City"
           placeholder="Enter the city"
         />
         <Input
-          onChange={(value) => setCountry(String(value))}
+          onChange={(value) =>
+            dispatch(updateMeetForm({ key: "country", value }))
+          }
           value={country}
           label="Country"
           placeholder="Enter the country"

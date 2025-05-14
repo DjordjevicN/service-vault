@@ -1,14 +1,35 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { updateMeetForm } from "@/store/formsSlice";
+
 import Calendar from "react-calendar";
 import TimePicker from "react-time-picker";
+import { useState } from "react";
 
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 const TimeAndDateSection = () => {
-  const [date, setDate] = useState<Value>(new Date());
-  const [time, setTime] = useState<string>("12:00");
+  const dispatch = useDispatch();
+  const { startTime, startDate } = useSelector(
+    (state: RootState) => state.meetForm
+  );
 
-  function combineDateAndTime(date: Date, time: string) {
+  const [selectedDate, setSelectedDate] = useState<Date>(
+    startDate ? new Date(startDate) : new Date()
+  );
+  const [selectedTime, setSelectedTime] = useState<string>(
+    startTime || "10:00"
+  );
+
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+    dispatch(updateMeetForm({ key: "startDate", value: date.toISOString() }));
+  };
+
+  const handleTimeChange = (time: string) => {
+    setSelectedTime(time);
+    dispatch(updateMeetForm({ key: "startTime", value: time }));
+  };
+
+  const combineDateAndTime = (date: Date, time: string) => {
     const [hours, minutes] = time.split(":").map(Number);
     const combined = new Date(date);
     combined.setHours(hours);
@@ -16,10 +37,10 @@ const TimeAndDateSection = () => {
     combined.setSeconds(0);
     combined.setMilliseconds(0);
     return combined;
-  }
-  const fullDateTime =
-    date instanceof Date && time ? combineDateAndTime(date, time) : null;
-  console.log("fullDateTime", fullDateTime);
+  };
+
+  const fullDateTime = combineDateAndTime(selectedDate, selectedTime);
+  console.log("Full date-time", fullDateTime);
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4">
@@ -34,16 +55,16 @@ const TimeAndDateSection = () => {
           nesciunt!
         </p>
       </div>
-      <div className="">
+      <div>
         <div className="bg-gray80 rounded p-6">
-          <Calendar onChange={setDate} value={date} />
+          <Calendar onChange={handleDateChange} value={selectedDate} />
         </div>
         <div className="flex items-center mt-4 bg-gray80 rounded p-6 gap-6">
           <p className="text-gray55">Select the time</p>
-          <div className="">
+          <div>
             <TimePicker
-              onChange={setTime}
-              value={time}
+              onChange={handleTimeChange}
+              value={selectedTime}
               disableClock={true}
               format="HH:mm"
             />

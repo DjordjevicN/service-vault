@@ -5,13 +5,6 @@ import { useState } from "react";
 const ParticipantsSection = () => {
   const [userSearch, setUserSearch] = useState("");
 
-  // const foundUsers = [
-  //   "John Doe",
-  //   "Jane Smith",
-  //   "Alice Johnson",
-  //   "Bob Brown",
-  //   "Charlie Davis",
-  // ].filter((user) => user.toLowerCase().includes(userSearch.toLowerCase()));
   const foundUsers = [
     "John Doe",
     "Jane Smith",
