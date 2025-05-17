@@ -21,10 +21,6 @@ const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
           return <DashboardGroupItem key={group.id} group={group} />;
         })} */}
       </div>
-
-      <Link to="/meet-config">
-        <Button wrapperClassName="mt-6 w-full">Create a Group</Button>
-      </Link>
     </div>
   );
 };

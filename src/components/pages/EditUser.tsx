@@ -10,7 +10,7 @@ const tips = [
 ];
 const EditUser = () => {
   return (
-    <div className="pb-20">
+    <div className="p-6 pb-20 ">
       <h1 className="text-white text-3xl font-bold mt-10">
         Edit your <span className="text-gradient">profile</span>
       </h1>

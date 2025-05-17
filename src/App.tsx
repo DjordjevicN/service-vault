@@ -19,7 +19,8 @@ import MeetConfiguration from "./components/pages/MeetConfiguration";
 
 const App = () => {
   const user = useSelector((state: RootState) => state.user);
-  const isAuthenticated = !!user;
+  const auth = useSelector((state: RootState) => state.auth);
+  const isAuthenticated = !!auth;
 
   return (
     <div className="max-w-[1440px] mx-auto">

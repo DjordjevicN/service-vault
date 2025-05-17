@@ -1,21 +1,20 @@
-import { Link } from "react-router-dom";
-
 import Hero from "../Hero";
 import HomeMeets from "../HomeMeets";
 import Footer from "../Footer";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
+  const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
+
+  if (auth && !user) {
+    window.location.href = "/edit-profile";
+  }
   return (
     <div className="">
       <Hero />
       <HomeMeets />
       <Footer />
-      <Link to="/register" className="text-blue-500 hover:underline">
-        Register
-      </Link>
-      <Link to="/login" className="text-blue-500 hover:underline">
-        login
-      </Link>
     </div>
   );
 };

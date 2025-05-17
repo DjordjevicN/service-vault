@@ -1,11 +1,11 @@
 import placeholder from "@/assets/placeholder.png";
-import gps from "@/assets/map.png";
 import Button from "@/components/UI/Button";
 import DivideLine from "@/components/UI/DivideLine";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import MyMap from "@/components/map/MyMap";
+import { USER_TYPES } from "@/constants/userTypes";
 const TextRow = ({
   label,
   details,
@@ -37,12 +37,29 @@ const RuleRow = ({
 };
 
 const MeetFormFinish = () => {
-  const meetForm = useSelector((state: RootState) => state.meetForm);
-  console.log("meetForm", meetForm);
   const navigate = useNavigate();
+  const meetForm = useSelector((state: RootState) => state.meetForm);
+  const user = useSelector((state: RootState) => state.user) as {
+    id: string;
+  } | null;
+  console.log("user", user);
+
+  console.log("meetForm", meetForm);
+
   const handlePublish = () => {
-    return navigate("/meet/56454654654");
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    const updatedMeetForm = {
+      ...meetForm,
+      organizerId: user.id,
+    };
+
+    return null;
   };
+
   return (
     <div className="mb-10">
       <div className="flex justify-between items-center py-10">

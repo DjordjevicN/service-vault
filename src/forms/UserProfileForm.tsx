@@ -1,28 +1,45 @@
-import { updateUser } from "@/api/userApi";
 import Button from "@/components/UI/Button";
 import DivideLine from "@/components/UI/DivideLine";
 import Input from "@/components/UI/Input";
 import { USER_TYPES } from "@/constants/userTypes";
+import { storeUser } from "@/store/userSlice";
+import { createUser, updateUserProfile } from "@/supabase/userFetchers";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const UserProfileForm = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const auth = useSelector((state) => state.auth);
   const [editedUser, setEditedUser] = useState({ ...user });
 
-  const { mutate } = useMutation({
-    mutationFn: (editedUser: USER_TYPES) => updateUser(editedUser),
+  const { mutate: createNewUser } = useMutation({
+    mutationFn: (newUser: USER_TYPES) => createUser(newUser),
     onSuccess: (data) => {
-      console.log(data);
+      dispatch(storeUser(data));
+    },
+  });
+
+  const { mutate: updateUser } = useMutation({
+    mutationFn: (newUser: USER_TYPES) => updateUserProfile(auth.id, newUser),
+    onSuccess: (data) => {
+      dispatch(storeUser(data));
     },
   });
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    mutate(editedUser);
-  };
+    const newUser = {
+      ...editedUser,
+    };
 
+    if (user) {
+      updateUser(newUser);
+    } else {
+      createNewUser(newUser);
+    }
+  };
   return (
     <div className="">
       <div className="w-[500px] p-6 mx-auto bg-gray80 rounded">
@@ -35,20 +52,23 @@ const UserProfileForm = () => {
             }
           />
           <Input
+            disabled
             label="Email"
-            value={editedUser.email}
+            value={auth.email}
             onChange={(value) =>
               setEditedUser((prev) => ({ ...prev, email: value }))
             }
           />
           <Input
+            type="password"
+            disabled
             label="Password"
             value={editedUser.password}
             onChange={(value) =>
               setEditedUser((prev) => ({ ...prev, password: value }))
             }
           />
-          <DivideLine className="my-4" />
+
           <Input
             label="City"
             value={editedUser.city}
@@ -63,19 +83,13 @@ const UserProfileForm = () => {
               setEditedUser((prev) => ({ ...prev, country: value }))
             }
           />
-          <Input
-            label="Bio"
-            value={editedUser.bio}
-            onChange={(value) =>
-              setEditedUser((prev) => ({ ...prev, bio: value }))
-            }
-          />
+
           <DivideLine className="my-4" />
           <Input
             label="Motorcycle"
-            value={editedUser.motorcycle}
+            value={editedUser.currentMotorcycle}
             onChange={(value) =>
-              setEditedUser((prev) => ({ ...prev, motorcycle: value }))
+              setEditedUser((prev) => ({ ...prev, currentMotorcycle: value }))
             }
           />
           <Button

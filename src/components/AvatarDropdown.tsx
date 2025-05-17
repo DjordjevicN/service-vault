@@ -6,6 +6,7 @@ import Avatar from "./Avatar";
 import { Link } from "react-router-dom";
 import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { USER_TYPES } from "@/constants/userTypes";
+import { removeAuth } from "@/store/authSlice";
 
 const AvatarDropdown = () => {
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -13,6 +14,7 @@ const AvatarDropdown = () => {
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
   );
+  const auth = useSelector((state: RootState) => state.auth);
 
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
@@ -22,8 +24,8 @@ const AvatarDropdown = () => {
   useOutsideClick(dropdownRef, closeDropdown);
 
   const handleLogout = () => {
+    dispatch(removeAuth());
     dispatch(logoutUser(null));
-    window.location.href = "/";
   };
 
   return (
@@ -32,23 +34,25 @@ const AvatarDropdown = () => {
       className="relative cursor-pointer"
       onClick={toggleDropdown}
     >
-      {user && <Avatar />}
-      {dropdownOpen && user && (
+      {(user || auth) && <Avatar />}
+      {dropdownOpen && (user || auth) && (
         <div className="absolute right-0 top-12 bg-gray60 shadow-lg rounded w-48 p-6">
           <div>
-            <p className="text-sm text-white">{user.username}</p>
+            {user && <p className="text-sm text-white">{user.username}</p>}
             <div className="h-0.5 bg-gray55 my-4"></div>
           </div>
           <div className="">
             <ul className="flex flex-col gap-4 mt-4">
-              <li>
-                <Link
-                  to="/profile"
-                  className="hover:text-gray50 cursor-pointer rounded text-white"
-                >
-                  Profile
-                </Link>
-              </li>
+              {user && (
+                <li>
+                  <Link
+                    to={user.username ? "/profile" : "/edit-profile"}
+                    className="hover:text-gray50 cursor-pointer rounded text-white"
+                  >
+                    Profile
+                  </Link>
+                </li>
+              )}
 
               <li
                 onClick={handleLogout}

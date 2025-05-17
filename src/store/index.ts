@@ -6,15 +6,17 @@ import userReducer from "./userSlice";
 import appReducer from "./appSlice";
 import meetReducer from "./meetSlice";
 import meetFormReducer from "./formsSlice";
+import authReducer from "./authSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "app", "meetForm"], // Can change to blacklist if needed
+  whitelist: ["user", "app", "meetForm", "auth"], // Can change to blacklist if needed
   blacklist: [], // Example: Don't persist sensitive fields
 };
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   user: userReducer,
   meets: meetReducer,
   meetForm: meetFormReducer,

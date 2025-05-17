@@ -1,38 +1,61 @@
-import { addUser, loginUser } from "@/api/userApi";
-import { NEW_USER_TYPES } from "@/constants/userTypes";
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { storeUser } from "../../store/userSlice";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 import DivideLine from "../UI/DivideLine";
+import { registerUser, loginUser, createUser } from "@/supabase/userFetchers";
+import { storeAuth } from "@/store/authSlice";
+
+import { storeUser } from "@/store/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("ze@gmail.com");
-  const [password, setPassword] = useState("123");
+  const [email, setEmail] = useState("dzonicam@gmail.com");
+  const [password, setPassword] = useState("@Djalokin3223");
   const [username, setUsername] = useState("ze");
-  const [confirmPassword, setConfirmPassword] = useState("123");
   const [formType, setFormType] = useState(true);
 
-  const { mutate } = useMutation({
-    mutationFn: (formData: NEW_USER_TYPES) =>
-      formType ? loginUser(formData) : addUser(formData),
+  const { mutate: createNewUser } = useMutation({
+    mutationFn: (newUser: { username: string; email: string; id: string }) =>
+      createUser(newUser),
     onSuccess: (data) => {
-      dispatch(storeUser(data.user));
-      window.location.href = "/";
+      dispatch(storeUser(data));
+    },
+    onError: (error) => {
+      console.log("Error creating user:", error);
+    },
+  });
+
+  const { mutate, status } = useMutation({
+    mutationFn: async ({
+      email,
+      password,
+    }: {
+      email: string;
+      password: string;
+    }) =>
+      formType ? loginUser(email, password) : registerUser(email, password),
+    onSuccess: (data) => {
+      dispatch(storeAuth(data.user));
+      if (!formType) {
+        createNewUser({
+          username,
+          email,
+          id: data.user.id,
+        });
+      } else {
+        window.location.href = "/";
+      }
+    },
+    onError: (error: any) => {
+      alert(`Auth failed: ${error.message}`);
     },
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (formType) {
-      mutate({ email, password });
-    } else {
-      mutate({ email, password, username });
-    }
+    mutate({ email, password });
   };
 
   return (
@@ -78,13 +101,6 @@ const Login = () => {
             {!formType && (
               <div>
                 <Input
-                  label="confirm password"
-                  placeholder="**********"
-                  onChange={setConfirmPassword}
-                  value={confirmPassword}
-                  type="password"
-                />
-                <Input
                   label="username"
                   placeholder="ze"
                   onChange={setUsername}
@@ -95,8 +111,9 @@ const Login = () => {
           </div>
 
           <Button
+            disabled={status === "pending"}
             variant="primary"
-            classname="mt-6 w-full flex justify-center "
+            wrapperClassName="mt-6 w-full flex justify-center"
             type="submit"
           >
             {formType ? "Login" : "Register"}

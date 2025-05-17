@@ -6,15 +6,12 @@ import MediaSection from "@/forms/MeetForms/MediaSection";
 import { useState } from "react";
 import MeetFormFinish from "@/forms/MeetForms/MeetFormFinish";
 import Button from "../UI/Button";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
+import { useDispatch } from "react-redux";
 import { resetMeetForm } from "@/store/formsSlice";
 
 const MeetConfiguration = () => {
   const dispatch = useDispatch();
   const [section, setSection] = useState(0);
-  const meetForm = useSelector((state: RootState) => state.meetForm);
-  console.log("meetForm", meetForm);
 
   const handleNext = () => {
     if (section === 5) {
@@ -51,7 +48,7 @@ const MeetConfiguration = () => {
           </Button>
         )}
         {section !== 0 && <Button onClick={handlePrevious}>Previous</Button>}
-        {section !== 6 && <Button onClick={handleNext}>Next</Button>}
+        {section !== 5 && <Button onClick={handleNext}>Next</Button>}
       </div>
     </div>
   );
