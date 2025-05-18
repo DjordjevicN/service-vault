@@ -2,6 +2,7 @@ import Button from "@/components/UI/Button";
 import DivideLine from "@/components/UI/DivideLine";
 import Input from "@/components/UI/Input";
 import { USER_TYPES } from "@/constants/userTypes";
+import { RootState } from "@/store";
 import { storeUser } from "@/store/userSlice";
 import { createUser, updateUserProfile } from "@/supabase/userFetchers";
 import { useMutation } from "@tanstack/react-query";
@@ -10,8 +11,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UserProfileForm = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state: RootState) => state.user);
+  const auth = useSelector((state: RootState) => state.auth);
   const [editedUser, setEditedUser] = useState({ ...user });
 
   const { mutate: createNewUser } = useMutation({
@@ -54,7 +55,7 @@ const UserProfileForm = () => {
           <Input
             disabled
             label="Email"
-            value={auth.email}
+            value={auth?.email}
             onChange={(value) =>
               setEditedUser((prev) => ({ ...prev, email: value }))
             }

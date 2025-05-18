@@ -1,8 +1,13 @@
 import { Link } from "react-router-dom";
 import google from "../assets/googleIcon.png";
+import { signInWithGoogle } from "./utils/signInWithGoogle";
 const LoginBox = () => {
-  const handleGoogleLogin = () => {
-    console.log("Google login");
+  const handleGoogleLogin = async () => {
+    try {
+      await signInWithGoogle();
+    } catch (err) {
+      console.error("Google login failed:", err);
+    }
   };
 
   return (

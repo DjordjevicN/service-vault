@@ -5,14 +5,21 @@ import { USER_TYPES } from "@/constants/userTypes";
 import Avatar from "../Avatar";
 import { meets } from "@/data/meetData";
 import GroupListingItem from "../GroupListingItem";
-import DashboardGroups from "../DashboardGroups";
 import { Link } from "react-router-dom";
+import LoadingModal from "../LoadingModal";
+import { formatToMonthYear } from "../utils/dateFormating";
 
 const UserProfile = () => {
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
 
+  const auth = useSelector((state: RootState) => state.auth);
+
+  if (!user) {
+    return <LoadingModal show={!user} />;
+  }
+  const formatted = formatToMonthYear(auth?.created_at);
   return (
     <div className="grid grid-cols-[1fr_2fr] gap-4 mt-14">
       <div className="">
@@ -25,7 +32,7 @@ const UserProfile = () => {
         </div>
         <div className="flex items-center justify-between gap-4 p-6 mt-6 bg-gray80">
           <div className="text-center">
-            <p className="text-gray50 text-2xl">{user?.myMeets.length}</p>
+            <p className="text-gray50 text-2xl">{user?.myMeets?.length || 0}</p>
             <p className="text-gray55">Meets</p>
           </div>
           <div className="text-center">
@@ -51,14 +58,13 @@ const UserProfile = () => {
             <div className="text-gray55 mt-3 text-sm">
               <p>{user?.email}</p>
               <p>{user?.motorcycle}</p>
-              <p>Belgrade, RS</p>
-              <p>Joined Rider Meets on Jan 2018</p>
+              <p>
+                {user?.city} <span>{user?.country}</span>
+              </p>
+              <p>Joined on {formatted}</p>
             </div>
           </div>
         </div>
-
-        <DashboardGroups />
-        <DashboardGroups />
       </div>
       <div className="">
         <div className="bg-gray80 rounded p-6">

@@ -42,7 +42,7 @@ const Login = () => {
         createNewUser({
           username,
           email,
-          id: data.user.id,
+          uuid: data.user.id,
         });
       } else {
         window.location.href = "/";
