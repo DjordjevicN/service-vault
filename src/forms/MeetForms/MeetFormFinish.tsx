@@ -2,12 +2,12 @@ import placeholder from "@/assets/placeholder.png";
 import Button from "@/components/UI/Button";
 import DivideLine from "@/components/UI/DivideLine";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import MyMap from "@/components/map/MyMap";
-import { USER_TYPES } from "@/constants/userTypes";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { createMeet } from "@/supabase/meetFetchers";
+import { storeUserMeets } from "@/store/meetSlice";
 const TextRow = ({
   label,
   details,
@@ -39,6 +39,7 @@ const RuleRow = ({
 };
 
 const MeetFormFinish = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const meetForm = useSelector((state: RootState) => state.meetForm);
   const user = useSelector((state: RootState) => state.user) as {
@@ -52,7 +53,12 @@ const MeetFormFinish = () => {
     mutationFn: (meet: any) => createMeet(meet),
     onSuccess: (data) => {
       console.log("Meet created successfully", data);
-      // navigate("/dashboard");
+      if (!data) {
+        console.error("No data returned from createMeet");
+        return;
+      }
+      dispatch(storeUserMeets(data[0]));
+      navigate(`/meet/${data[0].id}`);
     },
     onError: (error) => {
       console.error("Error creating meet:", error);

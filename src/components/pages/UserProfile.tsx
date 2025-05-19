@@ -8,6 +8,8 @@ import GroupListingItem from "../GroupListingItem";
 import { Link } from "react-router-dom";
 import LoadingModal from "../LoadingModal";
 import { formatToMonthYear } from "../utils/dateFormating";
+import { getAllMeetsByUserId } from "@/supabase/meetFetchers";
+import { useQuery } from "@tanstack/react-query";
 
 const UserProfile = () => {
   const user = useSelector(
@@ -15,6 +17,12 @@ const UserProfile = () => {
   ) as USER_TYPES | null;
 
   const auth = useSelector((state: RootState) => state.auth);
+
+  const usersMeets = useQuery({
+    queryKey: ["meets", user.uuid],
+    queryFn: () => getAllMeetsByUserId(user.uuid),
+  });
+  console.log("usersMeets", usersMeets.data);
 
   if (!user) {
     return <LoadingModal show={!user} />;
@@ -57,7 +65,7 @@ const UserProfile = () => {
             </div>
             <div className="text-gray55 mt-3 text-sm">
               <p>{user?.email}</p>
-              <p>{user?.motorcycle}</p>
+
               <p>
                 {user?.city} <span>{user?.country}</span>
               </p>
@@ -70,7 +78,7 @@ const UserProfile = () => {
         <div className="bg-gray80 rounded p-6">
           <h2 className="text-xl text-white font-bold mb-6">Events</h2>
           <div>
-            {meets.map((meet) => {
+            {usersMeets.data?.map((meet) => {
               return <GroupListingItem meet={meet} />;
             })}
           </div>

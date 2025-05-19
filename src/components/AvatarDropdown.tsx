@@ -36,7 +36,7 @@ const AvatarDropdown = () => {
     >
       {(user || auth) && <Avatar />}
       {dropdownOpen && (user || auth) && (
-        <div className="absolute right-0 top-12 bg-gray60 shadow-lg rounded w-48 p-6">
+        <div className="absolute right-0 top-12 bg-gray60 shadow-lg rounded w-48 p-6 z-10">
           <div>
             {user && <p className="text-sm text-white">{user.username}</p>}
             <div className="h-0.5 bg-gray55 my-4"></div>

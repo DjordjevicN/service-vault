@@ -8,6 +8,7 @@ import { registerUser, loginUser, createUser } from "@/supabase/userFetchers";
 import { storeAuth } from "@/store/authSlice";
 
 import { storeUser } from "@/store/userSlice";
+import { supabase } from "@/lib/supabase";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,13 @@ const Login = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     mutate({ email, password });
+  };
+  const resendEmail = async () => {
+    await supabase.auth.resend({
+      type: "signup",
+      email: email,
+    });
+    alert("Confirmation email sent");
   };
 
   return (
@@ -119,6 +127,13 @@ const Login = () => {
             {formType ? "Login" : "Register"}
           </Button>
         </form>
+        <Button
+          wrapperClassName="text-[10px]"
+          onClick={resendEmail}
+          variant="text"
+        >
+          Re-send confirmation email
+        </Button>
       </div>
     </div>
   );

@@ -1,4 +1,6 @@
 import { supabase } from "@/lib/supabase";
+import { storeUserMeets } from "@/store/meetSlice";
+import { storeUser } from "@/store/userSlice";
 
 export const registerUser = async (email: string, password: string) => {
   const { data, error } = await supabase.auth.signUp({ email, password });
@@ -67,4 +69,23 @@ export const getUserById = async (id: string) => {
     .single();
   if (error) throw error;
   return data;
+};
+
+export const getAllUsersByIds = async (userIds: string[]) => {
+  console.log("userIds", userIds);
+
+  const { data: users, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .in("id", userIds);
+  if (error) {
+    console.error("Error fetching meets:", error);
+    return [];
+  }
+  if (!users) {
+    console.error("No meets found");
+    return [];
+  }
+
+  return users;
 };

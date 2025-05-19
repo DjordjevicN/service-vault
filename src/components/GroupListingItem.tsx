@@ -9,6 +9,7 @@ import { USER_TYPES } from "@/constants/userTypes";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
+import crown from "@/assets/crown-gold.svg";
 
 const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
     (state: RootState) => state.user as USER_TYPES | null
   );
 
+  const isMyMeet = () => {
+    return user?.uuid === meet.organizerId;
+  };
   if (!meet || !user) return null;
 
   const handleNavigate = (id: string) => {
@@ -28,9 +32,14 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
 
   return (
     <div
-      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer"
+      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer relative"
       onClick={() => handleNavigate(meet.id)}
     >
+      {isMyMeet() && (
+        <div className="absolute top-0 right-0">
+          <img width={24} height={24} src={crown} alt="" />
+        </div>
+      )}
       <div>
         <img src={placeholder} alt="" />
       </div>

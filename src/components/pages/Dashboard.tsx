@@ -10,10 +10,14 @@ import { MeetType } from "@/constants/meetTypes";
 import Switch from "../UI/Switch";
 import { Link } from "react-router-dom";
 import Button from "../UI/Button";
-import { getAllMeetsByIds } from "@/supabase/meetFetchers";
+import {
+  getAllMeetsByIds,
+  getMeetsByTheCountry,
+} from "@/supabase/meetFetchers";
 import { storeUser } from "@/store/userSlice";
 import { getUserById } from "@/supabase/userFetchers";
 import { USER_TYPES } from "@/constants/userTypes";
+import LoadingModal from "../LoadingModal";
 
 type ValuePiece = Date | null;
 
@@ -59,9 +63,28 @@ const Dashboard = () => {
   useQuery({
     queryKey: ["meets"],
     queryFn: () => getAllMeetsByIds(meetIds, dispatch),
-    enabled: !!user && meetIds.length > 0,
+    enabled: Boolean(user && meetIds.length > 0),
   });
 
+  const { data: meetsFromMyCountry, isLoading: meetsIsLoading } = useQuery({
+    queryKey: ["meetsFromMyCountry"],
+    queryFn: () => getMeetsByTheCountry(user?.country),
+    enabled: !!user && !!user.country,
+  });
+
+  const allMeets = () => {
+    const allMeets = [];
+    // if (storedMeets) {
+    //   allMeets.push(...storedMeets);
+    // }
+    if (meetsFromMyCountry) {
+      allMeets.push(...meetsFromMyCountry);
+    }
+    return allMeets;
+  };
+  if (meetsIsLoading) {
+    return <LoadingModal show />;
+  }
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-10">
@@ -88,7 +111,7 @@ const Dashboard = () => {
               <p className="text-gray55">Favorite</p>
               <Switch onChange={setFetchOnlyFavorites} />
             </div>
-            <DashboardListing meets={storedMeets} />
+            <DashboardListing meets={allMeets()} />
           </div>
         </div>
       </div>

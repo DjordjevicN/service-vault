@@ -1,10 +1,53 @@
+import { USER_TYPES } from "@/constants/userTypes";
 import Avatar from "../Avatar";
-import { getStatusColor } from "../utils/getStatusColor";
-import { userRowType } from "./MeetDetails";
+import Button from "../UI/Button";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateUserProfile } from "@/supabase/userFetchers";
+import { updateMeet } from "@/supabase/meetFetchers";
+import { MeetType } from "@/constants/meetTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { storeUser } from "@/store/userSlice";
+import { RootState } from "@/store";
 
-const UserRow = ({ user }: { user: userRowType }) => {
+const UserRow = ({ user, meet }: { user: USER_TYPES; meet: MeetType }) => {
+  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.auth);
   const navigateToUser = (id: string) => {
     console.log(`Navigate to user with id: ${id}`);
+  };
+
+  const { mutate: removeUserFromMeet } = useMutation({
+    mutationFn: async ({ user, meet }) => {
+      const updatedUser = await updateUserProfile(user.uuid, {
+        attendingMeets: user.attendingMeets.filter(
+          (meetId) => meetId !== meet.id
+        ),
+      });
+      const updatedMeet = await updateMeet(meet.id, {
+        participants: meet.participants.filter(
+          (participantId) => participantId !== user.id
+        ),
+      });
+      return { updatedUser, updatedMeet };
+    },
+
+    onSuccess: (data) => {
+      dispatch(storeUser(data.updatedUser));
+    },
+  });
+
+  const removeUser = (id: string) => {
+    console.log(`Remove user with id: ${id}`);
+    if (id === user.id) {
+      removeUserFromMeet({ user, meet });
+    }
+  };
+  const permissionToRemove = () => {
+    if (user.uuid === meet.organizerId && auth) {
+      return true;
+    }
+
+    return false;
   };
   return (
     <div
@@ -14,7 +57,7 @@ const UserRow = ({ user }: { user: userRowType }) => {
       <Avatar url={user.image} size={32} />
 
       <div className="min-w-[150px] overflow-hidden">
-        <p className="text-white text-sm">{user.name}</p>
+        <p className="text-white text-sm">{user.username}</p>
       </div>
       <div>
         <p className="text-gray55 text-sm">
@@ -22,13 +65,11 @@ const UserRow = ({ user }: { user: userRowType }) => {
         </p>
       </div>
       <div className="ml-auto flex items-center w-[100px]">
-        <p
-          className={`text-sm text-left capitalize ${getStatusColor(
-            user.status
-          )}`}
-        >
-          {user.status}
-        </p>
+        {permissionToRemove() && (
+          <Button variant="text" onClick={() => removeUser(user.id)}>
+            Remove
+          </Button>
+        )}
       </div>
     </div>
   );
