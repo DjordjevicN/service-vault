@@ -3,7 +3,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Initial state
 const initialState: MeetType = {
-  id: "",
   name: "",
   description: "",
   rules: [],
@@ -13,19 +12,17 @@ const initialState: MeetType = {
   rideType: "",
   participants: [],
   maxRiders: 0,
-  createdAt: null,
-  updatedAt: null,
-  location: {
+
+  gps: {
     latitude: null,
     longitude: null,
   },
+
   address: "",
   city: "",
   country: "",
-  tags: [],
   organizerId: "",
   starRating: 0,
-  comments: [],
   image: "",
 };
 

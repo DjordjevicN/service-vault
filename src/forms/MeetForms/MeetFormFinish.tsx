@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import MyMap from "@/components/map/MyMap";
 import { USER_TYPES } from "@/constants/userTypes";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { createMeet } from "@/supabase/meetFetchers";
 const TextRow = ({
   label,
   details,
@@ -46,6 +48,17 @@ const MeetFormFinish = () => {
 
   console.log("meetForm", meetForm);
 
+  const { mutate } = useMutation({
+    mutationFn: (meet: any) => createMeet(meet),
+    onSuccess: (data) => {
+      console.log("Meet created successfully", data);
+      // navigate("/dashboard");
+    },
+    onError: (error) => {
+      console.error("Error creating meet:", error);
+    },
+  });
+
   const handlePublish = () => {
     if (!user) {
       navigate("/login");
@@ -54,10 +67,9 @@ const MeetFormFinish = () => {
 
     const updatedMeetForm = {
       ...meetForm,
-      organizerId: user.id,
+      organizerId: user.uuid,
     };
-
-    return null;
+    mutate(updatedMeetForm);
   };
 
   return (
@@ -118,10 +130,10 @@ const MeetFormFinish = () => {
             <h2 className="text-gradient text-2xl w-fit">Location</h2>
             <div className="mt-6">
               <div>
-                {meetForm.location.latitude && (
+                {meetForm.gps.latitude && (
                   <TextRow
                     label="GPS Location"
-                    details={`${meetForm.location.latitude}.${meetForm.location.longitude}`}
+                    details={`${meetForm.gps.latitude}.${meetForm.gps.longitude}`}
                   />
                 )}
                 <TextRow label="Address" details={meetForm.address} />
@@ -131,8 +143,8 @@ const MeetFormFinish = () => {
             </div>
             <div className="w-[300px] h-[300px] overflow-hidden bg-gray55 mt-4">
               <MyMap
-                lat={meetForm.location.latitude || 44.7866}
-                long={meetForm.location.longitude || 20.4489}
+                lat={meetForm.gps.latitude || 44.7866}
+                long={meetForm.gps.longitude || 20.4489}
               />
             </div>
           </div>

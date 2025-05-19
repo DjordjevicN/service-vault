@@ -13,6 +13,7 @@ import Button from "../UI/Button";
 import { getAllMeetsByIds } from "@/supabase/meetFetchers";
 import { storeUser } from "@/store/userSlice";
 import { getUserById } from "@/supabase/userFetchers";
+import { USER_TYPES } from "@/constants/userTypes";
 
 type ValuePiece = Date | null;
 

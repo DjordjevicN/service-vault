@@ -32,3 +32,12 @@ export const getAllMeetsByIds = async (meetIds: string[], dispatch: any) => {
   dispatch(storeUserMeets(meets));
   return meets;
 };
+// create new meet
+export const createMeet = async (meet: any) => {
+  const { data, error } = await supabase.from("meets").insert([meet]);
+  if (error) {
+    console.error("Error creating meet:", error);
+    return null;
+  }
+  return data;
+};

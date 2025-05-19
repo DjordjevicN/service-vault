@@ -41,10 +41,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
           <a
             onClick={(e) => e.stopPropagation()}
             target="_blank"
-            href={googleMapsPinLink(
-              meet.location.latitude,
-              meet.location.longitude
-            )}
+            href={googleMapsPinLink(meet.gps.latitude, meet.gps.longitude)}
             className="flex items-center gap-2 mt-2"
           >
             <img src={gps} alt="" />

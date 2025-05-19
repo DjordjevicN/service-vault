@@ -1,5 +1,6 @@
 export type USER_TYPES = {
   id: string;
+  uuid: string;
   username: string;
   email: string;
   password: string;

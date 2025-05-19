@@ -7,7 +7,7 @@ import Input from "@/components/UI/Input";
 
 const LocationSection = () => {
   const dispatch = useDispatch();
-  const { startLocation, address, city, country, location } = useSelector(
+  const { startLocation, address, city, country, gps } = useSelector(
     (state: RootState) => state.meetForm
   );
 
@@ -25,12 +25,12 @@ const LocationSection = () => {
       </div>
       <div className="flex flex-col gap-4">
         <MyMap
-          lat={location.latitude || 44.7866}
-          long={location.longitude || 20.4489}
+          lat={gps?.latitude || 44.7866}
+          long={gps?.longitude || 20.4489}
           onChange={(lat, lng) => {
             dispatch(
               updateMeetForm({
-                key: "location",
+                key: "gps",
                 value: { latitude: lat, longitude: lng },
               })
             );

@@ -121,8 +121,8 @@ const MeetDetails = () => {
                   onClick={(e) => e.stopPropagation()}
                   target="_blank"
                   href={googleMapsPinLink(
-                    meet.location.latitude,
-                    meet.location.longitude
+                    meet.gps.latitude,
+                    meet.gps.longitude
                   )}
                   className="flex items-center gap-2"
                 >
@@ -147,8 +147,8 @@ const MeetDetails = () => {
           </div>
           <div className="w-full bg-gray80 rounded">
             <MyMap
-              long={meet.location.longitude}
-              lat={meet.location.latitude}
+              long={meet.gps.longitude}
+              lat={meet.gps.latitude}
               disableMarker
             />
           </div>

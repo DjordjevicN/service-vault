@@ -12,13 +12,13 @@ export type RideComment = {
   createdAt: number | null;
 };
 
-export type RideLocation = {
+export type RideGps = {
   latitude: number | null;
   longitude: number | null;
 };
 
 export type MeetType = {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   rules: string[];
@@ -29,14 +29,11 @@ export type MeetType = {
   participants: RideParticipant[];
   maxRiders: number;
   image: string;
-  createdAt: number | null;
-  updatedAt: number | null;
-  location: RideLocation;
+  createdAt?: number | null;
+  gps: RideGps;
   address: string;
   city: string;
   country: string;
-  tags: string[];
   organizerId: string;
   starRating: number;
-  comments: RideComment[];
 };

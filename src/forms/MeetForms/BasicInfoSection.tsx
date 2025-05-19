@@ -8,11 +8,7 @@ import { updateMeetForm } from "@/store/formsSlice";
 
 const BasicInfoSection = () => {
   const dispatch = useDispatch();
-  const { name, description, rideType, participants } = useSelector(
-    (state: RootState) => state.meetForm
-  );
-  console.log("BasicInfoSection", name, description, rideType, participants);
-
+  const meetForm = useSelector((state: RootState) => state.meetForm);
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4">
       <div>
@@ -28,7 +24,7 @@ const BasicInfoSection = () => {
           type="text"
           placeholder="Meet name"
           onChange={(value) => dispatch(updateMeetForm({ key: "name", value }))}
-          value={name}
+          value={meetForm.name}
           label="Name"
         />
 
@@ -43,7 +39,7 @@ const BasicInfoSection = () => {
           onChange={(value) =>
             dispatch(updateMeetForm({ key: "rideType", value }))
           }
-          value={rideType}
+          value={meetForm.rideType}
         />
 
         <Input
@@ -58,7 +54,7 @@ const BasicInfoSection = () => {
               })
             )
           }
-          value={participants.length}
+          value={meetForm.maxRiders}
           description="If you set number of riders to 0, it will be unlimited"
         />
 
@@ -66,7 +62,7 @@ const BasicInfoSection = () => {
           onChange={(value) =>
             dispatch(updateMeetForm({ key: "description", value }))
           }
-          value={description}
+          value={meetForm.description}
           label="Description"
           rows={5}
           placeholder="Describe the ride"

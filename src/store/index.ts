@@ -11,7 +11,7 @@ import authReducer from "./authSlice";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["user", "app", "meetForm", "auth"], // Can change to blacklist if needed
+  whitelist: ["user", "app", "auth"], // Can change to blacklist if needed
   blacklist: [], // Example: Don't persist sensitive fields
 };
 
