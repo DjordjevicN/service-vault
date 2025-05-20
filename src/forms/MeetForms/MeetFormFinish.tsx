@@ -73,6 +73,7 @@ const MeetFormFinish = () => {
 
     const updatedMeetForm = {
       ...meetForm,
+      participants: [user.id],
       organizerId: user.uuid,
     };
     mutate(updatedMeetForm);

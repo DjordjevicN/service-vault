@@ -1,7 +1,7 @@
 import { USER_TYPES } from "@/constants/userTypes";
 import Avatar from "../Avatar";
 import Button from "../UI/Button";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { updateUserProfile } from "@/supabase/userFetchers";
 import { updateMeet } from "@/supabase/meetFetchers";
 import { MeetType } from "@/constants/meetTypes";
@@ -9,7 +9,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { storeUser } from "@/store/userSlice";
 import { RootState } from "@/store";
 
-const UserRow = ({ user, meet }: { user: USER_TYPES; meet: MeetType }) => {
+const UserRow = ({
+  user,
+  meet,
+  updateUser,
+}: {
+  user: USER_TYPES;
+  meet: MeetType;
+  updateUser: () => void;
+}) => {
   const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.auth);
   const navigateToUser = (id: string) => {
@@ -17,15 +25,22 @@ const UserRow = ({ user, meet }: { user: USER_TYPES; meet: MeetType }) => {
   };
 
   const { mutate: removeUserFromMeet } = useMutation({
-    mutationFn: async ({ user, meet }) => {
-      const updatedUser = await updateUserProfile(user.uuid, {
-        attendingMeets: user.attendingMeets.filter(
-          (meetId) => meetId !== meet.id
+    mutationFn: async ({
+      user,
+      meet,
+    }: {
+      user: USER_TYPES | null;
+      meet: MeetType;
+    }) => {
+      const updatedUser = await updateUserProfile(user?.uuid, {
+        attendingMeets: (user?.attendingMeets ?? []).filter(
+          (meetId: string) => meetId !== meet.id
         ),
       });
+
       const updatedMeet = await updateMeet(meet.id, {
         participants: meet.participants.filter(
-          (participantId) => participantId !== user.id
+          (participantId: string) => participantId !== user?.id
         ),
       });
       return { updatedUser, updatedMeet };
@@ -33,6 +48,7 @@ const UserRow = ({ user, meet }: { user: USER_TYPES; meet: MeetType }) => {
 
     onSuccess: (data) => {
       dispatch(storeUser(data.updatedUser));
+      updateUser();
     },
   });
 

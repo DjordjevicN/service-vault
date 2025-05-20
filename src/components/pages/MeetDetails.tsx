@@ -7,7 +7,7 @@ import Counter from "../Counter";
 import Button from "../UI/Button";
 import { useParams } from "react-router-dom";
 import DivideLine from "../UI/DivideLine";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
 import { getDate, getTime } from "../utils/getDates";
 import MyMap from "../map/MyMap";
@@ -17,12 +17,13 @@ import { updateUserProfile } from "@/supabase/userFetchers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
+
+import { storeUser } from "@/store/userSlice";
 import {
   useMeetDetails,
   useOrganizer,
   useParticipants,
 } from "@/hooks/useMeetQueries";
-import { storeUser } from "@/store/userSlice";
 
 const MeetDetails = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,9 @@ const MeetDetails = () => {
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const auth = useSelector((state: RootState) => state.auth);
-  const { data: meet, isLoading: isMeetLoading } = useMeetDetails(id);
+  const { data: meet, isLoading: isMeetLoading, refetch } = useMeetDetails(id);
+  console.log("meet", meet);
+
   const { data: participants } = useParticipants(meet?.participants);
   const { data: organizer } = useOrganizer(meet?.organizerId);
 
@@ -50,6 +53,7 @@ const MeetDetails = () => {
     },
     onSuccess: (data) => {
       dispatch(storeUser(data.updatedUser));
+      refetch();
     },
     onError: (error) => {
       console.error("Error attending meet", error);
@@ -102,7 +106,12 @@ const MeetDetails = () => {
             {meet &&
               participants &&
               participants.map((user) => (
-                <UserRow key={user.id} user={user} meet={meet} />
+                <UserRow
+                  key={user.id}
+                  user={user}
+                  meet={meet}
+                  updateUser={refetch}
+                />
               ))}
           </div>
         </div>

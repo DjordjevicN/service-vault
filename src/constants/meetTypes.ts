@@ -1,10 +1,4 @@
 // Types
-export type RideParticipant = {
-  userId: string;
-  motorcycle: string;
-  name: string;
-  status: "pending" | "confirmed" | "declined";
-};
 
 export type RideComment = {
   userId: string;
@@ -26,7 +20,7 @@ export type MeetType = {
   startTime: string;
   startDate: string;
   rideType: "relaxed" | "spirited" | "mixed" | "";
-  participants: RideParticipant[];
+  participants: string[];
   maxRiders: number;
   image: string;
   createdAt?: number | null;

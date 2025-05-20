@@ -12,13 +12,11 @@ import Login from "./components/pages/Login";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import OrganizationPage from "./components/pages/OrganizationPage";
-
 import EditUser from "./components/pages/EditUser";
 import PrivateRoute from "./PrivateRoute";
 import MeetConfiguration from "./components/pages/MeetConfiguration";
 
 const App = () => {
-  const user = useSelector((state: RootState) => state.user);
   const auth = useSelector((state: RootState) => state.auth);
   const isAuthenticated = !!auth;
 
@@ -27,7 +25,6 @@ const App = () => {
       <Router>
         <TopBar />
         <Routes>
-          {/* Public Routes */}
           <Route
             path="/"
             element={isAuthenticated ? <Dashboard /> : <HomePage />}
@@ -35,9 +32,6 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/meet/:id" element={<MeetDetails />} />
-
-          {/* Protected Routes */}
-
           <Route
             path="/meets"
             element={
@@ -70,7 +64,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-
           <Route
             path="/edit-profile"
             element={
