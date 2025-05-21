@@ -1,11 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  deleteMeet,
   fetchMeetById,
   getAllMeetsByIds,
   getMeetsByTheCountry,
 } from "@/supabase/meetFetchers";
 import { getAllUsersByIds, getUserById } from "@/supabase/userFetchers";
 import { useDispatch } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const useMeetDetails = (id?: string) => {
   return useQuery({
@@ -47,5 +49,16 @@ export const useMeetsFromMyCountry = (country: string) => {
     queryKey: ["meetsFromMyCountry"],
     queryFn: () => getMeetsByTheCountry(country),
     enabled: !!country,
+  });
+};
+export const useDeleteMeet = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (meetId: string) => deleteMeet(meetId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["meetsFromMyCountry"] });
+      window.location.href = "/";
+    },
   });
 };

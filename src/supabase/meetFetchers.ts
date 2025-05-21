@@ -59,6 +59,7 @@ export const createMeet = async (meet: MeetType) => {
     console.error("Error creating meet:", error);
     return null;
   }
+
   return data;
 };
 // get meet by id
@@ -105,4 +106,50 @@ export const updateMeet = async (id: number, updates: object) => {
   }
 
   return data;
+};
+
+export const deleteMeet = async (id: string) => {
+  // 1. Remove the meet
+  const { error: deleteError } = await supabase
+    .from("meets")
+    .delete()
+    .eq("id", id);
+
+  if (deleteError) {
+    console.error("Error deleting meet:", deleteError);
+    return null;
+  }
+
+  // 2. Get all users attending this meet
+  const { data: users, error: usersError } = await supabase
+    .from("profiles")
+    .select("id, attendingMeets");
+
+  if (usersError) {
+    console.error("Error fetching profiles:", usersError);
+    return null;
+  }
+
+  // 3. Filter and update users who are attending the deleted meet
+  const affectedUsers = users.filter((user) =>
+    user.attendingMeets?.includes(id)
+  );
+
+  for (const user of affectedUsers) {
+    const updatedMeets = user.attendingMeets.filter(
+      (meetId: string) => meetId !== id
+    );
+
+    const { error: updateError } = await supabase
+      .from("profiles")
+      .update({ attendingMeets: updatedMeets })
+      .eq("id", user.id);
+
+    if (updateError) {
+      console.error(`Error updating user ${user.id}:`, updateError);
+      // continue updating others instead of returning
+    }
+  }
+
+  return { success: true };
 };
