@@ -5,7 +5,7 @@ import location from "../../assets/gps.svg";
 import MeetDetailsAbout from "../MeetDetailsAbout";
 import Counter from "../Counter";
 import Button from "../UI/Button";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import DivideLine from "../UI/DivideLine";
 import { useMutation } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
@@ -30,8 +30,10 @@ import {
 import { MeetType } from "@/constants/meetTypes";
 import ConfirmationModal from "../ConfirmationModal";
 import { useState } from "react";
+import TreeDotMenu from "../UI/TreeDotMenu";
 
 const MeetDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
@@ -95,12 +97,15 @@ const MeetDetails = () => {
     setIsConfirmationModalOpen((prev) => !prev);
   };
   if (isMeetLoading) return <LoadingModal show={isMeetLoading} />;
+  const handleEditMeet = () => {
+    navigate(`/meet-config/${meet.id}`);
+  };
   return (
     <>
       <div className="p-6">
-        <div className="flex justify-between items-baseline">
+        <div className="flex  justify-between items-baseline">
           <h1 className="text-4xl mb-15 text-white">{meet.name}</h1>
-          {auth && (
+          {auth && !permissionToRemoveMeet(auth, meet) && (
             <Button
               onClick={handleAttend}
               disabled={isMaxRidersReached || isUserAttending}
@@ -111,6 +116,18 @@ const MeetDetails = () => {
                 ? "Attending"
                 : "Attend"}
             </Button>
+          )}
+          {permissionToRemoveMeet(auth, meet) && (
+            <TreeDotMenu
+              options={[
+                { text: "Edit Meet", action: handleEditMeet },
+                {
+                  text: "Delete Meet",
+                  action: toggleConfirmationModal,
+                  isDestructive: true,
+                },
+              ]}
+            />
           )}
         </div>
 
@@ -156,7 +173,7 @@ const MeetDetails = () => {
                   <p className="text-white">{meet.startTime}</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3 ">
+              <div className="flex items-start gap-3">
                 <div className="w-5">
                   <img src={location} alt="moto" />
                 </div>
@@ -170,7 +187,7 @@ const MeetDetails = () => {
                     )}
                     className="flex items-center gap-2"
                   >
-                    <p className="text-gray55">{meet.address}</p>
+                    <p className="text-gray55 capitalize">{meet.address}</p>
                   </a>
                 </div>
               </div>
@@ -181,8 +198,10 @@ const MeetDetails = () => {
                 </div>
                 <div>
                   <p className="text-gray55 capitalize">
-                    Max riders:
-                    <span className="text-white">{meet?.maxRiders}</span>
+                    Max riders:{" "}
+                    <span className="text-white">
+                      {meet?.maxRiders || "Unlimited"}
+                    </span>
                   </p>
                 </div>
               </div>
@@ -192,7 +211,7 @@ const MeetDetails = () => {
                 </div>
                 <div>
                   <p className="text-gray55 capitalize">
-                    Ride style:
+                    Ride style:{" "}
                     <span className="text-white">{meet?.rideType}</span>
                   </p>
                 </div>
@@ -209,20 +228,6 @@ const MeetDetails = () => {
             )}
           </div>
         </div>
-        {permissionToRemoveMeet(auth, meet) && (
-          <div className="flex gap-4 items-center">
-            <Link className="text-green-400" to={`/meet-config/${meet.id}`}>
-              Edit
-            </Link>
-            <Button
-              wrapperClassName="text-red-500"
-              variant="text"
-              onClick={() => toggleConfirmationModal()}
-            >
-              Delete
-            </Button>
-          </div>
-        )}
       </div>
       <ConfirmationModal
         show={isConfirmationModalOpen}
