@@ -5,7 +5,7 @@ import RulesSection from "@/forms/MeetForms/RulesSection";
 import MediaSection from "@/forms/MeetForms/MediaSection";
 import { useEffect, useState } from "react";
 import MeetFormFinish from "@/forms/MeetForms/MeetFormFinish";
-import Button from "../UI/Button";
+import Button from "../myUiLibrary/Button";
 import { useDispatch } from "react-redux";
 import { resetMeetForm, setEntireMeetForm } from "@/store/formsSlice";
 import { useParams } from "react-router-dom";

@@ -1,6 +1,6 @@
 import placeholder from "@/assets/placeholder.png";
-import Button from "@/components/UI/Button";
-import DivideLine from "@/components/UI/DivideLine";
+import Button from "@/components/myUiLibrary/Button";
+import DivideLine from "@/components/myUiLibrary/DivideLine";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";

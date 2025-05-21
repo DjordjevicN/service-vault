@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
-import Textarea from "@/components/UI/Textarea";
+import Textarea from "@/components/myUiLibrary/Textarea";
 import { addRule, deleteRule, updateRule } from "@/store/formsSlice";
 
 const RulesSection = () => {

@@ -1,21 +1,20 @@
 import Hero from "../Hero";
 import HomeMeets from "../HomeMeets";
-import Footer from "../Footer";
 import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const HomePage = () => {
-  const user = useSelector((state) => state.user);
-  const auth = useSelector((state) => state.auth);
+  const user = useSelector((state: RootState) => state.user);
+  const auth = useSelector((state: RootState) => state.auth);
 
   if (auth && !user) {
     window.location.href = "/edit-profile";
   }
   return (
-    <div className="">
+    <>
       <Hero />
       <HomeMeets />
-      <Footer />
-    </div>
+    </>
   );
 };
 

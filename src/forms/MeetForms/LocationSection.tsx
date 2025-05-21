@@ -3,7 +3,7 @@ import { RootState } from "@/store";
 import { updateMeetForm } from "@/store/formsSlice";
 
 import MyMap from "@/components/map/MyMap";
-import Input from "@/components/UI/Input";
+import Input from "@/components/myUiLibrary/Input";
 
 const LocationSection = () => {
   const dispatch = useDispatch();

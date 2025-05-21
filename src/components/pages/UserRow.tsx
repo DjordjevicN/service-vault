@@ -1,6 +1,6 @@
 import { USER_TYPES } from "@/constants/userTypes";
 import Avatar from "../Avatar";
-import Button from "../UI/Button";
+import Button from "../myUiLibrary/Button";
 import { useMutation } from "@tanstack/react-query";
 import { updateUserProfile } from "@/supabase/userFetchers";
 import { updateMeet } from "@/supabase/meetFetchers";

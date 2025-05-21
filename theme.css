@@ -1,0 +1,82 @@
+@layer base {
+  :root {
+    --radius: 0.5rem;
+
+    --background: 100% 0 0;
+    --foreground: 28.52% 0 0;
+
+    --muted: 91.66% 0 0;
+    --muted-foreground: 47.3% 0 0;
+
+    --popover: 100% 0 0;
+    --popover-foreground: 28.52% 0 0;
+
+    --card: 100% 0 0;
+    --card-foreground: 28.52% 0 0;
+
+    --border: 91.66% 0 0;
+    --input: 91.66% 0 0;
+
+    --primary: 51.57% 264.35 0.144;
+    --primary-foreground: 100% 0 0;
+
+    --secondary: 91.66% 0 0;
+    --secondary-foreground: 28.52% 0 0;
+
+    --accent: 91.66% 0 0;
+    --accent-foreground: 28.52% 0 0;
+
+    --destructive: 47.59% 27.07 0.247;
+    --destructive-foreground: 100% 0 0;
+
+    --ring: 51.57% 264.35 0.144;
+
+    --mainbg: #23272a;
+    --scndbg: #2c2f33;
+  }
+
+  .dark {
+    --background: 28.52% 0 0;
+    --foreground: 100% 0 0;
+
+    --muted: 34.27% 0 0;
+    --muted-foreground: 74.89% 0 0;
+
+    --popover: 28.52% 0 0;
+    --popover-foreground: 100% 0 0;
+
+    --card: 28.52% 0 0;
+    --card-foreground: 100% 0 0;
+
+    --border: 34.27% 0 0;
+    --input: 34.27% 0 0;
+
+    --primary: 51.57% 264.35 0.144;
+    --primary-foreground: 100% 0 0;
+
+    --secondary: 34.27% 0 0;
+    --secondary-foreground: 100% 0 0;
+
+    --accent: 34.27% 0 0;
+    --accent-foreground: 100% 0 0;
+
+    --destructive: 47.59% 27.07 0.247;
+    --destructive-foreground: 100% 0 0;
+
+    --ring: 51.57% 264.35 0.144;
+
+    --mainbg: #23272a;
+    --scndbg: #2c2f33;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      45deg,
+      oklch(var(--primary)),
+      oklch(var(--secondary))
+    );
+  }
+}

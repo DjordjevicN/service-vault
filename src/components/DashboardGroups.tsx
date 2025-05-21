@@ -1,5 +1,5 @@
 import { USER_TYPES } from "@/constants/userTypes";
-import Button from "./UI/Button";
+import Button from "./myUiLibrary/Button";
 import { Link } from "react-router-dom";
 
 const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {

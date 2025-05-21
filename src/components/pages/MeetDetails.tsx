@@ -4,9 +4,9 @@ import clock from "../../assets/clock.svg";
 import location from "../../assets/gps.svg";
 import MeetDetailsAbout from "../MeetDetailsAbout";
 import Counter from "../Counter";
-import Button from "../UI/Button";
+import Button from "../myUiLibrary/Button";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import DivideLine from "../UI/DivideLine";
+import DivideLine from "../myUiLibrary/DivideLine";
 import { useMutation } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
 import { getDate, getTime } from "../utils/getDates";
@@ -30,7 +30,7 @@ import {
 import { MeetType } from "@/constants/meetTypes";
 import ConfirmationModal from "../ConfirmationModal";
 import { useState } from "react";
-import TreeDotMenu from "../UI/TreeDotMenu";
+import TreeDotMenu from "../myUiLibrary/TreeDotMenu";
 
 const MeetDetails = () => {
   const navigate = useNavigate();

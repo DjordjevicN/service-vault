@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
-import Input from "@/components/UI/Input";
-import Select from "@/components/UI/Select";
-import Textarea from "@/components/UI/Textarea";
+import Input from "@/components/myUiLibrary/Input";
+import Select from "@/components/myUiLibrary/Select";
+import Textarea from "@/components/myUiLibrary/Textarea";
 import { updateMeetForm } from "@/store/formsSlice";
 
 const BasicInfoSection = () => {

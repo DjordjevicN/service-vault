@@ -1,6 +1,6 @@
-import Button from "@/components/UI/Button";
-import DivideLine from "@/components/UI/DivideLine";
-import Input from "@/components/UI/Input";
+import Button from "@/components/myUiLibrary/Button";
+import DivideLine from "@/components/myUiLibrary/DivideLine";
+import Input from "@/components/myUiLibrary/Input";
 import { USER_TYPES } from "@/constants/userTypes";
 import { RootState } from "@/store";
 import { storeUser } from "@/store/userSlice";
