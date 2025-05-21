@@ -53,17 +53,16 @@ const UserRow = ({
   });
 
   const removeUser = (id: string) => {
-    console.log(`Remove user with id: ${id}`);
     if (id === user.id) {
       removeUserFromMeet({ user, meet });
     }
   };
-  const permissionToRemove = () => {
-    if (user.uuid === meet.organizerId && auth) {
-      return true;
-    }
+  const permissionToRemove = (auth: any, meet: MeetType, user: USER_TYPES) => {
+    if (!auth || !meet?.participants?.includes(user.id)) return false;
 
-    return false;
+    const isOrganizer = auth.id === meet.organizerId;
+    const isSelf = auth.id === user.uuid;
+    return isOrganizer || isSelf;
   };
   return (
     <div
@@ -81,7 +80,7 @@ const UserRow = ({
         </p>
       </div>
       <div className="ml-auto flex items-center w-[100px]">
-        {permissionToRemove() && (
+        {permissionToRemove(auth, meet, user) && (
           <Button variant="text" onClick={() => removeUser(user.id)}>
             Remove
           </Button>

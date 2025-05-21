@@ -32,11 +32,11 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
 
   return (
     <div
-      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer relative"
+      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer relative border border-gray80 rounded-lg p-4 bg-gray80 hover:bg-gray70 transition duration-200"
       onClick={() => handleNavigate(meet.id)}
     >
       {isMyMeet() && (
-        <div className="absolute top-0 right-0">
+        <div className="absolute top-4 right-4">
           <img width={24} height={24} src={crown} alt="" />
         </div>
       )}

@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 import DivideLine from "../UI/DivideLine";
 import { registerUser, loginUser, createUser } from "@/supabase/userFetchers";
 import { storeAuth } from "@/store/authSlice";
-
 import { storeUser } from "@/store/userSlice";
 import { supabase } from "@/lib/supabase";
+import { RootState } from "@/store";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -16,7 +16,10 @@ const Login = () => {
   const [password, setPassword] = useState("@Djalokin3223");
   const [username, setUsername] = useState("ze");
   const [formType, setFormType] = useState(true);
-
+  const auth = useSelector((state: RootState) => state.auth);
+  if (auth) {
+    window.location.href = "/";
+  }
   const { mutate: createNewUser } = useMutation({
     mutationFn: (newUser: { username: string; email: string; id: string }) =>
       createUser(newUser),

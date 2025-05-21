@@ -17,17 +17,14 @@ const Hero = () => {
               </h1>
             </div>
             <div className="h-1 w-20 bg-gray50 rounded-full my-8" />
+            <p className="text-gray50">Organize Rides. Meet Riders.</p>
             <p className="text-gray50 max-w-[700px]">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ea est
-              ipsam eligendi obcaecati harum consequuntur suscipit ducimus id
-              facere atque aperiam nostrum veritatis excepturi error nulla quod,
-              blanditiis consectetur, quas delectus consequatur dolor iure quos
-              repellat culpa? Quas consequuntur maxime molestiae amet ab
-              cupiditate suscipit ipsa beatae vero debitis commodi laborum
-              facere ullam, iure vitae ea cum quis perspiciatis numquam.
+              Whether you're organizing a quick weekend ride or a multi-day
+              group trip, our platform makes it easy to create events, invite
+              riders, track who's joining, and keep everything organized — so
+              you can focus on the ride, not the logistics.
             </p>
           </div>
-          <LoginBox />
         </div>
       </div>
     </div>
