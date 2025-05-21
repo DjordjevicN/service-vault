@@ -1,7 +1,9 @@
+import { MeetType } from "@/constants/meetTypes";
 import { supabase } from "@/lib/supabase";
 import { storeUserMeets } from "@/store/meetSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 
-export const getAllMeets = async (dispatch: any) => {
+export const getAllMeets = async (dispatch: Dispatch) => {
   const { data: meets, error } = await supabase.from("meets").select("*");
   if (error) {
     console.error("Error fetching meets:", error);
@@ -31,8 +33,10 @@ export const getAllMeetsByUserId = async (id: string) => {
   return meets;
 };
 
-// get meets by ids
-export const getAllMeetsByIds = async (meetIds: string[], dispatch: any) => {
+export const getAllMeetsByIds = async (
+  meetIds: string[],
+  dispatch: Dispatch
+) => {
   const { data: meets, error } = await supabase
     .from("meets")
     .select("*")
@@ -49,7 +53,7 @@ export const getAllMeetsByIds = async (meetIds: string[], dispatch: any) => {
   return meets;
 };
 // create new meet
-export const createMeet = async (meet: any) => {
+export const createMeet = async (meet: MeetType) => {
   const { data, error } = await supabase.from("meets").insert([meet]).select();
   if (error) {
     console.error("Error creating meet:", error);
@@ -84,15 +88,11 @@ export const getMeetsByTheCountry = async (country: string) => {
     console.error("No meets found");
     return [];
   }
-  // dispatch(storeUserMeets(data));
+
   return data;
 };
 // update meet
-export const updateMeet = async (
-  id: string,
-  updates: object
-  // dispatch?: any
-) => {
+export const updateMeet = async (id: number, updates: object) => {
   const { data, error } = await supabase
     .from("meets")
     .update(updates)
@@ -104,6 +104,5 @@ export const updateMeet = async (
     return null;
   }
 
-  // dispatch(storeUserMeets(data));
   return data;
 };

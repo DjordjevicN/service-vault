@@ -12,7 +12,7 @@ export type RideGps = {
 };
 
 export type MeetType = {
-  id?: string | number;
+  id: number;
   name: string;
   description: string;
   rules: string[];

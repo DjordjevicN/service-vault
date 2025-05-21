@@ -24,6 +24,7 @@ import {
   useOrganizer,
   useParticipants,
 } from "@/hooks/useMeetQueries";
+import { MeetType } from "@/constants/meetTypes";
 
 const MeetDetails = () => {
   const dispatch = useDispatch();
@@ -40,9 +41,13 @@ const MeetDetails = () => {
   const { data: organizer } = useOrganizer(meet?.organizerId);
 
   const { mutate: userAttend } = useMutation({
-    mutationFn: async ({ user, meet }) => {
-      console.log("User attending meet", user, meet);
-
+    mutationFn: async ({
+      user,
+      meet,
+    }: {
+      user: USER_TYPES;
+      meet: MeetType;
+    }) => {
       const updatedUser = await updateUserProfile(user.uuid, {
         attendingMeets: [...(user.attendingMeets ?? []), meet.id],
       });
@@ -65,9 +70,8 @@ const MeetDetails = () => {
       userAttend({ user, meet });
     }
   };
-  const addToCalendar = () => {
-    console.log("Add to calendar clicked");
-  };
+
+  const addToCalendar = () => {};
 
   const totalParticipants = meet?.participants.length;
 
@@ -175,19 +179,3 @@ const MeetDetails = () => {
 };
 
 export default MeetDetails;
-// const { data: meet, isLoading } = useQuery({
-//   queryKey: ["meet", id],
-//   queryFn: () => fetchMeetById(id),
-//   enabled: !!id,
-// });
-// const { data: participants } = useQuery({
-//   queryKey: ["users", meet?.participants],
-//   queryFn: () => getAllUsersByIds(meet?.participants),
-//   enabled: meet?.participants.length > 0,
-// });
-
-// const { data: organizer } = useQuery({
-//   queryKey: ["organizer by id", organizerId],
-//   queryFn: () => getUserById(organizerId),
-//   enabled: !!organizerId,
-// });
