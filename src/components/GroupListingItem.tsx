@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
 import crown from "@/assets/crown-gold.svg";
+import { getDate } from "./utils/getDates";
 
 const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   const navigate = useNavigate();
@@ -45,7 +46,12 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
       </div>
       <div className="flex flex-col justify-between">
         <div>
-          <p className="text-gray55 uppercase text-sm">{meet.startTime}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-gray55 uppercase text-sm">
+              {getDate(meet.startDate)}
+            </p>
+            <p className="text-gray55 uppercase text-sm">{meet.startTime}</p>
+          </div>
           <p className="text-white">{meet.name}</p>
           <a
             onClick={(e) => e.stopPropagation()}

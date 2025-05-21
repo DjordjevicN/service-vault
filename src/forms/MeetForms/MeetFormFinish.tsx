@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import MyMap from "@/components/map/MyMap";
 import { useMutation } from "@tanstack/react-query";
-import { createMeet } from "@/supabase/meetFetchers";
+import { createMeet, updateMeet } from "@/supabase/meetFetchers";
 import { storeUserMeets } from "@/store/meetSlice";
+import { MeetType } from "@/constants/meetTypes";
 const TextRow = ({
   label,
   details,
@@ -38,7 +39,7 @@ const RuleRow = ({
   );
 };
 
-const MeetFormFinish = () => {
+const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const meetForm = useSelector((state: RootState) => state.meetForm);
@@ -65,7 +66,27 @@ const MeetFormFinish = () => {
     },
   });
 
+  const { mutate: updateMeetConfiguration } = useMutation({
+    mutationFn: (updatedMeet: MeetType) => updateMeet(meetForm.id, updatedMeet),
+    onSuccess: (data) => {
+      console.log("Meet updated successfully", data);
+      if (!data) {
+        console.error("No data returned from createMeet");
+        return;
+      }
+      dispatch(storeUserMeets(data[0]));
+      navigate(`/meet/${meetForm.id}`);
+    },
+    onError: (error) => {
+      console.error("Error creating meet:", error);
+    },
+  });
+
   const handlePublish = () => {
+    if (isUpdate) {
+      updateMeetConfiguration(meetForm);
+      return;
+    }
     if (!user) {
       navigate("/login");
       return;

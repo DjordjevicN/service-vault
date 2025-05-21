@@ -49,6 +49,14 @@ const App = () => {
             }
           />
           <Route
+            path="/meet-config/:meetId"
+            element={
+              <PrivateRoute>
+                <MeetConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/trips"
             element={
               <PrivateRoute>
