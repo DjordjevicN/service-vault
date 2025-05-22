@@ -40,7 +40,7 @@ const Dashboard = () => {
     return <LoadingModal show />;
   }
   return (
-    <div className="p-6">
+    <div className="mt-4">
       <Card className="p-6 mb-4">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold">

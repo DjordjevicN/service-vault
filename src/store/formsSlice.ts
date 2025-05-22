@@ -5,7 +5,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: MeetType = {
   name: "",
   description: "",
-  rules: [],
+  rules: [""],
   startLocation: "",
   startTime: "",
   startDate: "",

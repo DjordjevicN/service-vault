@@ -12,7 +12,7 @@ const tips = [
 const EditUser = () => {
   return (
     <div className="p-6 pb-20 ">
-      <h1 className="text-white text-3xl font-bold mt-10">
+      <h1 className="font-bold mt-10">
         Edit your <span className="text-gradient">profile</span>
       </h1>
       <div className="grid grid-cols-[2fr_1fr] gap-4 mt-16 items-start">

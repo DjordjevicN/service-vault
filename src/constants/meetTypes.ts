@@ -30,4 +30,6 @@ export type MeetType = {
   country: string;
   organizerId: string;
   starRating: number;
+  price?: number | null;
+  onSale?: number | null;
 };

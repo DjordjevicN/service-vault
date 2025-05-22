@@ -173,12 +173,13 @@
   display: none;
 }
 .react-time-picker__wrapper {
-  border-color: #53575c !important;
-  color: white !important;
-  padding: 8px 12px;
-  border-radius: 4px;
+  border-color: var(--color-muted) !important;
+  color: var(--color-muted-foreground) !important;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background-color: var(--background) !important;
 }
 .react-time-picker__clear-button__icon {
-  background-color: white !important;
+  background-color: var(--color-muted-foreground) !important;
   border-radius: 100% !important;
 }

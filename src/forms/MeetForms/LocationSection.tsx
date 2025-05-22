@@ -14,17 +14,19 @@ const LocationSection = () => {
   );
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 p-6">
-      <div>
-        <h2 className="text-white text-2xl">
-          Meet <span className="text-gradient">Location</span>
-        </h2>
-        <p className="text-gray55 mt-6">
-          Set the exact meetup point for the ride. Use the map to drop a pin,
-          then fill in the location details to help riders easily find the
-          starting point.
-        </p>
-      </div>
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+      <Card className="px-6">
+        <div>
+          <h2 className="">
+            Meet <span className="text-gradient">Location</span>
+          </h2>
+          <p className="text-gray55 mt-6">
+            Set the exact meetup point for the ride. Use the map to drop a pin,
+            then fill in the location details to help riders easily find the
+            starting point.
+          </p>
+        </div>
+      </Card>
       <div className="">
         <Card className="px-4 py-4 mb-4">
           <MyMap
@@ -40,44 +42,55 @@ const LocationSection = () => {
             }}
           />
         </Card>
-        <Label htmlFor="location">Location</Label>
-        <Input
-          onChange={(e) =>
-            dispatch(
-              updateMeetForm({ key: "startLocation", value: e.target.value })
-            )
-          }
-          value={startLocation}
-          id="location"
-          placeholder="Enter the location"
-        />
-        <Label htmlFor="Address">Address</Label>
-        <Input
-          onChange={(e) =>
-            dispatch(updateMeetForm({ key: "address", value: e.target.value }))
-          }
-          value={address}
-          id="Address"
-          placeholder="Enter the address"
-        />
-        <Label htmlFor="City">City</Label>
-        <Input
-          onChange={(e) =>
-            dispatch(updateMeetForm({ key: "city", value: e.target.value }))
-          }
-          value={city}
-          id="City"
-          placeholder="Enter the city"
-        />
-        <Label htmlFor="Country">Country</Label>
-        <Input
-          onChange={(e) =>
-            dispatch(updateMeetForm({ key: "country", value: e.target.value }))
-          }
-          value={country}
-          id="Country"
-          placeholder="Enter the country"
-        />
+        <Card className="px-6">
+          <div>
+            <Label htmlFor="location">Location</Label>
+            <Input
+              onChange={(e) =>
+                dispatch(
+                  updateMeetForm({
+                    key: "startLocation",
+                    value: e.target.value,
+                  })
+                )
+              }
+              value={startLocation}
+              id="location"
+              placeholder="Enter the location"
+            />
+            <Label htmlFor="Address">Address</Label>
+            <Input
+              onChange={(e) =>
+                dispatch(
+                  updateMeetForm({ key: "address", value: e.target.value })
+                )
+              }
+              value={address}
+              id="Address"
+              placeholder="Enter the address"
+            />
+            <Label htmlFor="City">City</Label>
+            <Input
+              onChange={(e) =>
+                dispatch(updateMeetForm({ key: "city", value: e.target.value }))
+              }
+              value={city}
+              id="City"
+              placeholder="Enter the city"
+            />
+            <Label htmlFor="Country">Country</Label>
+            <Input
+              onChange={(e) =>
+                dispatch(
+                  updateMeetForm({ key: "country", value: e.target.value })
+                )
+              }
+              value={country}
+              id="Country"
+              placeholder="Enter the country"
+            />
+          </div>
+        </Card>
       </div>
     </div>
   );

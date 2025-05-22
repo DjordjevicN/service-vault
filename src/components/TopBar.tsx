@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-
 import { useDebounce } from "../hooks/useDebounce";
 import Logo from "./Logo";
 import AvatarDropdown from "./AvatarDropdown";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Link } from "react-router-dom";
-import { Input } from "./ui/input";
 import { ThemeSwitch } from "./ThemeSwitch";
+import { Input } from "./ui/input";
+import { Card } from "./ui/card";
 
 const TopBar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -22,8 +22,8 @@ const TopBar = () => {
   }, [debounceSearch]);
 
   return (
-    <>
-      <div className="flex items-center justify-between p-4">
+    <Card className="px-6 py-4 mt-2">
+      <div className="flex items-center justify-between">
         <Logo />
         <Input
           value={searchValue}
@@ -42,7 +42,7 @@ const TopBar = () => {
           )}
         </div>
       </div>
-    </>
+    </Card>
   );
 };
 

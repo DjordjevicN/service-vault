@@ -10,6 +10,7 @@ import { resetMeetForm, setEntireMeetForm } from "@/store/formsSlice";
 import { useParams } from "react-router-dom";
 import { useMeetDetails } from "@/hooks/useMeetQueries";
 import { Button } from "../ui/button";
+import StepController from "../StepController";
 
 const MeetConfiguration = () => {
   const { meetId } = useParams();
@@ -41,27 +42,20 @@ const MeetConfiguration = () => {
   };
 
   return (
-    <div className="p-6">
+    <div>
       {section === 0 && <BasicInfoSection />}
       {section === 1 && <LocationSection />}
       {section === 2 && <TimeAndDateSection />}
       {section === 3 && <RulesSection />}
       {section === 4 && <MediaSection />}
       {section === 5 && <MeetFormFinish isUpdate={!!meetId} />}
-      {/* {section === 4 && <ParticipantsSection />} */}
-
-      <div className="flex gap-4">
-        {section === 0 && (
-          <Button variant={"ghost"} onClick={handleReset}>
-            Start new Meet
-          </Button>
-        )}
-        {section !== 0 && (
-          <Button variant={"ghost"} onClick={handlePrevious}>
-            Previous
-          </Button>
-        )}
-        {section !== 5 && <Button onClick={handleNext}>Next</Button>}
+      <div className="flex justify-end">
+        <StepController
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+        />
       </div>
     </div>
   );

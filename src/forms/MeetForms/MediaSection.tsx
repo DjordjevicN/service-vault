@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { updateMeetForm } from "@/store/formsSlice";
-import Button from "@/components/myUiLibrary/Button";
 import getCroppedImg from "@/components/utils/cropImage";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Cropper from "react-easy-crop";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const MediaSection = () => {
   const dispatch = useDispatch();
@@ -45,50 +46,56 @@ const MediaSection = () => {
   }, [imageSrc, croppedAreaPixels, dispatch]);
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4">
-      <div>
-        <h2 className="text-gradient text-2xl w-fit">Add Rider Image</h2>
-        <p className="text-gray55 mt-6">Upload and crop rider image.</p>
-      </div>
-      <div>
-        <div
-          {...getRootProps()}
-          className="border-dashed border-2 p-4 mt-4 cursor-pointer"
-        >
-          <input {...getInputProps()} />
-          <p className="text-gray55">
-            Drag 'n' drop or click to select an image
-          </p>
-        </div>
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+      <Card className="px-6">
         <div>
-          {imageSrc && (
-            <div className="relative h-[300px] ">
-              <Cropper
-                image={imageSrc}
-                crop={crop}
-                zoom={zoom}
-                aspect={1}
-                onCropChange={setCrop}
-                onZoomChange={setZoom}
-                onCropComplete={onCropComplete}
+          <h2 className="w-fit">
+            Add <span className="text-gradient">Meet Image</span>
+          </h2>
+          <p className="text-gray55 mt-6">Upload and crop rider image.</p>
+        </div>
+      </Card>
+      <Card className="px-6">
+        <div>
+          <div
+            {...getRootProps()}
+            className="border-dashed border-2 p-4 mt-4 cursor-pointer"
+          >
+            <input {...getInputProps()} />
+            <p className="text-gray55">
+              Drag 'n' drop or click to select an image
+            </p>
+          </div>
+          <div>
+            {imageSrc && (
+              <div className="relative h-[300px] ">
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={1}
+                  onCropChange={setCrop}
+                  onZoomChange={setZoom}
+                  onCropComplete={onCropComplete}
+                />
+              </div>
+            )}
+          </div>
+          {croppedImage && (
+            <div className="mt-4">
+              <h4 className="text-sm text-white mb-1">Preview</h4>
+              <img
+                src={croppedImage}
+                alt="Cropped"
+                className="w-48 h-48 object-cover"
               />
             </div>
           )}
+          <Button className="mt-6" onClick={showCroppedImage}>
+            Crop Image
+          </Button>
         </div>
-        {croppedImage && (
-          <div className="mt-4">
-            <h4 className="text-sm text-white mb-1">Preview</h4>
-            <img
-              src={croppedImage}
-              alt="Cropped"
-              className="w-48 h-48 object-cover"
-            />
-          </div>
-        )}
-        <Button wrapperClassName="mt-2" onClick={showCroppedImage}>
-          Crop Image
-        </Button>
-      </div>
+      </Card>
     </div>
   );
 };
