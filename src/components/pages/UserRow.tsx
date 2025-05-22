@@ -1,6 +1,6 @@
 import { USER_TYPES } from "@/constants/userTypes";
 import Avatar from "../Avatar";
-import Button from "../UI/Button";
+
 import { useMutation } from "@tanstack/react-query";
 import { updateUserProfile } from "@/supabase/userFetchers";
 import { updateMeet } from "@/supabase/meetFetchers";
@@ -8,6 +8,8 @@ import { MeetType } from "@/constants/meetTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { storeUser } from "@/store/userSlice";
 import { RootState } from "@/store";
+import { AuthUser } from "@supabase/supabase-js";
+import { Button } from "../ui/button";
 
 const UserRow = ({
   user,
@@ -34,7 +36,7 @@ const UserRow = ({
     }) => {
       const updatedUser = await updateUserProfile(user?.uuid, {
         attendingMeets: (user?.attendingMeets ?? []).filter(
-          (meetId: string) => meetId !== meet.id
+          (meetId: number) => meetId !== meet.id
         ),
       });
 
@@ -57,7 +59,11 @@ const UserRow = ({
       removeUserFromMeet({ user, meet });
     }
   };
-  const permissionToRemove = (auth: any, meet: MeetType, user: USER_TYPES) => {
+  const permissionToRemove = (
+    auth: AuthUser | null,
+    meet: MeetType,
+    user: USER_TYPES
+  ) => {
     if (!auth || !meet?.participants?.includes(user.id)) return false;
 
     const isOrganizer = auth.id === meet.organizerId;
@@ -65,26 +71,28 @@ const UserRow = ({
     return isOrganizer || isSelf;
   };
   return (
-    <div
-      className="flex items-center mb-3 p-2 gap-6 bg-gray80 rounded"
-      onClick={() => navigateToUser(user.id)}
-    >
-      <Avatar url={user.image} size={32} />
+    <div className="px-4 py-2 mb-2 border-b">
+      <div
+        className="flex items-center gap-6"
+        onClick={() => navigateToUser(user.id)}
+      >
+        <Avatar url={user.image} size={32} />
 
-      <div className="min-w-[150px] overflow-hidden">
-        <p className="text-white text-sm">{user.username}</p>
-      </div>
-      <div>
-        <p className="text-gray55 text-sm">
-          {user.motorcycle !== "" ? user.motorcycle : "/"}
-        </p>
-      </div>
-      <div className="ml-auto flex items-center w-[100px]">
-        {permissionToRemove(auth, meet, user) && (
-          <Button variant="text" onClick={() => removeUser(user.id)}>
-            Remove
-          </Button>
-        )}
+        <div className="min-w-[150px] overflow-hidden">
+          <p className="text-white text-sm">{user.username}</p>
+        </div>
+        <div>
+          <p className="text-gray55 text-sm">
+            {user.motorcycle !== "" ? user.motorcycle : "/"}
+          </p>
+        </div>
+        <div className="ml-auto flex items-center w-[100px]">
+          {permissionToRemove(auth, meet, user) && (
+            <Button variant="ghost" onClick={() => removeUser(user.id)}>
+              Remove
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -4,12 +4,13 @@ import clock from "../../assets/clock.svg";
 import location from "../../assets/gps.svg";
 import MeetDetailsAbout from "../MeetDetailsAbout";
 import Counter from "../Counter";
-import Button from "../UI/Button";
-import { Link, useParams } from "react-router-dom";
-import DivideLine from "../UI/DivideLine";
+import Button from "../myUiLibrary/Button";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { Separator } from "@/components/ui/separator";
 import { useMutation } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
-import { getDate, getTime } from "../utils/getDates";
+import { getDate } from "../utils/getDates";
 import MyMap from "../map/MyMap";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
 import { updateMeet } from "@/supabase/meetFetchers";
@@ -19,7 +20,6 @@ import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
 import shield from "../../assets/shield.svg";
 import moto from "../../assets/moto.svg";
-
 import { storeUser } from "@/store/userSlice";
 import {
   useDeleteMeet,
@@ -30,15 +30,19 @@ import {
 import { MeetType } from "@/constants/meetTypes";
 import ConfirmationModal from "../ConfirmationModal";
 import { useState } from "react";
+import { AuthUser } from "@supabase/supabase-js";
+import { Card, CardContent } from "../ui/card";
+import MyDropdownMenu from "../myUiLibrary/MyDropdownMenu";
 
 const MeetDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
-  const auth = useSelector((state: RootState) => state.auth);
+  const auth = useSelector((state: RootState) => state.auth) as AuthUser | null;
   const { data: meet, isLoading: isMeetLoading, refetch } = useMeetDetails(id);
   const { mutate: deleteMeet } = useDeleteMeet();
   const { data: participants } = useParticipants(meet?.participants);
@@ -79,7 +83,7 @@ const MeetDetails = () => {
     deleteMeet(meetId);
   };
 
-  const permissionToRemoveMeet = (auth: any, meet: MeetType) => {
+  const permissionToRemoveMeet = (auth: AuthUser, meet: MeetType) => {
     if (auth?.id === meet?.organizerId) {
       return true;
     }
@@ -95,134 +99,140 @@ const MeetDetails = () => {
     setIsConfirmationModalOpen((prev) => !prev);
   };
   if (isMeetLoading) return <LoadingModal show={isMeetLoading} />;
+  const handleEditMeet = () => {
+    navigate(`/meet-config/${meet.id}`);
+  };
   return (
     <>
       <div className="p-6">
-        <div className="flex justify-between items-baseline">
-          <h1 className="text-4xl mb-15 text-white">{meet.name}</h1>
-          {auth && (
-            <Button
-              onClick={handleAttend}
-              disabled={isMaxRidersReached || isUserAttending}
-            >
-              {isMaxRidersReached
-                ? "Full"
-                : isUserAttending
-                ? "Attending"
-                : "Attend"}
-            </Button>
-          )}
-        </div>
-
-        <HostedByCard organizedBy={organizer} />
-        <DivideLine className="mt-6" />
-        <div className="grid grid-cols-[2fr_1fr] gap-4 mt-14">
-          <div>
-            <MeetDetailsAbout title="Details" description={meet.description} />
-            <div>
-              <p className="text-white text-xl capitalize mt-14">Rules:</p>
-              {meet.rules.map((rule: string, index: number) => {
-                return (
-                  <div key={index} className="text-gray55 text-base mt-2">
-                    <p className="text-white">{rule}</p>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="flex gap-9 mt-10">
-              <Counter label="total" count={totalParticipants} />
-            </div>
-            <div className="h-96 overflow-auto mt-6">
-              {meet &&
-                participants &&
-                participants.map((user) => (
-                  <UserRow
-                    key={user.id}
-                    user={user}
-                    meet={meet}
-                    updateUser={refetch}
-                  />
-                ))}
-            </div>
-          </div>
-          <div className="flex flex-col gap-3">
-            <div className="w-full bg-gray80 p-6 rounded flex flex-col gap-4">
-              <div className="flex items-start gap-3">
-                <div className="w-5">
-                  <img src={clock} alt="clock" className="" />
-                </div>
-                <div>
-                  <p className="text-white">{getDate(meet.startDate)}</p>
-                  <p className="text-white">{meet.startTime}</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 ">
-                <div className="w-5">
-                  <img src={location} alt="moto" />
-                </div>
-                <div>
-                  <a
-                    onClick={(e) => e.stopPropagation()}
-                    target="_blank"
-                    href={googleMapsPinLink(
-                      meet.gps.latitude,
-                      meet.gps.longitude
-                    )}
-                    className="flex items-center gap-2"
-                  >
-                    <p className="text-gray55">{meet.address}</p>
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 ">
-                <div className="w-5">
-                  <img src={moto} alt="moto" />
-                </div>
-                <div>
-                  <p className="text-gray55 capitalize">
-                    Max riders:
-                    <span className="text-white">{meet?.maxRiders}</span>
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3 ">
-                <div className="w-5">
-                  <img src={shield} alt="moto" />
-                </div>
-                <div>
-                  <p className="text-gray55 capitalize">
-                    Ride style:
-                    <span className="text-white">{meet?.rideType}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            {meet.gps.latitude && (
-              <div className="w-full bg-gray80 rounded relative z-40">
-                <MyMap
-                  long={meet.gps.longitude}
-                  lat={meet.gps.latitude}
-                  disableMarker
-                />
-              </div>
+        <Card className="px-6">
+          <div className="flex  justify-between items-baseline">
+            <h1 className="text-2xl font-bold">{meet.name}</h1>
+            {auth && !permissionToRemoveMeet(auth, meet) && (
+              <Button
+                onClick={handleAttend}
+                disabled={isMaxRidersReached || isUserAttending}
+              >
+                {isMaxRidersReached
+                  ? "Full"
+                  : isUserAttending
+                  ? "Attending"
+                  : "Attend"}
+              </Button>
+            )}
+            {auth && permissionToRemoveMeet(auth, meet) && (
+              <MyDropdownMenu
+                trigger="Admin Actions"
+                options={[
+                  { name: "Edit Meet", action: handleEditMeet },
+                  { name: "Delete Meet", action: handleEditMeet },
+                ]}
+              />
             )}
           </div>
-        </div>
-        {permissionToRemoveMeet(auth, meet) && (
-          <div className="flex gap-4 items-center">
-            <Link className="text-green-400" to={`/meet-config/${meet.id}`}>
-              Edit
-            </Link>
-            <Button
-              wrapperClassName="text-red-500"
-              variant="text"
-              onClick={() => toggleConfirmationModal()}
-            >
-              Delete
-            </Button>
+
+          <HostedByCard organizedBy={organizer} />
+        </Card>
+        <div className="grid grid-cols-[2fr_1fr] gap-4 mt-4">
+          <div>
+            <MeetDetailsAbout title="Details" description={meet.description} />
+            <Card className="px-6 mt-4">
+              <p className="text-sm font-bold text-muted-foreground capitalize">
+                Rules:
+              </p>
+              {meet.rules.map((rule: string, index: number) => {
+                return (
+                  <CardContent className="text-sm" key={index}>
+                    {rule}
+                  </CardContent>
+                );
+              })}
+            </Card>
+            <Card className="px-6 mt-4">
+              <div className="flex gap-9">
+                <Counter label="total" count={totalParticipants} />
+              </div>
+              <Separator />
+              <div className="overflow-auto">
+                {meet &&
+                  participants?.map((user) => (
+                    <UserRow
+                      key={user.id}
+                      user={user}
+                      meet={meet}
+                      updateUser={refetch}
+                    />
+                  ))}
+              </div>
+            </Card>
           </div>
-        )}
+          <div className="flex flex-col gap-3">
+            <Card className="px-6 text-sm">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-5">
+                    <img src={clock} alt="clock" />
+                  </div>
+                  <div className="flex gap-2">
+                    <p>{getDate(meet.startDate)}</p>
+                    <p>{meet.startTime}h</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-5">
+                    <img src={location} alt="moto" />
+                  </div>
+                  <div>
+                    <a
+                      onClick={(e) => e.stopPropagation()}
+                      target="_blank"
+                      href={googleMapsPinLink(
+                        meet.gps.latitude,
+                        meet.gps.longitude
+                      )}
+                      className="flex items-center gap-2"
+                    >
+                      <p className="capitalize">{meet.address}</p>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 ">
+                  <div className="w-5">
+                    <img src={moto} alt="moto" />
+                  </div>
+                  <div>
+                    <p className="capitalize">
+                      Max riders: <span>{meet?.maxRiders || "Unlimited"}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 ">
+                  <div className="w-5">
+                    <img src={shield} alt="moto" />
+                  </div>
+                  <div>
+                    <p className="capitalize">
+                      Ride style:{" "}
+                      <span className="text-white">{meet?.rideType}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+            <Card className="p-2">
+              {meet.gps.latitude && (
+                <div className="relative z-10">
+                  <MyMap
+                    long={meet.gps.longitude}
+                    lat={meet.gps.latitude}
+                    disableMarker
+                  />
+                </div>
+              )}
+            </Card>
+          </div>
+        </div>
       </div>
       <ConfirmationModal
         show={isConfirmationModalOpen}

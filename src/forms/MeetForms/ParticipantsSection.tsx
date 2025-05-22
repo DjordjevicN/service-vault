@@ -1,5 +1,5 @@
 import Avatar from "@/components/Avatar";
-import Input from "@/components/UI/Input";
+import Input from "@/components/myUiLibrary/Input";
 import { useState } from "react";
 
 const ParticipantsSection = () => {

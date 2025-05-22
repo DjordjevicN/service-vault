@@ -5,6 +5,8 @@ import { updateMeetForm } from "@/store/formsSlice";
 import Calendar from "react-calendar";
 import TimePicker from "react-time-picker";
 import { useState } from "react";
+import MyDatePicker from "@/components/myUiLibrary/MyDatePicker";
+import { Label } from "@/components/ui/label";
 
 const TimeAndDateSection = () => {
   const dispatch = useDispatch();
@@ -56,19 +58,21 @@ const TimeAndDateSection = () => {
         </p>
       </div>
       <div>
-        <div className="bg-gray80 rounded p-6">
-          <Calendar onChange={handleDateChange} value={selectedDate} />
-        </div>
-        <div className="flex items-center mt-4 bg-gray80 rounded p-6 gap-6">
-          <p className="text-gray55">Select the time</p>
-          <div>
-            <TimePicker
-              onChange={handleTimeChange}
-              value={selectedTime}
-              disableClock={true}
-              format="HH:mm"
-            />
-          </div>
+        <Label className="text-gray55" htmlFor="date">
+          Pick a date
+        </Label>
+        <MyDatePicker onChange={(date) => handleDateChange(date)} />
+
+        <div>
+          <Label className="mt-4" htmlFor="time">
+            Select the time
+          </Label>
+          <TimePicker
+            onChange={handleTimeChange}
+            value={selectedTime}
+            disableClock={true}
+            format="HH:mm"
+          />
         </div>
       </div>
     </div>

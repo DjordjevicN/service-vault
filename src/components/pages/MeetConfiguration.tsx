@@ -5,11 +5,11 @@ import RulesSection from "@/forms/MeetForms/RulesSection";
 import MediaSection from "@/forms/MeetForms/MediaSection";
 import { useEffect, useState } from "react";
 import MeetFormFinish from "@/forms/MeetForms/MeetFormFinish";
-import Button from "../UI/Button";
 import { useDispatch } from "react-redux";
 import { resetMeetForm, setEntireMeetForm } from "@/store/formsSlice";
 import { useParams } from "react-router-dom";
 import { useMeetDetails } from "@/hooks/useMeetQueries";
+import { Button } from "../ui/button";
 
 const MeetConfiguration = () => {
   const { meetId } = useParams();
@@ -52,11 +52,15 @@ const MeetConfiguration = () => {
 
       <div className="flex gap-4">
         {section === 0 && (
-          <Button variant="text" onClick={handleReset}>
+          <Button variant={"ghost"} onClick={handleReset}>
             Start new Meet
           </Button>
         )}
-        {section !== 0 && <Button onClick={handlePrevious}>Previous</Button>}
+        {section !== 0 && (
+          <Button variant={"ghost"} onClick={handlePrevious}>
+            Previous
+          </Button>
+        )}
         {section !== 5 && <Button onClick={handleNext}>Next</Button>}
       </div>
     </div>

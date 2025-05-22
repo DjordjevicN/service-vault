@@ -36,7 +36,7 @@ export const useOrganizer = (organizerId?: string) => {
   });
 };
 
-export const useUsersMeets = (meetIds: string[]) => {
+export const useUsersMeets = (meetIds: number[]) => {
   const dispatch = useDispatch();
   useQuery({
     queryKey: ["users meets", meetIds],

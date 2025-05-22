@@ -11,6 +11,8 @@ import { RootState } from "@/store";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
 import crown from "@/assets/crown-gold.svg";
 import { getDate } from "./utils/getDates";
+import { Card } from "./ui/card";
+import RMHoverCard from "./RMHoverCard";
 
 const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   const navigate = useNavigate();
@@ -23,7 +25,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   };
   if (!meet || !user) return null;
 
-  const handleNavigate = (id: string) => {
+  const handleNavigate = (id: number) => {
     navigate(`/meet/${id}`);
   };
 
@@ -32,8 +34,8 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   };
 
   return (
-    <div
-      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer relative border border-gray80 rounded-lg p-4 bg-gray80 hover:bg-gray70 transition duration-200"
+    <Card
+      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer relative rounded-lg p-4 transition duration-200"
       onClick={() => handleNavigate(meet.id)}
     >
       {isMyMeet() && (
@@ -42,17 +44,19 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
         </div>
       )}
       <div>
-        <img src={placeholder} alt="" />
+        <img src={placeholder} alt="meet image" />
       </div>
       <div className="flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <p className="text-gray55 uppercase text-sm">
+            <p className="text-white uppercase text-sm">
               {getDate(meet.startDate)}
             </p>
-            <p className="text-gray55 uppercase text-sm">{meet.startTime}</p>
+            <p className="text-white uppercase text-sm">{meet.startTime}</p>
           </div>
-          <p className="text-white">{meet.name}</p>
+          <p className="text-muted-foreground text-2xl capitalize">
+            {meet.name}
+          </p>
           <a
             onClick={(e) => e.stopPropagation()}
             target="_blank"
@@ -60,22 +64,20 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
             className="flex items-center gap-2 mt-2"
           >
             <img src={gps} alt="" />
-            <p className="text-gray55 text-sm">
+            <p className="text-white text-sm capitalize">
               {meet.address} {meet.city}, {meet.country}
             </p>
           </a>
         </div>
         <div className="flex justify-between">
-          <p className="text-sm text-gray55">
-            {meet.participants.length} attendees
+          <p className="text-sm text-gray50">
+            Attendees: {meet.participants.length}
           </p>
           <div className="flex gap-4 ">
-            <div
-              className="cursor-pointer"
-              onClick={() => console.log("share")}
-            >
+            <RMHoverCard copy={`http://localhost:5173/meet/${meet.id}`}>
               <img src={share} alt="share" />
-            </div>
+            </RMHoverCard>
+
             <div className="cursor-pointer" onClick={() => console.log("fav")}>
               {isUsersFavorite() ? (
                 <img src={favoriteOn} alt="favorite on" />
@@ -86,7 +88,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

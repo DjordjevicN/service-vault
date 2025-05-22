@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-const initialState = null;
+import { AuthUser } from "@supabase/supabase-js";
+const initialState: AuthUser | null = null;
 
 const authSlice = createSlice({
   name: "auth",

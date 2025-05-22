@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { updateMeetForm } from "@/store/formsSlice";
-import Button from "@/components/UI/Button";
+import Button from "@/components/myUiLibrary/Button";
 import getCroppedImg from "@/components/utils/cropImage";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";

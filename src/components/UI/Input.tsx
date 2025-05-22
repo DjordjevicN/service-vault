@@ -1,55 +1,21 @@
-import React from "react";
+import * as React from "react";
 
-type InputProps = {
-  value?: string | number;
-  onChange: (value: string | number) => void;
-  label?: string;
-  type?: string;
-  placeholder?: string | number;
-  wrapperClassName?: string;
-  inputClassName?: string;
-  description?: string;
-  errorMessage?: string;
-  required?: boolean;
-  disabled?: boolean;
-};
+import { cn } from "@/lib/utils";
 
-const Input: React.FC<InputProps> = ({
-  value = "",
-  onChange,
-  label,
-  type = "text",
-  placeholder = "placeholder",
-  wrapperClassName = "",
-  inputClassName = "",
-  description,
-  errorMessage,
-  required = false,
-  disabled = false,
-}) => {
+function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
-    <div
-      className={`flex flex-col mt-4 ${wrapperClassName} ${
-        disabled && "opacity-50"
-      }`}
-    >
-      {label && (
-        <label id={label} className="text-white capitalize font-bold mb-2">
-          {label}
-        </label>
+    <input
+      type={type}
+      data-slot="input"
+      className={cn(
+        "file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
+        "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive mb-4",
+        className
       )}
-      <input
-        disabled={disabled}
-        className={`border border-gray70 placeholder:text-gray55 text-white h-10 rounded-lg px-4 focus:outline-none bg-mainbg  ${inputClassName}`}
-        placeholder={type === "password" ? "********" : String(placeholder)}
-        type={type}
-        onChange={(e) => onChange(e.target.value)}
-        value={value}
-      />
-      {description && <p className="text-sm text-gray55 mt-2">{description}</p>}
-      {required && <p className="text-sm text-gray55 mt-2">{errorMessage}</p>}
-    </div>
+      {...props}
+    />
   );
-};
+}
 
-export default Input;
+export { Input };
