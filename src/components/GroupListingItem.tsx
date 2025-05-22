@@ -13,6 +13,7 @@ import crown from "@/assets/crown-gold.svg";
 import { getDate } from "./utils/getDates";
 import { Card } from "./ui/card";
 import RMHoverCard from "./RMHoverCard";
+import money from "@/assets/money.svg";
 
 const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   const navigate = useNavigate();
@@ -49,35 +50,44 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
       <div className="flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <p className="text-white uppercase text-sm">
+            <p className="uppercase text-sm text-muted-foreground">
               {getDate(meet.startDate)}
             </p>
-            <p className="text-white uppercase text-sm">{meet.startTime}</p>
+            <p className=" text-muted-foreground uppercase text-sm">
+              {meet.startTime}
+            </p>
           </div>
-          <p className="text-muted-foreground text-2xl capitalize">
-            {meet.name}
-          </p>
+          <p className="text-xl capitalize">{meet.name}</p>
           <a
             onClick={(e) => e.stopPropagation()}
             target="_blank"
             href={googleMapsPinLink(meet.gps.latitude, meet.gps.longitude)}
             className="flex items-center gap-2 mt-2"
           >
-            <img src={gps} alt="" />
+            {" "}
+            <div className="w-6">
+              <img src={gps} alt="" />
+            </div>
             <p className="text-white text-sm capitalize">
               {meet.address} {meet.city}, {meet.country}
             </p>
           </a>
+
+          <div className="flex items-center gap-2">
+            <div className="w-6">
+              <img src={money} alt="" />
+            </div>
+            <p className="text-sm">
+              Price: <span>{meet.price || "FREE"}</span>
+            </p>
+          </div>
         </div>
         <div className="flex justify-between">
           <p className="text-sm text-gray50">
             Attendees: {meet.participants.length}
           </p>
           <div className="flex gap-4 ">
-            <RMHoverCard copy={`http://localhost:5173/meet/${meet.id}`}>
-              <img src={share} alt="share" />
-            </RMHoverCard>
-
+            <img src={share} alt="share" />
             <div className="cursor-pointer" onClick={() => console.log("fav")}>
               {isUsersFavorite() ? (
                 <img src={favoriteOn} alt="favorite on" />
