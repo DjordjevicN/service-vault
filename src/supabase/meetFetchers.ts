@@ -34,7 +34,7 @@ export const getAllMeetsByUserId = async (id: string) => {
 };
 
 export const getAllMeetsByIds = async (
-  meetIds: string[],
+  meetIds: number[],
   dispatch: Dispatch
 ) => {
   const { data: meets, error } = await supabase

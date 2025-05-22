@@ -1,5 +1,5 @@
 export type USER_TYPES = {
-  id: string;
+  id: number;
   uuid: string;
   username: string;
   email: string;
@@ -9,10 +9,10 @@ export type USER_TYPES = {
   orgId?: string;
   role: "superadmin" | "admin" | "user";
   motorcycle?: string;
-  followers?: string[];
-  myMeets?: string[];
-  attendingMeets?: string[];
-  favoriteMeets?: string[];
+  followers?: number[];
+  myMeets?: number[];
+  attendingMeets?: number[];
+  favoriteMeets?: number[];
   myTrips?: string[];
   favoriteTrips?: string[];
   attendingTrips?: string[];

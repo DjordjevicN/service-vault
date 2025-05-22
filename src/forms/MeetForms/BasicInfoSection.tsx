@@ -1,35 +1,39 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
-import Input from "@/components/myUiLibrary/Input";
 import Select from "@/components/myUiLibrary/Select";
-import Textarea from "@/components/myUiLibrary/Textarea";
+
 import { updateMeetForm } from "@/store/formsSlice";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const BasicInfoSection = () => {
   const dispatch = useDispatch();
   const meetForm = useSelector((state: RootState) => state.meetForm);
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4">
+    <div className="grid grid-cols-[1fr_1fr] gap-4 p-6">
       <div>
         <h2 className="text-gradient text-2xl w-fit">Basic Information</h2>
         <p className="text-gray55 mt-6">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, ea?
-          Accusantium, deleniti dolorum? Officiis fugit dolores at placeat ab
-          nesciunt!
+          Add the key details about your ride. Give it a name, define the style
+          of the meet, set a rider limit if needed, and write a short
+          description to let others know what to expect.
         </p>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col ">
+        <Label htmlFor="meet-name">Meet name</Label>
         <Input
+          id="meet-name"
           type="text"
           placeholder="Meet name"
-          onChange={(value) => dispatch(updateMeetForm({ key: "name", value }))}
+          onChange={(e) =>
+            dispatch(updateMeetForm({ key: "name", value: e.target.value }))
+          }
           value={meetForm.name}
-          label="Name"
         />
-
+        <Label htmlFor="type">Ride Type</Label>
         <Select
-          label="Type of meet"
           options={[
             { label: "Show off", value: "show-off" },
             { label: "Casual", value: "casual" },
@@ -41,29 +45,34 @@ const BasicInfoSection = () => {
           }
           value={meetForm.rideType}
         />
-
+        <Label htmlFor="max-riders">Max Riders</Label>
         <Input
+          className="mb-2"
           type="number"
           placeholder="Number of riders"
-          label="Number of riders"
-          onChange={(value) =>
+          id="max-riders"
+          onChange={(e) =>
             dispatch(
               updateMeetForm({
                 key: "maxRiders",
-                value: value,
+                value: e.target.value,
               })
             )
           }
           value={meetForm.maxRiders}
-          description="If you set number of riders to 0, it will be unlimited"
         />
-
+        <p className="text-sm text-muted-foreground mb-4">
+          If you set number of riders to 0, it will be unlimited
+        </p>
+        <Label htmlFor="description">Description</Label>
         <Textarea
-          onChange={(value) =>
-            dispatch(updateMeetForm({ key: "description", value }))
+          id="description"
+          onChange={(e) =>
+            dispatch(
+              updateMeetForm({ key: "description", value: e.target.value })
+            )
           }
           value={meetForm.description}
-          label="Description"
           rows={5}
           placeholder="Describe the ride"
         />

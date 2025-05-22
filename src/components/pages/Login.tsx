@@ -11,6 +11,16 @@ import { RootState } from "@/store";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -54,13 +64,13 @@ const Login = () => {
         window.location.href = "/";
       }
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       alert(`Auth failed: ${error.message}`);
     },
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     mutate({ email, password });
   };
   const resendEmail = async () => {
@@ -73,47 +83,70 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <div className="border py-10 px-20 rounded-md">
-        <div className="flex justify-between mb-5">
-          <div
-            onClick={() => setFormType(true)}
-            className={`${
-              formType && "text-gradient"
-            } w-full p-2 flex justify-center items-center cursor-pointer`}
-          >
+      <Tabs defaultValue="login" className="w-[400px]">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger onClick={() => setFormType(true)} value="login">
             Login
-          </div>
-          <div
-            onClick={() => setFormType(false)}
-            className={`${
-              !formType && "text-gradient"
-            } w-full p-2 flex justify-center items-center cursor-pointer`}
-          >
+          </TabsTrigger>
+          <TabsTrigger onClick={() => setFormType(false)} value="register">
             Register
-          </div>
-        </div>
-        <DivideLine />
-        <form onSubmit={handleSubmit}>
-          <div className="flex  flex-col">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                placeholder="example@gmail.com"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-              <Label htmlFor="password">Password</Label>
-              <Input
-                placeholder="**********"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                type="password"
-              />
-            </div>
-
-            {!formType && (
-              <div>
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="login">
+          <Card>
+            <CardHeader>
+              <CardTitle>Login</CardTitle>
+              <CardDescription>
+                Enter your email and password to access your account.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  placeholder="example@gmail.com"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  placeholder="**********"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  type="password"
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button
+                onClick={(e) => handleSubmit(e)}
+                disabled={status === "pending"}
+              >
+                {status === "pending" && (
+                  <Loader2 className="mr-2 animate-spin" />
+                )}
+                Login
+              </Button>
+            </CardFooter>
+            <Button variant="ghost" className="mt-3" onClick={resendEmail}>
+              Re-send confirmation email
+            </Button>
+          </Card>
+        </TabsContent>
+        <TabsContent value="register">
+          <Card>
+            <CardHeader>
+              <CardTitle>Register</CardTitle>
+              <CardDescription>
+                Create a new account by filling out the form below. A
+                confirmation email will be sent.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
                 <Label htmlFor="username">Username</Label>
                 <Input
                   placeholder="Username"
@@ -121,22 +154,39 @@ const Login = () => {
                   value={username}
                 />
               </div>
-            )}
-          </div>
-
-          <Button
-            variant="outline"
-            disabled={status === "pending"}
-            type="submit"
-            className="w-full mt-3"
-          >
-            {formType ? "Login" : "Register"}
-          </Button>
-        </form>
-        <Button variant="ghost" className="mt-3" onClick={resendEmail}>
-          Re-send confirmation email
-        </Button>
-      </div>
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  placeholder="example@gmail.com"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  placeholder="**********"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  type="password"
+                />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button
+                onClick={(e) => handleSubmit(e)}
+                disabled={status === "pending"}
+              >
+                {status === "pending" && (
+                  <Loader2 className="mr-2 animate-spin" />
+                )}
+                Register
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

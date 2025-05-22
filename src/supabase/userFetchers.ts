@@ -1,6 +1,5 @@
+import { USER_TYPES } from "@/constants/userTypes";
 import { supabase } from "@/lib/supabase";
-import { storeUserMeets } from "@/store/meetSlice";
-import { storeUser } from "@/store/userSlice";
 
 export const registerUser = async (email: string, password: string) => {
   const { data, error } = await supabase.auth.signUp({ email, password });
@@ -29,12 +28,12 @@ export const updateUser = async (updates: object) => {
 };
 
 export const deleteUser = async () => {
-  const { error } = await supabase.rpc("delete_user"); // Use Postgres function
+  const { error } = await supabase.rpc("delete_user");
   if (error) throw error;
 };
 // create user
 type CreateUserPayload = {
-  id: string; // uuid from auth.user
+  id: number;
   username: string;
   email: string;
 };
@@ -49,7 +48,7 @@ export const createUser = async (userData: CreateUserPayload) => {
   return data;
 };
 // update user profile
-export const updateUserProfile = async (id: any, updates: object) => {
+export const updateUserProfile = async (id: number, updates: USER_TYPES) => {
   const { data, error } = await supabase
     .from("profiles")
     .update(updates)

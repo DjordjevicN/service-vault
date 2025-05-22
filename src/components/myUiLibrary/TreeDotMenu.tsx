@@ -8,7 +8,7 @@ const TreeDotMenu = ({
   options: { text: string; action: () => void; isDestructive?: boolean }[];
 }) => {
   const dotRef = useRef<HTMLDivElement | null>(null);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen((prev) => !prev);

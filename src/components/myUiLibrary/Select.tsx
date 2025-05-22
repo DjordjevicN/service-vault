@@ -25,16 +25,16 @@ const Select: React.FC<SelectProps> = ({
   selectClassName = "",
 }) => {
   return (
-    <div className={`flex flex-col mt-4 ${wrapperClassName}`}>
+    <div className={`flex flex-col mb-4 ${wrapperClassName}`}>
       {label && (
         <label className="text-white capitalize font-bold mb-2">{label}</label>
       )}
       <select
-        className={`border border-gray70 text-white h-10 rounded-lg px-4 bg-mainbg focus:outline-none ${selectClassName}`}
+        className={`border text-sm h-10 rounded-lg px-2 text-muted-foreground focus:outline-none ${selectClassName}`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
-        <option value="" disabled hidden>
+        <option disabled hidden>
           {placeholder}
         </option>
         {options.map((opt) => (

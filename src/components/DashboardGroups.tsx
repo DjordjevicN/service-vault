@@ -1,27 +1,30 @@
 import { USER_TYPES } from "@/constants/userTypes";
-import Button from "./myUiLibrary/Button";
-import { Link } from "react-router-dom";
+import { Card } from "./ui/card";
 
 const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
   if (!user) return null;
 
   return (
-    <div className="mt-6 bg-gray80 rounded p-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl text-white">Your groups</h2>
-        <p className="text-gray55 cursor-pointer">See all your groups</p>
-      </div>
-      <div className="mt-4">
-        {user?.orgsIFollow?.length === 0 && (
-          <p className="text-gray55">
-            You are not part of any groups yet. Join a group to see events.
+    <Card className="mt-4">
+      <div className="rounded px-6">
+        <div className="flex items-center justify-between">
+          <h2 className=" text-white">Your groups</h2>
+          <p className="text-gray55 text-sm cursor-pointer">
+            See all your groups
           </p>
-        )}
-        {/* {groups.map((group) => {
+        </div>
+        <div className="mt-4">
+          {!user?.orgsIFollow && (
+            <p className="text-sm text-muted-foreground">
+              You are not part of any groups yet. Join a group to see events.
+            </p>
+          )}
+          {/* {groups.map((group) => {
           return <DashboardGroupItem key={group.id} group={group} />;
         })} */}
+        </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

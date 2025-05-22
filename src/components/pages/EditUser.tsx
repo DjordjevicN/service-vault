@@ -1,5 +1,6 @@
 import UserProfileForm from "@/forms/UserProfileForm";
 import grom from "@/assets/grom.svg";
+import { Card } from "../ui/card";
 const tips = [
   "Ensure your profile data is complete and accurate.",
   "Username / Email: Used for identification and contact.",
@@ -16,8 +17,8 @@ const EditUser = () => {
       </h1>
       <div className="grid grid-cols-[2fr_1fr] gap-4 mt-16 items-start">
         <UserProfileForm />
-        <div>
-          <div className="bg-gray80 rounded p-6 w-full">
+        <Card className="px-6">
+          <div className="">
             <div className="flex items-center gap-2">
               <img src={grom} alt="icom" />
               <p className="capitalize font-bold text-white">tip</p>
@@ -26,7 +27,7 @@ const EditUser = () => {
               return <p className="text-gray55 mt-4">{tip}</p>;
             })}
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   );

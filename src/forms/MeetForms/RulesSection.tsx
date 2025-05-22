@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
-import Textarea from "@/components/myUiLibrary/Textarea";
 import { addRule, deleteRule, updateRule } from "@/store/formsSlice";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 const RulesSection = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const RulesSection = () => {
         <h2 className="text-white text-2xl">
           Let's set some <span className="text-gradient font-bold">Rules</span>
         </h2>
-        <p className="text-gray55 mt-6">
+        <p className="text-gray55 mt-6 mb-20">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam, ea?
           Accusantium, deleniti dolorum? Officiis fugit dolores at placeat ab
           nesciunt!
@@ -40,9 +41,8 @@ const RulesSection = () => {
         {rules.map((rule, i) => (
           <div key={i} className="relative">
             <Textarea
-              onChange={(value) => handleRuleChange(value as string, i)}
+              onChange={(e) => handleRuleChange(e.target.value as string, i)}
               value={rule}
-              label={`Rule #${i + 1}`}
               rows={4}
               placeholder="Describe the rule"
             />
@@ -57,12 +57,7 @@ const RulesSection = () => {
           </div>
         ))}
 
-        <button
-          onClick={handleAddRule}
-          className="div-gradient text-white px-4 py-2 rounded-md"
-        >
-          + Add Rule
-        </button>
+        <Button onClick={handleAddRule}>+ Add Rule</Button>
       </div>
     </div>
   );
