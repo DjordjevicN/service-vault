@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { updateMeetForm } from "@/store/formsSlice";
+import { updateMeetForm } from "@/store/meetFormSlice";
 
 import MyMap from "@/components/map/MyMap";
 import { Input } from "@/components/ui/input";

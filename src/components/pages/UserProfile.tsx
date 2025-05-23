@@ -32,7 +32,7 @@ const UserProfile = () => {
   }
   const formatted = formatToMonthYear(auth?.created_at || "");
   return (
-    <div className="px-6 mt-10">
+    <div className="mt-4">
       <Card className="px-6">
         <div className="flex gap-6 text-white">
           <Avatar size={100} />

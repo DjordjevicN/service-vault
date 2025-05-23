@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: MeetType | null = null;
 
 const meetSlice = createSlice({
-  name: "user",
+  name: "meet",
   initialState,
   reducers: {
     storeUserMeets: (state, action: PayloadAction<MeetType>) => {

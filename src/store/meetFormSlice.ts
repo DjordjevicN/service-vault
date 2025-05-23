@@ -12,12 +12,10 @@ const initialState: MeetType = {
   rideType: "",
   participants: [],
   maxRiders: 0,
-
   gps: {
     latitude: null,
     longitude: null,
   },
-
   address: "",
   city: "",
   country: "",

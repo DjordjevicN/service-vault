@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
-import { addRule, deleteRule, updateRule } from "@/store/formsSlice";
+import { addRule, deleteRule, updateRule } from "@/store/meetFormSlice";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";

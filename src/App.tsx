@@ -15,6 +15,9 @@ import OrganizationPage from "./components/pages/OrganizationPage";
 import EditUser from "./components/pages/EditUser";
 import PrivateRoute from "./PrivateRoute";
 import MeetConfiguration from "./components/pages/MeetConfiguration";
+import OrgsPage from "./components/pages/OrgsPage";
+import OrgDetails from "./components/pages/OrgDetails";
+import OrgConfiguration from "./components/pages/OrgConfiguration";
 
 const App = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -29,6 +32,8 @@ const App = () => {
             path="/"
             element={isAuthenticated ? <Dashboard /> : <HomePage />}
           />
+          <Route path="/orgs" element={<OrgsPage />} />
+          <Route path="/org/:id" element={<OrgDetails />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/meet/:id" element={<MeetDetails />} />
@@ -37,6 +42,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <Meets />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/org-config"
+            element={
+              <PrivateRoute>
+                <OrgConfiguration />
               </PrivateRoute>
             }
           />

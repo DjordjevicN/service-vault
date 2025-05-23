@@ -37,7 +37,7 @@ const TopBar = () => {
             <AvatarDropdown />
           ) : (
             <div>
-              <Link to="/login">Signup / Login</Link>
+              <Link to="/login">Sign up / Login</Link>
             </div>
           )}
         </div>

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { updateMeetForm } from "@/store/formsSlice";
+import { updateMeetForm } from "@/store/meetFormSlice";
 import TimePicker from "react-time-picker";
 import { useState } from "react";
 import MyDatePicker from "@/components/myUiLibrary/MyDatePicker";
