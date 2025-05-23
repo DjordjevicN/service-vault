@@ -21,6 +21,12 @@ export type USER_TYPES = {
   city?: string;
   country?: string;
   bio?: string;
+  instagram?: string;
+  facebook?: string;
+  twitter?: string;
+  tiktok?: string;
+  youtube?: string;
+  customLink?: string;
 };
 export type NEW_USER_TYPES = {
   username?: string;

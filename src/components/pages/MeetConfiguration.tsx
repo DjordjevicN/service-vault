@@ -6,23 +6,21 @@ import MediaSection from "@/forms/MeetForms/MediaSection";
 import { useEffect, useState } from "react";
 import MeetFormFinish from "@/forms/MeetForms/MeetFormFinish";
 import { useDispatch } from "react-redux";
-import { resetMeetForm, setEntireMeetForm } from "@/store/formsSlice";
+import { resetMeetForm, setEntireMeetForm } from "@/store/meetFormSlice";
 import { useParams } from "react-router-dom";
 import { useMeetDetails } from "@/hooks/useMeetQueries";
-import { Button } from "../ui/button";
 import StepController from "../StepController";
 
 const MeetConfiguration = () => {
   const { meetId } = useParams();
-  const { data: meet, isLoading } = useMeetDetails(meetId);
-  console.log(meet);
-  console.log(isLoading);
+  const { data: meet } = useMeetDetails(meetId);
   const dispatch = useDispatch();
   const [section, setSection] = useState(0);
   useEffect(() => {
     if (!meetId) return;
     dispatch(setEntireMeetForm(meet));
   }, [meetId, dispatch, meet]);
+
   const handleNext = () => {
     if (section === 5) {
       return;

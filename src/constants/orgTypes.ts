@@ -1,34 +1,30 @@
-export type OrgMember = {
-  userId: string;
-  username: string;
-  rank: "president" | "vice president" | "member"; // Extend if needed
-};
-
-export type Location = {
-  latitude: number;
-  longitude: number;
-};
-
-export type Organization = {
-  id: string;
-  email: string;
-  password: string;
+export type IOrganization = {
+  id: number;
+  created_at: string;
   name: string;
+  admin: number;
+  email: string;
   description: string;
-  rules: string[];
   image: string;
-  city: string;
   country: string;
-  createdAt: number; // or Date
-  updatedAt: number; // or Date
-  location: Location;
-  members: OrgMember[];
-  followers: string[];
-  myMeets: string[];
-  attendingMeets: string[];
-  favoriteMeets: string[];
-  myTrips: string[];
-  favoriteTrips: string[];
-  attendingTrips: string[];
-  orgsIFollow: string[];
+  city: string;
+  gpsLocation: {
+    lat: number;
+    lng: number;
+  };
+  members: {
+    userName: string;
+    userId: number;
+    status: number;
+  }[];
+  followers: number[];
+  myMeets: number[];
+  myTrips: number[];
+  //
+  instagram?: string;
+  facebook?: string;
+  twitter?: string;
+  tiktok?: string;
+  youtube?: string;
+  customLink?: string;
 };

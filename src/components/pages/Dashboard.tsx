@@ -43,14 +43,19 @@ const Dashboard = () => {
     <div className="mt-4">
       <Card className="p-6 mb-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-2xl font-bold">
             {`Welcome, ${user?.username || auth?.email}`}
           </h1>
-          <Link to="/meet-config">
-            <Button>Create a Meet</Button>
-          </Link>
+          <div className="flex gap-2">
+            <Link to="/org-config">
+              <Button>Create a Organization</Button>
+            </Link>
+            <Link to="/meet-config">
+              <Button>Create a Meet</Button>
+            </Link>
+          </div>
         </div>
-        <p className="text-xl">Events from your groups</p>
+        <p className="">Events from your Groups, Country</p>
       </Card>
       <div>
         <div className="grid grid-cols-[1fr_2fr] gap-4">

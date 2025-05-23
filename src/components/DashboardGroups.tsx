@@ -1,5 +1,6 @@
 import { USER_TYPES } from "@/constants/userTypes";
 import { Card } from "./ui/card";
+import { Link } from "react-router-dom";
 
 const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
   if (!user) return null;
@@ -9,9 +10,9 @@ const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
       <div className="rounded px-6">
         <div className="flex items-center justify-between">
           <h2 className=" text-white">Your groups</h2>
-          <p className="text-gray55 text-sm cursor-pointer">
-            See all your groups
-          </p>
+          <Link to="/groups" className="text-gray55 text-sm cursor-pointer">
+            See all groups
+          </Link>
         </div>
         <div className="mt-4">
           {!user?.orgsIFollow && (

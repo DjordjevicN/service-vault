@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Select from "@/components/myUiLibrary/Select";
-import { updateMeetForm } from "@/store/formsSlice";
+import { updateMeetForm } from "@/store/meetFormSlice";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";

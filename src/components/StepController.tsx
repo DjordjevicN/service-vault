@@ -15,7 +15,7 @@ const StepController = ({
     <div className="flex gap-4 p-6">
       {section === 0 && (
         <Button variant={"ghost"} onClick={handleReset}>
-          Start new Meet
+          Reset
         </Button>
       )}
       {section !== 0 && (

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { updateMeetForm } from "@/store/formsSlice";
+import { updateMeetForm } from "@/store/meetFormSlice";
 import getCroppedImg from "@/components/utils/cropImage";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";

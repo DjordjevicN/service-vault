@@ -1,9 +1,5 @@
 import placeholder from "@/assets/placeholder.png";
-import favoriteOn from "@/assets/favoriteOn.svg";
-import favoriteOff from "@/assets/favoriteOff.svg";
-import share from "@/assets/share.svg";
 import { MeetType } from "@/constants/meetTypes";
-import gps from "@/assets/gps.svg";
 import { useNavigate } from "react-router-dom";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useSelector } from "react-redux";
@@ -12,8 +8,8 @@ import { googleMapsPinLink } from "@/constants/helperFunctions";
 import crown from "@/assets/crown-gold.svg";
 import { getDate } from "./utils/getDates";
 import { Card } from "./ui/card";
-import RMHoverCard from "./RMHoverCard";
-import money from "@/assets/money.svg";
+import IconMoney from "./icons/IconMoney";
+import IconGps from "./icons/IconGps";
 
 const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   const navigate = useNavigate();
@@ -28,10 +24,6 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
 
   const handleNavigate = (id: number) => {
     navigate(`/meet/${id}`);
-  };
-
-  const isUsersFavorite = () => {
-    return user.favoriteMeets?.includes(meet.id);
   };
 
   return (
@@ -64,9 +56,8 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
             href={googleMapsPinLink(meet.gps.latitude, meet.gps.longitude)}
             className="flex items-center gap-2 mt-2"
           >
-            {" "}
             <div className="w-6">
-              <img src={gps} alt="" />
+              <IconGps className="text-muted-foreground" />
             </div>
             <p className="text-white text-sm capitalize">
               {meet.address} {meet.city}, {meet.country}
@@ -74,28 +65,18 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
           </a>
 
           <div className="flex items-center gap-2">
-            <div className="w-6">
-              <img src={money} alt="" />
+            <div className="w-6 mt-1">
+              <IconMoney className="text-muted-foreground mx-auto" />
             </div>
-            <p className="text-sm">
-              Price: <span>{meet.price || "FREE"}</span>
+            <p className="text-sm text-muted-foreground">
+              Price: <span className="text-white">{meet.price || "FREE"}</span>
             </p>
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <p className="text-sm text-gray50">
             Attendees: {meet.participants.length}
           </p>
-          <div className="flex gap-4 ">
-            <img src={share} alt="share" />
-            <div className="cursor-pointer" onClick={() => console.log("fav")}>
-              {isUsersFavorite() ? (
-                <img src={favoriteOn} alt="favorite on" />
-              ) : (
-                <img src={favoriteOff} alt="favorite off" />
-              )}
-            </div>
-          </div>
         </div>
       </div>
     </Card>

@@ -5,8 +5,10 @@ import { persistReducer, persistStore } from "redux-persist";
 import userReducer from "./userSlice";
 import appReducer from "./appSlice";
 import meetReducer from "./meetSlice";
-import meetFormReducer from "./formsSlice";
+import meetFormReducer from "./meetFormSlice";
 import authReducer from "./authSlice";
+import orgReducer from "./orgSlice";
+import orgFormReducer from "./orgFormSlice";
 
 const persistConfig = {
   key: "root",
@@ -20,6 +22,8 @@ const rootReducer = combineReducers({
   user: userReducer,
   meets: meetReducer,
   meetForm: meetFormReducer,
+  organization: orgReducer,
+  organizationForm: orgFormReducer,
   app: appReducer,
 });
 
