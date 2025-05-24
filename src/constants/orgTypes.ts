@@ -1,19 +1,20 @@
 export type IOrganization = {
-  id: number;
+  id?: number;
   created_at: string;
+  address: string;
   name: string;
-  admin: number;
+  admin: number | null;
   email: string;
   description: string;
   image: string;
   country: string;
   city: string;
-  gpsLocation: {
-    lat: number;
-    lng: number;
+  gps: {
+    latitude: number;
+    longitude: number;
   };
   members: {
-    userName: string;
+    username: string;
     userId: number;
     status: number;
   }[];

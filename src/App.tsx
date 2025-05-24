@@ -54,6 +54,14 @@ const App = () => {
             }
           />
           <Route
+            path="/org-config/:orgId"
+            element={
+              <PrivateRoute>
+                <OrgConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/meet-config"
             element={
               <PrivateRoute>

@@ -9,21 +9,7 @@ import { storeUserMeets } from "@/store/meetSlice";
 import { MeetType } from "@/constants/meetTypes";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-const TextRow = ({
-  label,
-  details,
-}: {
-  label: string;
-  details: string | number;
-}) => {
-  return (
-    <div className="text-[18px]">
-      <p className="text-white font-bold">
-        {label}: <span className="text-gray55 font-normal">{details}</span>
-      </p>
-    </div>
-  );
-};
+import TextRow from "@/components/TextRow";
 const RuleRow = ({
   ruleNumber,
   rule,

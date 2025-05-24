@@ -1,44 +1,48 @@
 import { IOrganization } from "@/constants/orgTypes";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: IOrganization = {
-  id: 1,
+const initialState: IOrganization | null = {
   created_at: new Date().toISOString(),
-  name: "Nikola Riders Club",
-  admin: 1,
-  email: "nikola@example.com",
-  description: "A motorcycle club for adventurous riders.",
-  image: "https://example.com/images/club.jpg",
-  country: "Serbia",
-  city: "Belgrade",
-  gpsLocation: {
-    lat: 44.7866,
-    lng: 20.4489,
+  name: "",
+  address: "",
+  admin: null,
+  email: "",
+  description: "",
+  image: "",
+  country: "",
+  city: "",
+  gps: {
+    latitude: 0,
+    longitude: 0,
   },
-  members: [
-    {
-      userName: "Nikola",
-      userId: 11,
-      status: 1,
-    },
-    {
-      userName: "Milos",
-      userId: 12,
-      status: 0,
-    },
-  ],
-  followers: [21, 34, 55],
-  myMeets: [101, 102],
-  myTrips: [201, 202],
+  members: [],
+  followers: [],
+  myMeets: [],
+  myTrips: [],
 };
+
 const orgFormSlice = createSlice({
-  name: "meetForm",
+  name: "orgForm",
   initialState,
   reducers: {
-    resetMeetForm: () => initialState,
+    updateOrgForm: (
+      state,
+      action: PayloadAction<{ key: keyof IOrganization; value: any }>
+    ) => {
+      console.log("updateOrgForm", action.payload);
+
+      const { key, value } = action.payload;
+      (state[key] as any) = value;
+    },
+
+    resetOrgForm: () => initialState,
+    setEntireOrgForm: (_state, action: PayloadAction<IOrganization>) => {
+      return action.payload;
+    },
   },
 });
 
-export const { resetMeetForm } = orgFormSlice.actions;
+export const { resetOrgForm, updateOrgForm, setEntireOrgForm } =
+  orgFormSlice.actions;
 
 export default orgFormSlice.reducer;

@@ -88,3 +88,12 @@ export const getAllUsersByIds = async (userIds: string[]) => {
 
   return users;
 };
+export const searchUsersByEmailOrUsername = async (query: string) => {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .or(`email.ilike.%${query}%,username.ilike.%${query}%`);
+
+  if (error) throw error;
+  return data;
+};
