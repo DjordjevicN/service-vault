@@ -1,3 +1,9 @@
+export type IMember = {
+  username: string;
+  userId: number;
+  status: number;
+};
+
 export type IOrganization = {
   id?: number;
   created_at: string;
@@ -13,11 +19,7 @@ export type IOrganization = {
     latitude: number;
     longitude: number;
   };
-  members: {
-    username: string;
-    userId: number;
-    status: number;
-  }[];
+  members: IMember[];
   followers: number[];
   myMeets: number[];
   myTrips: number[];

@@ -18,11 +18,11 @@ export const getAllOrgs = async (dispatch: Dispatch) => {
   return orgs;
 };
 
-export const getAllOrgByUserId = async (id: string) => {
+export const getAllOrgByUserId = async (id: number) => {
   const { data: orgs, error } = await supabase
     .from("organization")
     .select("*")
-    .in("ownerId", [id]);
+    .in("admin", [id]);
   if (error) {
     console.error("Error fetching organizations:", error);
     return [];
@@ -155,4 +155,22 @@ export const deleteOrg = async (id: string) => {
   }
 
   return { success: true };
+};
+export const getAllOrganizationByMemberId = async (memberId: number) => {
+  console.log("Fetching organizations for member id:", memberId);
+
+  const { data: orgs, error } = await supabase
+    .from("organization")
+    .select("*")
+    .contains("members", { userId: memberId });
+  if (error) {
+    console.error("Error fetching organizations by member id:", error);
+    return [];
+  }
+  if (!orgs) {
+    console.error("No organizations found for this member");
+    return [];
+  }
+
+  return orgs;
 };

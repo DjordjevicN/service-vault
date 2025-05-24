@@ -1,16 +1,16 @@
-import React from "react";
-
 const TextRow = ({
   label,
   details,
+  className = "",
 }: {
   label: string;
   details: string | number;
+  className?: string;
 }) => {
   return (
-    <div className="text-[18px]">
+    <div className={`${className}`}>
       <p className="text-white font-bold">
-        {label}: <span className="text-gray55 font-normal">{details}</span>
+        {label}: <span className="text-gray55">{details}</span>
       </p>
     </div>
   );
