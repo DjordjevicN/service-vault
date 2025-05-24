@@ -1,3 +1,4 @@
+import { ORG_MEMBER_STATUS } from "@/constants/orgMemberStatus";
 import { Button } from "./ui/button";
 
 const OrgMemberConfigCard = ({
@@ -17,9 +18,10 @@ const OrgMemberConfigCard = ({
         onChange={(e) => onChangeStatus(member.userId, Number(e.target.value))}
         className="border rounded-md px-4 py-2 text-sm bg-background"
       >
-        <option value={0}>Member</option>
-        <option value={1}>Admin</option>
-        <option value={2}>Pending</option>
+        <option value={ORG_MEMBER_STATUS.MEMBER}>Member</option>
+        <option value={ORG_MEMBER_STATUS.ADMIN}>Admin</option>
+        <option value={ORG_MEMBER_STATUS.MODERATOR}>Moderator</option>
+        <option value={ORG_MEMBER_STATUS.ORG_PRESIDENT}>President</option>
       </select>
 
       <Button variant="outline" onClick={() => onRemove(member.userId)}>

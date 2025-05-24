@@ -1,10 +1,10 @@
-import { USER_TYPES } from "@/constants/userTypes";
 import { Card } from "./ui/card";
 import { Link } from "react-router-dom";
+import { IOrganization } from "@/constants/orgTypes";
+import DashboardGroupItem from "./DashboardGroupItem";
 
-const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
-  if (!user) return null;
-
+const DashboardGroups = ({ orgs }: { orgs: IOrganization[] | null }) => {
+  const hasGroups = orgs && orgs.length > 0;
   return (
     <Card className="mt-4">
       <div className="rounded px-6">
@@ -15,14 +15,15 @@ const DashboardGroups = ({ user }: { user: USER_TYPES | null }) => {
           </Link>
         </div>
         <div className="mt-4">
-          {!user?.orgsIFollow && (
+          {!hasGroups && (
             <p className="text-sm text-muted-foreground">
               You are not part of any groups yet. Join a group to see events.
             </p>
           )}
-          {/* {groups.map((group) => {
-          return <DashboardGroupItem key={group.id} group={group} />;
-        })} */}
+          {hasGroups &&
+            orgs.map((group) => {
+              return <DashboardGroupItem key={group.id} group={group} />;
+            })}
         </div>
       </div>
     </Card>

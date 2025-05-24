@@ -10,6 +10,7 @@ import { getAllMeetsByUserId } from "@/supabase/meetFetchers";
 import { useQuery } from "@tanstack/react-query";
 import { Card } from "../ui/card";
 import { AuthUser } from "@supabase/supabase-js";
+import { Button } from "../ui/button";
 
 const UserProfile = () => {
   const user = useSelector(
@@ -48,9 +49,18 @@ const UserProfile = () => {
               <p>Joined on {formatted}</p>
             </div>
           </div>
-          <Link to={"/edit-profile"} className="text-gradient text-sm ml-auto">
-            Edit profile
-          </Link>
+
+          <div className="flex flex-col text-right gap-2 ml-auto">
+            <Link to="/edit-profile" className="text-gradient text-sm ml-auto">
+              <Button>Edit profile</Button>
+            </Link>
+            <Link to="/meet-config">
+              <Button>Create a Meet</Button>
+            </Link>
+            <Link to="/org-config">
+              <Button>Create a Organization</Button>
+            </Link>
+          </div>
         </div>
       </Card>
       <div className="grid grid-cols-[1fr_2fr] gap-4 mt-4">

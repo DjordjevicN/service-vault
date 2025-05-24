@@ -4,7 +4,6 @@ import DashboardGroups from "../DashboardGroups";
 import DashboardListing from "../DashboardListing";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { Link } from "react-router-dom";
 import { USER_TYPES } from "@/constants/userTypes";
 import LoadingModal from "../LoadingModal";
 import { useLoggedUser, useMeetIdsFromUser } from "@/hooks/useUser";
@@ -12,7 +11,11 @@ import { useMeetsFromMyCountry, useUsersMeets } from "@/hooks/useMeetQueries";
 import { Calendar } from "../ui/calendar";
 import { AuthUser } from "@supabase/supabase-js";
 import { Card } from "../ui/card";
-import { Button } from "../ui/button";
+import { useQuery } from "@tanstack/react-query";
+import {
+  getAllOrganizationByMemberId,
+  getAllOrgByUserId,
+} from "@/supabase/orgFetchers";
 
 const Dashboard = () => {
   const [value, onChange] = useState<Date | undefined>(new Date());
@@ -20,6 +23,20 @@ const Dashboard = () => {
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
   );
+
+  const { data: myOrganization } = useQuery({
+    queryKey: ["myOrganization", user?.id],
+    queryFn: () => getAllOrgByUserId(user?.id || 0),
+    enabled: !!user?.id,
+  });
+
+  const { data: orgsIAmMember } = useQuery({
+    queryKey: ["orgsIAmMember", user?.id],
+    queryFn: () => getAllOrganizationByMemberId((user?.id as number) || 0),
+    enabled: !!user?.id,
+  });
+
+  console.log("orgsIAmMember", orgsIAmMember);
 
   useLoggedUser(auth);
   const meetIds = useMeetIdsFromUser(user);
@@ -46,16 +63,8 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold">
             {`Welcome, ${user?.username || auth?.email}`}
           </h1>
-          <div className="flex gap-2">
-            <Link to="/org-config">
-              <Button>Create a Organization</Button>
-            </Link>
-            <Link to="/meet-config">
-              <Button>Create a Meet</Button>
-            </Link>
-          </div>
         </div>
-        <p className="">Events from your Groups, Country</p>
+        <p>Events from your Groups, Country</p>
       </Card>
       <div>
         <div className="grid grid-cols-[1fr_2fr] gap-4">
@@ -68,7 +77,7 @@ const Dashboard = () => {
                 className="rounded-md mx-auto"
               />
             </Card>
-            <DashboardGroups user={user} />
+            <DashboardGroups orgs={myOrganization ?? null} />
           </div>
           <div>
             <DashboardListing meets={allMeets()} />
