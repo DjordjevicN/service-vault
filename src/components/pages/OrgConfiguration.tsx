@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchOrgById } from "@/supabase/orgFetchers";
 import BasicOrgInformation from "@/forms/orgForms/BasicOrgInformation";
 import LocationOrgInformation from "@/forms/orgForms/LocationOrgInformation";
-import OrgMembers from "@/forms/orgForms/OrgMembers";
 import OrgSocials from "@/forms/orgForms/OrgSocials";
 import { resetOrgForm, setEntireOrgForm } from "@/store/orgFormSlice";
 import { useParams } from "react-router-dom";
@@ -56,8 +55,7 @@ const OrgConfiguration = () => {
         {section === 1 && <LocationOrgInformation />}
         {section === 2 && <OrgSocials />}
         {section === 3 && <OrgMedia />}
-        {section === 4 && <OrgMembers />}
-        {section === 5 && <OrgFormFinish isUpdate={!!orgId} />}
+        {section === 4 && <OrgFormFinish isUpdate={!!orgId} />}
       </div>
       <StepController
         section={section}

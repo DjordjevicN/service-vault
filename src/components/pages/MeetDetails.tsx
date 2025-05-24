@@ -104,9 +104,9 @@ const MeetDetails = () => {
   };
   return (
     <>
-      <div className="p-6">
-        <Card className="px-6">
-          <div className="flex  justify-between items-baseline">
+      <div className="mt-4">
+        <Card>
+          <div className="flex justify-between items-baseline">
             <h1 className="text-2xl font-bold">{meet.name}</h1>
             {auth && !permissionToRemoveMeet(auth, meet) && (
               <Button

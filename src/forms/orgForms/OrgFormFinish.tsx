@@ -1,21 +1,22 @@
 import TextRow from "@/components/TextRow";
 import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
-import { IMember, IOrganization } from "@/constants/orgTypes";
+import { Card } from "@/components/ui/card";
+import { IOrganization } from "@/constants/orgTypes";
 import { RootState } from "@/store";
 import { createOrg, updateOrg } from "@/supabase/orgFetchers";
 import { useMutation } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import placeholder from "@/assets/placeholder.png";
 import MyMap from "@/components/map/MyMap";
-import { ORG_MEMBER_STATUS_LABELS } from "@/constants/orgMemberStatus";
+import { USER_TYPES } from "@/constants/userTypes";
 
 const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const orgForm = useSelector((state: RootState) => state.organizationForm);
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector(
+    (state: RootState) => state.user
+  ) as USER_TYPES | null;
 
   const { mutate: createOrgMutation } = useMutation({
     mutationFn: (org: IOrganization) => createOrg(org),
@@ -33,14 +34,13 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
   });
   const { mutate: updateOrgConfiguration } = useMutation({
     mutationFn: (updatedOrg: IOrganization) =>
-      updateOrg(orgForm.id, updatedOrg),
+      updateOrg(orgForm.id!, updatedOrg),
     onSuccess: (data) => {
       console.log("Org updated successfully", data);
       if (!data) {
         console.error("No data returned from createOrg");
         return;
       }
-
       navigate(`/org/${orgForm.id}`);
     },
     onError: (error) => {
@@ -56,7 +56,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
 
     const newOrg = {
       ...orgForm,
-      admin: Number(user.id),
+      admin: Number(user.id!),
     };
     createOrgMutation(newOrg);
   };
@@ -77,7 +77,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
           <img src={orgForm.image || placeholder} alt="Org banner" />
           <div>
             <TextRow label="Organization Name" details={orgForm.name} />
-            <TextRow label="Admin" details={user?.username} />
+            <TextRow label="Admin" details={user?.username ?? ""} />
           </div>
           <div>
             <p className="font-bold">Description:</p>
@@ -107,36 +107,12 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
               label="City"
               details={orgForm.city}
             />
-          </div>
-        </Card>
-        <Card>
-          <div>
             <TextRow label="Email" details={orgForm.email} />
             <TextRow label="Website" details={orgForm?.customLink || ""} />
             <TextRow label="Instagram" details={orgForm?.instagram || ""} />
             <TextRow label="Facebook" details={orgForm?.facebook || ""} />
             <TextRow label="Twitter" details={orgForm?.twitter || ""} />
             <TextRow label="YouTube" details={orgForm?.youtube || ""} />
-          </div>
-        </Card>
-        <Card>
-          <CardTitle>Members</CardTitle>
-          <div>
-            {orgForm.members &&
-              orgForm.members.length > 0 &&
-              orgForm.members.map((member: IMember) => {
-                return (
-                  <div
-                    key={member.userId}
-                    className="flex gap-3 mb-1 items-center bg-accent p-2 rounded"
-                  >
-                    <p className="w-28 overflow-hidden truncate">
-                      {member.username}
-                    </p>
-                    <p>{ORG_MEMBER_STATUS_LABELS[member.status]}</p>
-                  </div>
-                );
-              })}
           </div>
         </Card>
       </div>
