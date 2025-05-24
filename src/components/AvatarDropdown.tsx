@@ -9,6 +9,7 @@ import { removeAuth } from "@/store/authSlice";
 import MyDropdownMenu from "./myUiLibrary/MyDropdownMenu";
 
 const AvatarDropdown = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
@@ -17,8 +18,8 @@ const AvatarDropdown = () => {
   const handleLogout = () => {
     dispatch(removeAuth());
     dispatch(logoutUser(null));
+    navigate("/");
   };
-  const navigate = useNavigate();
 
   const handleProfile = () => {
     if (user) {

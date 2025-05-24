@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { storeOrg } from "@/store/orgSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 
-export const getAllOrgs = async (dispatch: Dispatch) => {
+export const getAllOrgs = async () => {
   const { data: orgs, error } = await supabase.from("organization").select("*");
   if (error) {
     console.error("Error fetching organization:", error);
@@ -14,7 +14,7 @@ export const getAllOrgs = async (dispatch: Dispatch) => {
     console.error("No organizations found");
     return [];
   }
-  dispatch(storeOrg(orgs));
+
   return orgs;
 };
 
@@ -66,7 +66,7 @@ export const createOrg = async (org: IOrganization) => {
   return data;
 };
 // get organization by id
-export const fetchOrgById = async (id: string) => {
+export const fetchOrgById = async (id: number, dispatch: Dispatch) => {
   const { data, error } = await supabase
     .from("organization")
     .select("*")
@@ -76,7 +76,7 @@ export const fetchOrgById = async (id: string) => {
     console.error("Error fetching organization by id:", error);
     return null;
   }
-
+  dispatch(storeOrg(data));
   return data;
 };
 export const getOrgsByTheCountry = async (country: string) => {
@@ -173,4 +173,34 @@ export const getAllOrganizationByMemberId = async (memberId: number) => {
   }
 
   return orgs;
+};
+export const getOrgMembers = async (orgId: number) => {
+  const { data: members, error } = await supabase
+    .from("members")
+    .select("*")
+    .eq("orgId", orgId);
+  if (error) {
+    console.error("Error fetching organization members:", error);
+    return [];
+  }
+  if (!members) {
+    console.error("No members found for this organization");
+    return [];
+  }
+
+  return members;
+};
+export const updateMembersStatus = async (memberId: number, status: number) => {
+  const { data, error } = await supabase
+    .from("members")
+    .update({ status })
+    .eq("id", memberId)
+    .select();
+
+  if (error) {
+    console.error("Error updating member status:", error);
+    return null;
+  }
+
+  return data;
 };
