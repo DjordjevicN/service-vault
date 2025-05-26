@@ -106,35 +106,39 @@ const MeetDetails = () => {
     <>
       <div className="mt-4">
         <Card>
-          <div className="flex justify-between items-baseline">
-            <h1 className="text-2xl font-bold">{meet.name}</h1>
-            {auth && !permissionToRemoveMeet(auth, meet) && (
-              <Button
-                onClick={handleAttend}
-                disabled={isMaxRidersReached || isUserAttending}
-              >
-                {isMaxRidersReached
-                  ? "Full"
-                  : isUserAttending
-                  ? "Attending"
-                  : "Attend"}
-              </Button>
-            )}
-            {auth && permissionToRemoveMeet(auth, meet) && (
-              <MyDropdownMenu
-                trigger="Admin Actions"
-                options={[
-                  { name: "Edit Meet", action: handleEditMeet },
-                  {
-                    name: "Delete Meet",
-                    action: () => handleDeleteMeet(meet.id),
-                  },
-                ]}
-              />
-            )}
+          <div className="flex gap-6">
+            <img src={meet.image} alt={meet.name} className="max-w-[200px]" />
+            <div className="flex flex-col w-full">
+              <div className="flex justify-between items-baseline">
+                <h1 className="text-2xl font-bold mb-5">{meet.name}</h1>
+                {auth && !permissionToRemoveMeet(auth, meet) && (
+                  <Button
+                    onClick={handleAttend}
+                    disabled={isMaxRidersReached || isUserAttending}
+                  >
+                    {isMaxRidersReached
+                      ? "Full"
+                      : isUserAttending
+                      ? "Attending"
+                      : "Attend"}
+                  </Button>
+                )}
+                {auth && permissionToRemoveMeet(auth, meet) && (
+                  <MyDropdownMenu
+                    trigger="Admin Actions"
+                    options={[
+                      { name: "Edit Meet", action: handleEditMeet },
+                      {
+                        name: "Delete Meet",
+                        action: () => handleDeleteMeet(meet.id),
+                      },
+                    ]}
+                  />
+                )}
+              </div>
+              <HostedByCard organizedBy={organizer} />
+            </div>
           </div>
-
-          <HostedByCard organizedBy={organizer} />
         </Card>
         <div className="grid grid-cols-[2fr_1fr] gap-4 mt-4">
           <div>

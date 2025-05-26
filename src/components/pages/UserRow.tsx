@@ -54,7 +54,7 @@ const UserRow = ({
     },
   });
 
-  const removeUser = (id: string) => {
+  const removeUser = (id: number) => {
     if (id === user.id) {
       removeUserFromMeet({ user, meet });
     }
@@ -83,7 +83,7 @@ const UserRow = ({
         </div>
         <div>
           <p className="text-gray55 text-sm">
-            {user.motorcycle !== "" ? user.motorcycle : "/"}
+            {user.currentMotorcycle !== "" ? user.currentMotorcycle : "/"}
           </p>
         </div>
         <div className="ml-auto flex items-center w-[100px]">

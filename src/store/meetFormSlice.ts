@@ -22,6 +22,8 @@ const initialState: MeetType = {
   organizerId: "",
   starRating: 0,
   image: "",
+  price: 0,
+  onSale: 0,
 };
 
 // Slice

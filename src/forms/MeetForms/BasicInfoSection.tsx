@@ -2,10 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import Select from "@/components/myUiLibrary/Select";
 import { updateMeetForm } from "@/store/meetFormSlice";
-import { Label } from "@/components/ui/label";
+
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 
 const BasicInfoSection = () => {
   const dispatch = useDispatch();
@@ -63,6 +64,19 @@ const BasicInfoSection = () => {
           />
           <p className="text-sm text-muted-foreground mb-4">
             If you set number of riders to 0, it will be unlimited
+          </p>{" "}
+          <Label htmlFor="price">Price</Label>
+          <Input
+            id="price"
+            type="number"
+            placeholder="Price in $"
+            onChange={(e) =>
+              dispatch(updateMeetForm({ key: "price", value: e.target.value }))
+            }
+            value={meetForm.price || 0}
+          />
+          <p className="text-sm text-muted-foreground mb-4">
+            If you set price to 0, it will be free
           </p>
           <Label htmlFor="description">Description</Label>
           <Textarea
