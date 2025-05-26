@@ -27,12 +27,11 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [formType, setFormType] = useState(true);
   const auth = useSelector((state: RootState) => state.auth);
-
   if (auth) {
     window.location.href = "/";
   }
   const { mutate: createNewUser } = useMutation({
-    mutationFn: (newUser: { username: string; email: string; uuid: string }) =>
+    mutationFn: (newUser: { username: string; email: string; id: string }) =>
       createUser(newUser),
     onSuccess: (data) => {
       dispatch(storeUser(data));
@@ -57,7 +56,7 @@ const Login = () => {
         createNewUser({
           username,
           email,
-          uuid: data?.user?.id,
+          uuid: data.user.id,
         });
       } else {
         window.location.href = "/";

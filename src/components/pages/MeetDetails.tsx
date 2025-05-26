@@ -125,7 +125,10 @@ const MeetDetails = () => {
                 trigger="Admin Actions"
                 options={[
                   { name: "Edit Meet", action: handleEditMeet },
-                  { name: "Delete Meet", action: handleEditMeet },
+                  {
+                    name: "Delete Meet",
+                    action: () => handleDeleteMeet(meet.id),
+                  },
                 ]}
               />
             )}
