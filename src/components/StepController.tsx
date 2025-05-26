@@ -5,11 +5,13 @@ const StepController = ({
   handleReset,
   handlePrevious,
   handleNext,
+  maxSection,
 }: {
   section: number;
   handleReset: () => void;
   handlePrevious: () => void;
   handleNext: () => void;
+  maxSection: number;
 }) => {
   return (
     <div className="flex gap-4 p-6">
@@ -23,7 +25,7 @@ const StepController = ({
           Previous
         </Button>
       )}
-      {section !== 5 && <Button onClick={handleNext}>Next</Button>}
+      {section !== maxSection && <Button onClick={handleNext}>Next</Button>}
     </div>
   );
 };

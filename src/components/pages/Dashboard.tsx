@@ -36,8 +36,6 @@ const Dashboard = () => {
     enabled: !!user?.id,
   });
 
-  console.log("orgsIAmMember", orgsIAmMember);
-
   useLoggedUser(auth);
   const meetIds = useMeetIdsFromUser(user);
 
@@ -77,7 +75,7 @@ const Dashboard = () => {
                 className="rounded-md mx-auto"
               />
             </Card>
-            <DashboardGroups orgs={myOrganization ?? null} />
+            <DashboardGroups orgs={orgsIAmMember ?? null} />
           </div>
           <div>
             <DashboardListing meets={allMeets()} />

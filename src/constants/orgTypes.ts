@@ -19,7 +19,7 @@ export type IOrganization = {
     latitude: number;
     longitude: number;
   };
-  members: IMember[];
+  members: number[];
   followers: number[];
   myMeets: number[];
   myTrips: number[];

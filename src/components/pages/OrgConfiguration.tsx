@@ -14,19 +14,19 @@ import OrgFormFinish from "@/forms/orgForms/OrgFormFinish";
 const OrgConfiguration = () => {
   const { orgId } = useParams();
   const dispatch = useDispatch();
-  const [section, setSection] = useState(5);
+  const [section, setSection] = useState(0);
 
   const { data: organization } = useQuery({
     queryKey: ["organization", orgId],
     queryFn: () =>
       orgId
-        ? fetchOrgById(orgId)
+        ? fetchOrgById(Number(orgId), dispatch)
         : Promise.reject("Organization ID is undefined"),
     enabled: !!orgId,
   });
 
   const handleNext = () => {
-    if (section === 5) {
+    if (section === 4) {
       return;
     }
     setSection((prev) => prev + 1);
@@ -62,6 +62,7 @@ const OrgConfiguration = () => {
         handleNext={handleNext}
         handleReset={handleReset}
         handlePrevious={handlePrevious}
+        maxSection={4}
       />
     </div>
   );

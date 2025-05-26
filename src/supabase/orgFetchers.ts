@@ -1,4 +1,4 @@
-import { IOrganization } from "@/constants/orgTypes";
+import { IMember, IOrganization } from "@/constants/orgTypes";
 import { supabase } from "@/lib/supabase";
 
 import { storeOrg } from "@/store/orgSlice";
@@ -111,7 +111,7 @@ export const updateOrg = async (id: number, updates: object) => {
   return data;
 };
 
-export const deleteOrg = async (id: string) => {
+export const deleteOrg = async (id: number) => {
   // 1. Remove the organization
   const { error: deleteError } = await supabase
     .from("organization")
@@ -162,7 +162,7 @@ export const getAllOrganizationByMemberId = async (memberId: number) => {
   const { data: orgs, error } = await supabase
     .from("organization")
     .select("*")
-    .contains("members", { userId: memberId });
+    .contains("members", [memberId]);
   if (error) {
     console.error("Error fetching organizations by member id:", error);
     return [];
@@ -199,6 +199,35 @@ export const updateMembersStatus = async (memberId: number, status: number) => {
 
   if (error) {
     console.error("Error updating member status:", error);
+    return null;
+  }
+
+  return data;
+};
+export const createNewMember = async (member: IMember) => {
+  const { data, error } = await supabase
+    .from("members")
+    .insert([member])
+    .select();
+
+  if (error) {
+    console.error("Error creating new member:", error);
+    return null;
+  }
+
+  return data;
+};
+export const removeMember = async (memberId: number) => {
+  console.log("Removing member with ID:", memberId);
+
+  const { data, error } = await supabase
+    .from("members")
+    .delete()
+    .eq("userId", memberId)
+    .select();
+
+  if (error) {
+    console.error("Error removing member from organization:", error);
     return null;
   }
 
