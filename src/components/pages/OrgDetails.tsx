@@ -1,8 +1,9 @@
-import { Card } from "../ui/card";
+import { Card, CardTitle } from "../ui/card";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createNewMember,
+  deleteOrg,
   fetchOrgById,
   getOrgMembers,
   removeMember,
@@ -27,7 +28,9 @@ import { Button } from "../ui/button";
 
 const OrgDetails = () => {
   const dispatch = useDispatch();
+
   const { id } = useParams();
+  const [isAdminZoneLocked, setIsAdminZoneLocked] = useState(true);
   const organization = useSelector(
     (state: RootState) => state.organization
   ) as IOrganization | null;
@@ -140,7 +143,21 @@ const OrgDetails = () => {
     deleteMember(userId);
     refetch();
   };
+  const { mutate: removeOrganization } = useMutation({
+    mutationFn: (orgId: number) => deleteOrg(orgId),
+    onSuccess: () => {
+      window.location.href = "/";
+    },
+  });
+
   if (!organization) return;
+  const deleteOrganization = () => {
+    if (!organization.id) return;
+    if (!window.confirm("Are you sure you want to delete this organization?")) {
+      return;
+    }
+    removeOrganization(organization.id);
+  };
   const isAdmin = user && user.id === organization.admin;
   return (
     <div className="mt-4">
@@ -265,6 +282,27 @@ const OrgDetails = () => {
           </div>
         </div>
       </div>
+      {isAdmin && (
+        <Card className="mt-4 bg-red-950">
+          <div className="flex items-center gap-4">
+            <p>Admin Zone</p>
+            <Button
+              onClick={() => setIsAdminZoneLocked(!isAdminZoneLocked)}
+              className="w-fit text-red-400"
+              variant="ghost"
+            >
+              {isAdminZoneLocked ? "Unlock Admin Zone" : "Lock Admin Zone"}
+            </Button>
+            <Button
+              onClick={deleteOrganization}
+              className={`${isAdminZoneLocked ? "text-muted" : "text-white"}`}
+              variant={isAdminZoneLocked ? "ghost" : "destructive"}
+            >
+              Delete Organization
+            </Button>
+          </div>
+        </Card>
+      )}
     </div>
   );
 };

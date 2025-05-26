@@ -53,6 +53,7 @@ const MeetConfiguration = () => {
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
+          maxSection={5}
         />
       </div>
     </div>

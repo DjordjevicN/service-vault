@@ -111,7 +111,7 @@ export const updateOrg = async (id: number, updates: object) => {
   return data;
 };
 
-export const deleteOrg = async (id: string) => {
+export const deleteOrg = async (id: number) => {
   // 1. Remove the organization
   const { error: deleteError } = await supabase
     .from("organization")
