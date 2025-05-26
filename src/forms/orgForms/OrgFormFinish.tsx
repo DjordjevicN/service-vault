@@ -57,6 +57,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
     const newOrg = {
       ...orgForm,
       admin: Number(user.id!),
+      member: [Number(user.id!)],
     };
     createOrgMutation(newOrg);
   };
