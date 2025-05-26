@@ -12,10 +12,7 @@ import { Calendar } from "../ui/calendar";
 import { AuthUser } from "@supabase/supabase-js";
 import { Card } from "../ui/card";
 import { useQuery } from "@tanstack/react-query";
-import {
-  getAllOrganizationByMemberId,
-  getAllOrgByUserId,
-} from "@/supabase/orgFetchers";
+import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
 
 const Dashboard = () => {
   const [value, onChange] = useState<Date | undefined>(new Date());
@@ -24,36 +21,29 @@ const Dashboard = () => {
     (state: RootState) => state.user as USER_TYPES | null
   );
 
-  const { data: myOrganization } = useQuery({
-    queryKey: ["myOrganization", user?.id],
-    queryFn: () => getAllOrgByUserId(user?.id || 0),
-    enabled: !!user?.id,
-  });
-
   const { data: orgsIAmMember } = useQuery({
     queryKey: ["orgsIAmMember", user?.id],
     queryFn: () => getAllOrganizationByMemberId((user?.id as number) || 0),
     enabled: !!user?.id,
   });
-
   useLoggedUser(auth);
   const meetIds = useMeetIdsFromUser(user);
-
   useUsersMeets(meetIds);
+
   const { data: meetsFromMyCountry, isLoading: meetsIsLoading } =
     useMeetsFromMyCountry(user?.country || "");
-
   const allMeets = () => {
     const allMeets = [];
-
     if (meetsFromMyCountry) {
       allMeets.push(...meetsFromMyCountry);
     }
     return allMeets;
   };
+
   if (meetsIsLoading) {
     return <LoadingModal show />;
   }
+
   return (
     <div className="mt-4">
       <Card className="p-6 mb-4">

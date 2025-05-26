@@ -1,11 +1,12 @@
 import { USER_TYPES } from "@/constants/userTypes";
 import { storeUser } from "@/store/userSlice";
 import { getUserById } from "@/supabase/userFetchers";
+import { AuthUser } from "@supabase/supabase-js";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
 
-export const useLoggedUser = (auth: any) => {
+export const useLoggedUser = (auth: AuthUser) => {
   const dispatch = useDispatch();
   useQuery({
     queryKey: ["user"],

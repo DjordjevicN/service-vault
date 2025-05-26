@@ -1,8 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import DivideLine from "../myUiLibrary/DivideLine";
 import { registerUser, loginUser, createUser } from "@/supabase/userFetchers";
 import { storeAuth } from "@/store/authSlice";
 import { storeUser } from "@/store/userSlice";
