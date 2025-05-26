@@ -1,4 +1,4 @@
-import { Card, CardTitle } from "../ui/card";
+import { Card } from "../ui/card";
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
