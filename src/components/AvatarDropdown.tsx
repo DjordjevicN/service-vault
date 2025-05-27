@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { USER_TYPES } from "@/constants/userTypes";
 import { removeAuth } from "@/store/authSlice";
 import MyDropdownMenu from "./myUiLibrary/MyDropdownMenu";
+import { resetOrgForm } from "@/store/orgFormSlice";
 
 const AvatarDropdown = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const AvatarDropdown = () => {
   const handleLogout = () => {
     dispatch(removeAuth());
     dispatch(logoutUser(null));
+    dispatch(resetOrgForm());
     navigate("/");
   };
 

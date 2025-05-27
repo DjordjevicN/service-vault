@@ -52,7 +52,6 @@ const Dashboard = () => {
             {`Welcome, ${user?.username || auth?.email}`}
           </h1>
         </div>
-        <p>Events from your Groups, Country</p>
       </Card>
       <div>
         <div className="grid grid-cols-[1fr_2fr] gap-4">

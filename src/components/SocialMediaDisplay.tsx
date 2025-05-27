@@ -16,9 +16,16 @@ const iconMap: Record<string, string> = {
 
 const SocialMediaDisplay = ({
   links,
+  size = "medium",
 }: {
   links: Partial<Record<keyof typeof iconMap, string>>;
+  size?: "small" | "medium" | "large";
 }) => {
+  const sizeClasses = {
+    small: "w-[16px]",
+    medium: "w-[24px]",
+    large: "w-[40px]",
+  };
   return (
     <div className="flex items-center gap-6 mt-2">
       {Object.entries(links).map(([platform, url]) => {
@@ -31,7 +38,7 @@ const SocialMediaDisplay = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img className="w-[24px]" src={icon} alt={platform} />
+            <img className={sizeClasses[size]} src={icon} alt={platform} />
           </a>
         );
       })}
