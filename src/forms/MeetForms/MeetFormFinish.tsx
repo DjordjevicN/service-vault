@@ -10,6 +10,7 @@ import { MeetType } from "@/constants/meetTypes";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import TextRow from "@/components/TextRow";
+import { getDate } from "@/components/utils/getDates";
 const RuleRow = ({
   ruleNumber,
   rule,
@@ -81,6 +82,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
       participants: [user.id],
       organizerId: user.uuid,
       organizationId: orgId ? Number(orgId) : null,
+      country: meetForm.country || user.country || "world",
     };
     mutate(updatedMeetForm);
   };
@@ -119,7 +121,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
                   details={meetForm.maxRiders || "Unlimited"}
                 />
                 <TextRow label="Meet type" details={meetForm.rideType} />
-                <TextRow label="Date" details={meetForm.startDate} />
+                <TextRow label="Date" details={getDate(meetForm.startDate)} />
                 <TextRow label="Time" details={meetForm.startTime} />
               </div>
             </div>

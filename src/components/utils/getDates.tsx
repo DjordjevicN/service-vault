@@ -8,3 +8,6 @@ export const getTime = (date: number) => {
   const humanReadableTime = moment(date).format("h:mm A");
   return humanReadableTime;
 };
+export const combineDateAndTime = (date: Date) => {
+  return new Date(date);
+};

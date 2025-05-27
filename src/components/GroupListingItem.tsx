@@ -43,7 +43,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
         <div>
           <div className="flex items-center gap-2">
             <p className="uppercase text-sm text-muted-foreground">
-              {getDate(meet.startDate)}
+              {meet.startDate}
             </p>
             <p className=" text-muted-foreground uppercase text-sm">
               {meet.startTime}
@@ -54,7 +54,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
             onClick={(e) => e.stopPropagation()}
             target="_blank"
             href={googleMapsPinLink(meet.gps.latitude, meet.gps.longitude)}
-            className="flex items-center gap-2 mt-2"
+            className="flex items-center gap-2 mt-2 w-fit"
           >
             <div className="w-6">
               <IconGps className="text-muted-foreground" />

@@ -2,12 +2,22 @@ import { USER_TYPES } from "@/constants/userTypes";
 import { supabase } from "@/lib/supabase";
 
 export const registerUser = async (email: string, password: string) => {
+  console.log("Registering user with email:", email, password);
+
   const { data, error } = await supabase.auth.signUp({ email, password });
   if (error) throw error;
   return data;
 };
 
 export const loginUser = async (email: string, password: string) => {
+  console.log("Logging in user with email:", email, password);
+  if (!email || !password) {
+    throw new Error("Email and password are required for login.");
+  }
+  // Check if email and password are provided
+  if (!email.trim() || !password.trim()) {
+    throw new Error("Email and password cannot be empty.");
+  }
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -33,9 +43,10 @@ export const deleteUser = async () => {
 };
 // create user
 type CreateUserPayload = {
-  id: number;
   username: string;
   email: string;
+  country: string;
+  uuid: string;
 };
 
 export const createUser = async (userData: CreateUserPayload) => {

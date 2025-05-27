@@ -302,7 +302,7 @@ const OrgDetails = () => {
             <Card className="mb-4">
               <div className="flex gap-4 items-center">
                 <Button onClick={handleOrgMeetCreation} className="w-fit">
-                  Create Organization Meet
+                  Create Meet as an Organization
                 </Button>
                 <Link to={`/org-config/${id}`}>
                   <Button>Edit Organization</Button>
