@@ -13,9 +13,14 @@ import { AuthUser } from "@supabase/supabase-js";
 import { Card } from "../ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
+import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
+import { getMeetsByDate } from "@/supabase/meetFetchers";
+import { getDate } from "../utils/getDates";
 
 const Dashboard = () => {
   const [value, onChange] = useState<Date | undefined>(new Date());
+  const [showAllMeets, setShowAllMeets] = useState(false);
   const auth = useSelector((state: RootState) => state.auth as AuthUser | null);
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
@@ -24,33 +29,56 @@ const Dashboard = () => {
   const { data: orgsIAmMember } = useQuery({
     queryKey: ["orgsIAmMember", user?.id],
     queryFn: () => getAllOrganizationByMemberId((user?.id as number) || 0),
-    enabled: !!user?.id,
+    enabled: !!user?.id && !showAllMeets,
   });
+
+  const { data: meetsByDate, isLoading: meetsByDateLoading } = useQuery({
+    queryKey: ["meetsByDate", value],
+    queryFn: () => getMeetsByDate(getDate(value)),
+    enabled: !!value,
+  });
+
   useLoggedUser(auth);
   const meetIds = useMeetIdsFromUser(user);
   useUsersMeets(meetIds);
 
   const { data: meetsFromMyCountry, isLoading: meetsIsLoading } =
     useMeetsFromMyCountry(user?.country || "");
+
   const allMeets = () => {
     const allMeets = [];
-    if (meetsFromMyCountry) {
+    if (meetsFromMyCountry && showAllMeets) {
       allMeets.push(...meetsFromMyCountry);
+      return allMeets;
     }
-    return allMeets;
+    if (meetsByDate) {
+      allMeets.push(...meetsByDate);
+      return allMeets;
+    }
   };
 
-  if (meetsIsLoading) {
+  if (meetsIsLoading || meetsByDateLoading) {
     return <LoadingModal show />;
   }
 
   return (
     <div className="mt-4">
       <Card className="p-6 mb-4">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between">
           <h1 className="text-2xl font-bold">
             {`Welcome, ${user?.username || auth?.email}`}
           </h1>
+          <div className="flex flex-col text-right gap-2 ml-auto">
+            <Link to="/edit-profile" className="text-gradient text-sm ml-auto">
+              <Button>Edit profile</Button>
+            </Link>
+            <Link to="/meet-config">
+              <Button>Create a Meet</Button>
+            </Link>
+            <Link to="/org-config">
+              <Button>Create a Organization</Button>
+            </Link>
+          </div>
         </div>
       </Card>
       <div>
@@ -63,7 +91,11 @@ const Dashboard = () => {
                 onSelect={onChange}
                 className="rounded-md mx-auto"
               />
+              <Button onClick={() => setShowAllMeets(!showAllMeets)}>
+                {showAllMeets ? "Show by date" : "Show all meets"}
+              </Button>
             </Card>
+
             <DashboardGroups orgs={orgsIAmMember ?? null} />
           </div>
           <div>

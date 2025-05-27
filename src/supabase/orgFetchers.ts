@@ -174,6 +174,7 @@ export const getAllOrganizationByMemberId = async (memberId: number) => {
 
   return orgs;
 };
+
 export const getOrgMembers = async (orgId: number) => {
   const { data: members, error } = await supabase
     .from("members")

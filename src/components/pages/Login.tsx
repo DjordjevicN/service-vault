@@ -6,7 +6,7 @@ import { storeAuth } from "@/store/authSlice";
 import { storeUser } from "@/store/userSlice";
 import { supabase } from "@/lib/supabase";
 import { RootState } from "@/store";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/Input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
@@ -26,17 +26,18 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [country, setCountry] = useState("");
-  const [formType, setFormType] = useState(true);
+
   const auth = useSelector((state: RootState) => state.auth);
   if (auth) {
     window.location.href = "/";
   }
+
   const { mutate: createNewUser } = useMutation({
     mutationFn: (newUser: {
       username: string;
       email: string;
-      id: string;
       country: string;
+      uuid: string;
     }) => createUser(newUser),
     onSuccess: (data) => {
       dispatch(storeUser(data));
@@ -46,36 +47,48 @@ const Login = () => {
     },
   });
 
-  const { mutate, status } = useMutation({
+  const { mutate: login } = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      loginUser(email, password),
+    onSuccess: (data) => {
+      dispatch(storeAuth(data.user));
+      window.location.href = "/";
+    },
+    onError: (error) => {
+      console.log("Error logging in:", error);
+      alert(`Login failed: ${error.message}`);
+    },
+  });
+
+  const { mutate: register, status } = useMutation({
     mutationFn: async ({
       email,
       password,
     }: {
       email: string;
       password: string;
-    }) =>
-      formType ? loginUser(email, password) : registerUser(email, password),
+    }) => registerUser(email, password),
     onSuccess: (data) => {
       dispatch(storeAuth(data.user));
-      if (!formType) {
-        createNewUser({
-          username,
-          email,
-          country,
-          uuid: data.user.id,
-        });
-      } else {
-        window.location.href = "/";
-      }
+      createNewUser({
+        username,
+        email,
+        country,
+        uuid: data.user.id,
+      });
     },
     onError: (error: Error) => {
       alert(`Auth failed: ${error.message}`);
     },
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    mutate({ email, password });
+    register({ email, password });
+  };
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    login({ email, password });
   };
   const resendEmail = async () => {
     await supabase.auth.resend({
@@ -89,12 +102,8 @@ const Login = () => {
     <div className="flex flex-col items-center justify-center h-screen">
       <Tabs defaultValue="login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger onClick={() => setFormType(true)} value="login">
-            Login
-          </TabsTrigger>
-          <TabsTrigger onClick={() => setFormType(false)} value="register">
-            Register
-          </TabsTrigger>
+          <TabsTrigger value="login">Login</TabsTrigger>
+          <TabsTrigger value="register">Register</TabsTrigger>
         </TabsList>
         <TabsContent value="login">
           <Card>
@@ -126,7 +135,7 @@ const Login = () => {
             </CardContent>
             <CardFooter>
               <Button
-                onClick={(e) => handleSubmit(e)}
+                onClick={(e) => handleLogin(e)}
                 disabled={status === "pending"}
               >
                 {status === "pending" && (
@@ -187,7 +196,7 @@ const Login = () => {
             </CardContent>
             <CardFooter>
               <Button
-                onClick={(e) => handleSubmit(e)}
+                onClick={(e) => handleRegister(e)}
                 disabled={status === "pending"}
               >
                 {status === "pending" && (

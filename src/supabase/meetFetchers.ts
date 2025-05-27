@@ -1,3 +1,4 @@
+import { getDate } from "@/components/utils/getDates";
 import { MeetType } from "@/constants/meetTypes";
 import { supabase } from "@/lib/supabase";
 import { storeUserMeets } from "@/store/meetSlice";
@@ -168,4 +169,21 @@ export const deleteMeet = async (id: string) => {
   }
 
   return { success: true };
+};
+
+export const getMeetsByDate = async (date: string | undefined) => {
+  const { data, error } = await supabase
+    .from("meets")
+    .select("*")
+    .eq("startDate", date);
+  if (error) {
+    console.error("Error fetching meets by date:", error);
+    return [];
+  }
+  if (!data) {
+    console.error("No meets found for the specified date");
+    return [];
+  }
+
+  return data;
 };

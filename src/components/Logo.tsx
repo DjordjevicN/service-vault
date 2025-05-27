@@ -1,7 +1,7 @@
-import { useDispatch } from "react-redux";
-import logo from "../assets/logo.svg";
 import { removeAuth } from "@/store/authSlice";
+import logo from "../assets/logo.svg";
 import { logoutUser } from "@/store/userSlice";
+import { useDispatch } from "react-redux";
 
 const Logo = () => {
   const dispatch = useDispatch();

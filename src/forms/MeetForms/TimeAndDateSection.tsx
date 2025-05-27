@@ -6,6 +6,7 @@ import { useState } from "react";
 import MyDatePicker from "@/components/myUiLibrary/MyDatePicker";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { combineDateAndTime, getDate } from "@/components/utils/getDates";
 
 const TimeAndDateSection = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,8 @@ const TimeAndDateSection = () => {
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    dispatch(updateMeetForm({ key: "startDate", value: date.toISOString() }));
+
+    dispatch(updateMeetForm({ key: "startDate", value: getDate(date) }));
   };
 
   const handleTimeChange = (time: string) => {
@@ -30,17 +32,7 @@ const TimeAndDateSection = () => {
     dispatch(updateMeetForm({ key: "startTime", value: time }));
   };
 
-  const combineDateAndTime = (date: Date, time: string) => {
-    const [hours, minutes] = time.split(":").map(Number);
-    const combined = new Date(date);
-    combined.setHours(hours);
-    combined.setMinutes(minutes);
-    combined.setSeconds(0);
-    combined.setMilliseconds(0);
-    return combined;
-  };
-
-  const fullDateTime = combineDateAndTime(selectedDate, selectedTime);
+  const fullDateTime = combineDateAndTime(selectedDate);
   console.log("Full date-time", fullDateTime);
 
   return (
