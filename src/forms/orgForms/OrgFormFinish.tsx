@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { IOrganization } from "@/constants/orgTypes";
 import { RootState } from "@/store";
-import { createOrg, updateOrg } from "@/supabase/orgFetchers";
+import { createNewMember, createOrg, updateOrg } from "@/supabase/orgFetchers";
 import { useMutation } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +25,15 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
         console.error("No data returned from createOrg");
         return;
       }
-
+      if (!user) return;
+      const newMember = {
+        userId: user.id!,
+        orgId: data[0].id,
+        status: 1,
+        username: user.username || "",
+        image: user.image || "",
+      };
+      createNewMember(newMember);
       navigate(`/org/${data[0].id}`);
     },
     onError: (error) => {
@@ -57,8 +65,9 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
     const newOrg = {
       ...orgForm,
       admin: Number(user.id!),
-      member: [Number(user.id!)],
+      members: [Number(user.id!)],
     };
+
     createOrgMutation(newOrg);
   };
   return (
@@ -75,7 +84,11 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
       </Card>
       <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
         <Card>
-          <img src={orgForm.image || placeholder} alt="Org banner" />
+          <img
+            src={orgForm.image || placeholder}
+            alt="Org banner"
+            className="max-w-[200px]"
+          />
           <div>
             <TextRow label="Organization Name" details={orgForm.name} />
             <TextRow label="Admin" details={user?.username ?? ""} />

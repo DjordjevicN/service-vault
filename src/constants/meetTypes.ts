@@ -22,14 +22,15 @@ export type MeetType = {
   rideType: "relaxed" | "spirited" | "mixed" | "";
   participants: string[];
   maxRiders: number;
-  image: string;
   createdAt?: number | null;
   gps: RideGps;
   address: string;
   city: string;
   country: string;
   organizerId: string;
+  organizationId: number;
   starRating: number;
   price?: number | null;
   onSale?: number | null;
+  image: string;
 };

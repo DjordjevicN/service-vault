@@ -16,11 +16,27 @@ export const getAllMeets = async (dispatch: Dispatch) => {
   dispatch(storeUserMeets(meets));
   return meets;
 };
-export const getAllMeetsByUserId = async (id: string) => {
+export const getAllMeetsByUserId = async (id: number) => {
   const { data: meets, error } = await supabase
     .from("meets")
     .select("*")
     .in("organizerId", [id]);
+  if (error) {
+    console.error("Error fetching meets:", error);
+    return [];
+  }
+  if (!meets) {
+    console.error("No meets found");
+    return [];
+  }
+
+  return meets;
+};
+export const getAllOrgMeets = async (id: number) => {
+  const { data: meets, error } = await supabase
+    .from("meets")
+    .select("*")
+    .in("organizationId", [id]);
   if (error) {
     console.error("Error fetching meets:", error);
     return [];
