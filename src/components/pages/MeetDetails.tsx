@@ -6,8 +6,7 @@ import MeetDetailsAbout from "../MeetDetailsAbout";
 import Counter from "../Counter";
 import Button from "../myUiLibrary/Button";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { Separator } from "@/components/ui/separator";
+import placeholder from "../../assets/placeholder.png";
 import { useMutation } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
 import { getDate } from "../utils/getDates";
@@ -102,12 +101,18 @@ const MeetDetails = () => {
   const handleEditMeet = () => {
     navigate(`/meet-config/${meet.id}`);
   };
+  const areThereAnyRules =
+    meet?.rules && meet.rules.length > 0 && meet.rules[0] !== "";
   return (
     <>
       <div className="mt-4">
         <Card>
           <div className="flex gap-6">
-            <img src={meet.image} alt={meet.name} className="max-w-[200px]" />
+            <img
+              src={meet.image || placeholder}
+              alt={meet.name}
+              className="max-w-[200px]"
+            />
             <div className="flex flex-col w-full">
               <div className="flex justify-between items-baseline">
                 <h1 className="text-2xl font-bold mb-5">{meet.name}</h1>
@@ -140,26 +145,32 @@ const MeetDetails = () => {
             </div>
           </div>
         </Card>
-        <div className="grid grid-cols-[2fr_1fr] gap-4 mt-4">
+        <div className="grid grid-cols-[2fr_1fr] gap-4">
           <div>
-            <MeetDetailsAbout title="Details" description={meet.description} />
-            <Card className="px-6 mt-4">
-              <p className="text-sm font-bold text-muted-foreground capitalize">
-                Rules:
-              </p>
-              {meet.rules.map((rule: string, index: number) => {
-                return (
-                  <CardContent className="text-sm" key={index}>
-                    {rule}
-                  </CardContent>
-                );
-              })}
-            </Card>
-            <Card className="px-6 mt-4">
+            {meet.description && (
+              <MeetDetailsAbout
+                title="Details"
+                description={meet.description}
+              />
+            )}
+            {areThereAnyRules && (
+              <Card className="mt-4">
+                <p className="text-sm font-bold text-muted-foreground capitalize">
+                  Rules:
+                </p>
+                {meet.rules.map((rule: string, index: number) => {
+                  return (
+                    <CardContent className="text-sm" key={index}>
+                      {rule}
+                    </CardContent>
+                  );
+                })}
+              </Card>
+            )}
+            <Card className="mt-4">
               <div className="flex gap-9">
                 <Counter label="total" count={totalParticipants} />
               </div>
-              <Separator />
               <div className="overflow-auto">
                 {meet &&
                   participants?.map((user) => (
@@ -173,36 +184,41 @@ const MeetDetails = () => {
               </div>
             </Card>
           </div>
-          <div className="flex flex-col gap-3">
+
+          <div className="flex flex-col gap-3 mt-4">
             <Card className="px-6 text-sm">
               <div className="flex flex-col gap-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-5">
-                    <img src={clock} alt="clock" />
+                {meet.startDate && (
+                  <div className="flex items-start gap-3">
+                    <div className="w-5">
+                      <img src={clock} alt="clock" />
+                    </div>
+                    <div className="flex gap-2">
+                      <p>{getDate(meet.startDate)}</p>
+                      <p>{meet.startTime}h</p>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <p>{getDate(meet.startDate)}</p>
-                    <p>{meet.startTime}h</p>
+                )}
+                {meet.gps.latitude && meet.address && (
+                  <div className="flex items-start gap-3">
+                    <div className="w-5">
+                      <img src={location} alt="moto" />
+                    </div>
+                    <div>
+                      <a
+                        onClick={(e) => e.stopPropagation()}
+                        target="_blank"
+                        href={googleMapsPinLink(
+                          meet.gps.latitude,
+                          meet.gps.longitude
+                        )}
+                        className="flex items-center gap-2"
+                      >
+                        <p className="capitalize">{meet.address}</p>
+                      </a>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-5">
-                    <img src={location} alt="moto" />
-                  </div>
-                  <div>
-                    <a
-                      onClick={(e) => e.stopPropagation()}
-                      target="_blank"
-                      href={googleMapsPinLink(
-                        meet.gps.latitude,
-                        meet.gps.longitude
-                      )}
-                      className="flex items-center gap-2"
-                    >
-                      <p className="capitalize">{meet.address}</p>
-                    </a>
-                  </div>
-                </div>
+                )}
 
                 <div className="flex items-start gap-3 ">
                   <div className="w-5">
@@ -214,21 +230,23 @@ const MeetDetails = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 ">
-                  <div className="w-5">
-                    <img src={shield} alt="moto" />
+                {meet?.rideType && (
+                  <div className="flex items-start gap-3 ">
+                    <div className="w-5">
+                      <img src={shield} alt="moto" />
+                    </div>
+                    <div>
+                      <p className="capitalize">
+                        Ride style:{" "}
+                        <span className="text-white">{meet?.rideType}</span>
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="capitalize">
-                      Ride style:{" "}
-                      <span className="text-white">{meet?.rideType}</span>
-                    </p>
-                  </div>
-                </div>
+                )}
               </div>
             </Card>
-            <Card className="p-2">
-              {meet.gps.latitude && (
+            {meet.gps.latitude && (
+              <Card className="p-2">
                 <div className="relative z-10">
                   <MyMap
                     long={meet.gps.longitude}
@@ -236,8 +254,8 @@ const MeetDetails = () => {
                     disableMarker
                   />
                 </div>
-              )}
-            </Card>
+              </Card>
+            )}
           </div>
         </div>
       </div>

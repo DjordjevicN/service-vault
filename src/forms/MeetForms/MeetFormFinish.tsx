@@ -32,7 +32,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
   const user = useSelector((state: RootState) => state.user) as {
     id: string;
   } | null;
-
+  const orgId = localStorage.getItem("orgId");
   const { mutate } = useMutation({
     mutationFn: (meet: MeetType) => createMeet(meet),
     onSuccess: (data) => {
@@ -41,6 +41,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
         return;
       }
       dispatch(storeUserMeets(data[0]));
+      localStorage.removeItem("orgId");
       navigate(`/meet/${data[0].id}`);
     },
     onError: (error) => {
@@ -57,6 +58,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
         return;
       }
       dispatch(storeUserMeets(data[0]));
+      localStorage.removeItem("orgId");
       navigate(`/meet/${meetForm.id}`);
     },
     onError: (error) => {
@@ -78,6 +80,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
       ...meetForm,
       participants: [user.id],
       organizerId: user.uuid,
+      organizationId: orgId ? Number(orgId) : null,
     };
     mutate(updatedMeetForm);
   };

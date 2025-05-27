@@ -1,5 +1,5 @@
 import { Card } from "../ui/card";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createNewMember,
@@ -16,7 +16,7 @@ import { IMember, IOrganization } from "@/constants/orgTypes";
 import placeholder from "@/assets/placeholder.png";
 import SocialMediaDisplay from "../SocialMediaDisplay";
 import DashboardListing from "../DashboardListing";
-import { getAllMeets } from "@/supabase/meetFetchers";
+import { getAllOrgMeets } from "@/supabase/meetFetchers";
 import { ORG_MEMBER_STATUS_LABELS } from "@/constants/orgMemberStatus";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useState } from "react";
@@ -28,7 +28,7 @@ import { Button } from "../ui/button";
 
 const OrgDetails = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const { id } = useParams();
   const [isAdminZoneLocked, setIsAdminZoneLocked] = useState(true);
   const organization = useSelector(
@@ -44,8 +44,12 @@ const OrgDetails = () => {
     enabled: !!id,
   });
   const { data: allMeets } = useQuery({
-    queryKey: ["allMeets"],
-    queryFn: () => getAllMeets(dispatch),
+    queryKey: ["org meets", organization?.id],
+    queryFn: () =>
+      organization?.id
+        ? getAllOrgMeets(organization.id)
+        : Promise.reject("Organization ID is undefined"),
+    enabled: !!organization?.id,
   });
   const { data: members, refetch } = useQuery({
     queryKey: ["orgMembers"],
@@ -159,6 +163,12 @@ const OrgDetails = () => {
     removeOrganization(organization.id);
   };
   const isAdmin = user && user.id === organization.admin;
+
+  const handleOrgMeetCreation = () => {
+    if (!organization) return;
+    localStorage.setItem("orgId", String(organization.id));
+    navigate(`/meet-config`);
+  };
   return (
     <div className="mt-4">
       <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
@@ -168,7 +178,7 @@ const OrgDetails = () => {
               <img
                 src={organization.image || placeholder}
                 alt="organization"
-                className="w-full"
+                className="w-full max-w-[200px]"
               />
               <div className="mt-6">
                 <p className="text-2xl capitalize">{organization.name}</p>
@@ -275,7 +285,7 @@ const OrgDetails = () => {
         </div>
         <div>
           <Card>
-            <p>buttons</p>
+            <Button onClick={handleOrgMeetCreation}>Create Meet</Button>
           </Card>
           <div className="mt-4">
             <DashboardListing meets={allMeets || []} />
