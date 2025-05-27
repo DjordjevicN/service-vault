@@ -5,13 +5,15 @@ import { IOrganization } from "@/constants/orgTypes";
 import { RootState } from "@/store";
 import { createNewMember, createOrg, updateOrg } from "@/supabase/orgFetchers";
 import { useMutation } from "@tanstack/react-query";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import placeholder from "@/assets/placeholder.png";
 import MyMap from "@/components/map/MyMap";
 import { USER_TYPES } from "@/constants/userTypes";
+import { resetOrgForm } from "@/store/orgFormSlice";
 
 const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const orgForm = useSelector((state: RootState) => state.organizationForm);
   const user = useSelector(
@@ -34,6 +36,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
         image: user.image || "",
       };
       createNewMember(newMember);
+      dispatch(resetOrgForm());
       navigate(`/org/${data[0].id}`);
     },
     onError: (error) => {
@@ -49,6 +52,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
         console.error("No data returned from createOrg");
         return;
       }
+      dispatch(resetOrgForm());
       navigate(`/org/${orgForm.id}`);
     },
     onError: (error) => {

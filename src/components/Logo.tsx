@@ -1,17 +1,20 @@
+import { useDispatch } from "react-redux";
 import logo from "../assets/logo.svg";
+import { removeAuth } from "@/store/authSlice";
+import { logoutUser } from "@/store/userSlice";
 
 const Logo = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const goHome = () => {
     window.location.href = "/";
   };
-  // const handleLogout = () => {
-  //   dispatch(removeAuth());
-  //   dispatch(logoutUser(null));
-  // };
+  const handleLogout = () => {
+    dispatch(removeAuth());
+    dispatch(logoutUser(null));
+  };
   return (
     <div className="flex items-center ">
-      {/* <button onClick={handleLogout}>remove</button> */}
+      <button onClick={handleLogout}>remove</button>
       <div className="flex items-center gap-4 cursor-pointer" onClick={goHome}>
         <img src={logo} alt="app logo" />
         <div>

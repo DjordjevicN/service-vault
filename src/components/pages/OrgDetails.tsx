@@ -1,5 +1,5 @@
 import { Card } from "../ui/card";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   createNewMember,
@@ -21,24 +21,24 @@ import { ORG_MEMBER_STATUS_LABELS } from "@/constants/orgMemberStatus";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useState } from "react";
 import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/Input";
 import { searchUsersByEmailOrUsername } from "@/supabase/userFetchers";
 import SearchUserResultItem from "../SearchUserResultItem";
 import { Button } from "../ui/button";
+import LoadingModal from "../LoadingModal";
 
 const OrgDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
   const [isAdminZoneLocked, setIsAdminZoneLocked] = useState(true);
-  const organization = useSelector(
-    (state: RootState) => state.organization
-  ) as IOrganization | null;
+
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const [searchValue, setSearchValue] = useState("");
-  useQuery({
+
+  const { data: organization, isLoading } = useQuery({
     queryKey: ["orgDetails", id],
     queryFn: () => fetchOrgById(Number(id), dispatch),
     enabled: !!id,
@@ -169,6 +169,7 @@ const OrgDetails = () => {
     localStorage.setItem("orgId", String(organization.id));
     navigate(`/meet-config`);
   };
+  if (isLoading) return <LoadingModal show={true} />;
   return (
     <div className="mt-4">
       <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
@@ -182,6 +183,13 @@ const OrgDetails = () => {
               />
               <div className="mt-6">
                 <p className="text-2xl capitalize">{organization.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {organization.address}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {organization.city} <span>{organization.country}</span>
+                </p>
+
                 <p className="mt-4 text-muted-foreground">
                   {organization.description}
                 </p>
@@ -204,12 +212,18 @@ const OrgDetails = () => {
             </p>
             <div>
               <div>
-                <Label htmlFor="org-search">Search for members by email</Label>
-                <Input
-                  id="org-search"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                />
+                {isAdmin && (
+                  <div>
+                    <Label htmlFor="org-search">
+                      Search for members by email
+                    </Label>
+                    <Input
+                      id="org-search"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                  </div>
+                )}
                 {foundUsers && (
                   <div className="relative">
                     <div className="absolute w-full bg-card border rounded p-2 text-xs">
@@ -284,12 +298,20 @@ const OrgDetails = () => {
           </Card>
         </div>
         <div>
-          <Card>
-            <Button onClick={handleOrgMeetCreation}>Create Meet</Button>
-          </Card>
-          <div className="mt-4">
-            <DashboardListing meets={allMeets || []} />
-          </div>
+          {isAdmin && (
+            <Card className="mb-4">
+              <div className="flex gap-4 items-center">
+                <Button onClick={handleOrgMeetCreation} className="w-fit">
+                  Create Organization Meet
+                </Button>
+                <Link to={`/org-config/${id}`}>
+                  <Button>Edit Organization</Button>
+                </Link>
+              </div>
+            </Card>
+          )}
+
+          <DashboardListing meets={allMeets || []} />
         </div>
       </div>
       {isAdmin && (

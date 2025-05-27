@@ -25,14 +25,19 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [country, setCountry] = useState("");
   const [formType, setFormType] = useState(true);
   const auth = useSelector((state: RootState) => state.auth);
   if (auth) {
     window.location.href = "/";
   }
   const { mutate: createNewUser } = useMutation({
-    mutationFn: (newUser: { username: string; email: string; id: string }) =>
-      createUser(newUser),
+    mutationFn: (newUser: {
+      username: string;
+      email: string;
+      id: string;
+      country: string;
+    }) => createUser(newUser),
     onSuccess: (data) => {
       dispatch(storeUser(data));
     },
@@ -56,6 +61,7 @@ const Login = () => {
         createNewUser({
           username,
           email,
+          country,
           uuid: data.user.id,
         });
       } else {
@@ -150,6 +156,14 @@ const Login = () => {
                   placeholder="Username"
                   onChange={(e) => setUsername(e.target.value)}
                   value={username}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="country">Country</Label>
+                <Input
+                  placeholder="Country"
+                  onChange={(e) => setCountry(e.target.value)}
+                  value={country}
                 />
               </div>
               <div className="space-y-1">

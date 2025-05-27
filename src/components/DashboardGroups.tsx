@@ -10,7 +10,7 @@ const DashboardGroups = ({ orgs }: { orgs: IOrganization[] | null }) => {
       <div className="rounded px-6">
         <div className="flex items-center justify-between">
           <h2 className=" text-white">Your groups</h2>
-          <Link to="/groups" className="text-gray55 text-sm cursor-pointer">
+          <Link to="/orgs" className="text-gray55 text-sm cursor-pointer">
             See all groups
           </Link>
         </div>

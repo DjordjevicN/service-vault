@@ -1,65 +1,92 @@
-import { motoGP } from "@/data/motoGP";
-import { Card, CardHeader } from "../ui/card";
-import insta from "@/assets/socials/insta.svg";
-import facebook from "@/assets/socials/facebook.svg";
-import twitter from "@/assets/socials/twitter2.svg";
-import website from "@/assets/socials/web.svg";
+import { Card } from "../ui/card";
+import { useQuery } from "@tanstack/react-query";
+import { getOrgsByTheCountry } from "@/supabase/orgFetchers";
+import SocialMediaDisplay from "../SocialMediaDisplay";
+import { useNavigate } from "react-router-dom";
+import LoadingModal from "../LoadingModal";
+import { Label } from "../ui/label";
+import { Input } from "../ui/Input";
+import { useState } from "react";
+import { getOrgSearchInformation } from "@/supabase/searchFetchers";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const OrgsPage = () => {
-  const img =
-    "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNjUyOXwwfDF8c2VhcmNofDJ8fGdyb3VwfGVufDB8fHx8MTY5MjQ1NTQyNg&ixlib=rb-4.0.3&q=80&w=400";
+  const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
+  const debounceSearch = useDebounce(searchValue, 1000);
+  const { data: orgs, isLoading: orgsLoading } = useQuery({
+    queryKey: ["all Orgs"],
+    queryFn: () => getOrgsByTheCountry("Serbia"),
+  });
 
-  const groups = [
-    { name: "Group 1", id: 1, image: img, events: [] },
-    { name: "MotoGP", id: 2, image: img, events: motoGP },
-  ];
-  console.log(groups);
+  const { data: foundOrgs, isLoading: foundLoading } = useQuery({
+    queryKey: ["org search", debounceSearch],
+    queryFn: () => getOrgSearchInformation(debounceSearch),
+    enabled: !!debounceSearch && debounceSearch.length > 3,
+  });
+
+  const goToOrgDetails = (orgId: number) => {
+    navigate(`/org/${orgId}`);
+  };
+
+  const orgsToDisplay =
+    searchValue && searchValue.length > 3 ? foundOrgs : orgs;
+  if (orgsLoading || foundLoading) return <LoadingModal show={true} />;
   return (
     <div className="mt-4">
       <Card>
-        <CardHeader>Groups</CardHeader>
-        <div className="flex items-center flex-wrap gap-4 px-6">
-          {groups.map((group) => {
+        <div className="flex gap-4">
+          <div>
+            <Label htmlFor="org-search">Search for Organization</Label>
+            <Input
+              id="org-search"
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              placeholder="Search by name"
+            />
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-4">
+          {orgsToDisplay?.map((group) => {
             return (
-              <Card
+              <div
                 key={group.id}
-                className="px-6 w-[320px] bg-accent cursor-pointer"
+                className="p-6 border rounded w-[320px] bg-accent cursor-pointer"
+                onClick={() => goToOrgDetails(group.id)}
               >
                 <div>
                   <div>
                     <p className="text-xl font-semibold">{group.name}</p>
                     <p className="text-xs text-muted-foreground font-light">
-                      Dzonicam
+                      {`${group.city} ${group.country}`}
                     </p>
                   </div>
+
                   <p className="text-sm text-muted-foreground mt-3">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s,
+                    {(group.description?.slice(0, 150) ||
+                      "No description available.") +
+                      (group.description?.length > 150 ? "..." : "")}
                   </p>
                 </div>
-                <div className="text-sm text-muted-foreground flex flex-col gap-2">
+                <div className="text-sm text-muted-foreground flex flex-col gap-2 mt-4">
                   <div className="text-xs text-white">
-                    <p>Events: 22</p>
-                    <p>Followers: 22</p>
-                    <p>Members: 22</p>
+                    <p>
+                      Members: <span>{group.members.length}</span>
+                    </p>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <a href="http://" target="_blank" rel="noopener noreferrer">
-                      <img src={insta} alt="" />
-                    </a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">
-                      <img src={facebook} alt="" />
-                    </a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">
-                      <img src={twitter} alt="" />
-                    </a>
-                    <a href="http://" target="_blank" rel="noopener noreferrer">
-                      <img src={website} alt="" />
-                    </a>
-                  </div>
+                  <SocialMediaDisplay
+                    size="small"
+                    links={{
+                      instagram: group.instagram,
+                      facebook: group.facebook,
+                      twitter: group.twitter,
+                      youtube: group.youtube,
+                      tiktok: group.tiktok,
+                      customLink: group.customLink,
+                    }}
+                  />
                 </div>
-              </Card>
+              </div>
             );
           })}
         </div>
