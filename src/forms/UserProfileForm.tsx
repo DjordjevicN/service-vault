@@ -46,6 +46,7 @@ const UserProfileForm = () => {
       createNewUser(newUser);
     }
   };
+
   return (
     <Card className="px-6 min-w-[500px] mx-auto">
       <div className="">
