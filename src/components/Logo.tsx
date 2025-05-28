@@ -12,9 +12,11 @@ const Logo = () => {
     dispatch(removeAuth());
     dispatch(logoutUser(null));
   };
+
+  const emergency = localStorage.getItem("emergency") === "true";
   return (
     <div className="flex items-center ">
-      <button onClick={handleLogout}>remove</button>
+      {emergency && <button onClick={handleLogout}>remove</button>}
       <div className="flex items-center gap-4 cursor-pointer" onClick={goHome}>
         <img src={logo} alt="app logo" />
         <div>
