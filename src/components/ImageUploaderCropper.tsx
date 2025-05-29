@@ -3,6 +3,7 @@ import { useDropzone } from "react-dropzone";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "@/components/utils/cropImage";
 import { Button } from "./ui/Button";
+import imageCompression from "browser-image-compression";
 
 type Props = {
   onCropped: (image: string) => void;
@@ -14,10 +15,22 @@ const ImageUploaderCropper = ({ onCropped }: Props) => {
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const reader = new FileReader();
-    reader.onload = () => setImageSrc(reader.result as string);
-    reader.readAsDataURL(acceptedFiles[0]);
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1024,
+      useWebWorker: true,
+    };
+
+    try {
+      const compressedFile = await imageCompression(file, options);
+      const reader = new FileReader();
+      reader.onload = () => setImageSrc(reader.result as string);
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("Compression failed:", error);
+    }
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -43,7 +56,7 @@ const ImageUploaderCropper = ({ onCropped }: Props) => {
   return (
     <div>
       {imageSrc ? (
-        <div className="relative w-[320px] h-[320px] mt-4">
+        <div className="relative w-[320px] h-[320px] mt-2">
           <Cropper
             image={imageSrc}
             crop={crop}
@@ -57,7 +70,7 @@ const ImageUploaderCropper = ({ onCropped }: Props) => {
       ) : (
         <div
           {...getRootProps()}
-          className="border-dashed border-2 p-4 mt-4 cursor-pointer w-[320px] h-[320px] flex items-center justify-center "
+          className="border-dashed border-2 p-4 mt-2 cursor-pointer w-[320px] h-[320px] flex items-center justify-center "
         >
           <input {...getInputProps()} />
           <p className="text-gray55 text-sm">
@@ -67,10 +80,10 @@ const ImageUploaderCropper = ({ onCropped }: Props) => {
       )}
 
       <div className="flex gap-4">
-        <Button onClick={cropImage} className="mt-4">
+        <Button onClick={cropImage} className="mt-2">
           Crop Image
         </Button>
-        <Button onClick={() => setImageSrc(null)} className="mt-4">
+        <Button onClick={() => setImageSrc(null)} className="mt-2">
           Clear
         </Button>
       </div>

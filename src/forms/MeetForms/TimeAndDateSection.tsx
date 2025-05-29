@@ -36,7 +36,7 @@ const TimeAndDateSection = () => {
   console.log("Full date-time", fullDateTime);
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
       <Card className="px-6">
         <div>
           <h2 className="">
@@ -58,7 +58,7 @@ const TimeAndDateSection = () => {
           <MyDatePicker onChange={(date) => handleDateChange(date)} />
 
           <div>
-            <Label className="mt-4 text-gray55" htmlFor="time">
+            <Label className="mt-2 text-gray55" htmlFor="time">
               Select the time
             </Label>
             <TimePicker

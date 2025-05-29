@@ -40,11 +40,11 @@ const UserProfile = () => {
   const formatted = formatToMonthYear(auth?.created_at || "");
 
   return (
-    <div className="mt-4">
+    <div className="mt-2">
       <Card className="px-6">
         <div className="flex gap-6 text-white">
           <div className="relative">
-            <Avatar size={100} />
+            <Avatar url={user?.image} size={100} />
             <div
               onClick={() => handleNavigate()}
               className="opacity-0 hover:opacity-80 bg-black cursor-pointer w-[100px] h-[100px] absolute top-0 left-0 rounded-full flex items-center justify-center animate-fade-in-out transition-all duration-300"
@@ -78,7 +78,7 @@ const UserProfile = () => {
           </div>
         </div>
       </Card>
-      <div className="grid grid-cols-[1fr_2fr] gap-4 mt-4">
+      <div className="grid grid-cols-[1fr_2fr] gap-2 mt-2">
         <div>
           <Card className="px-6">
             <div className=" flex items-center justify-between">

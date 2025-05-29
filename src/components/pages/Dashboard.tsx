@@ -47,7 +47,7 @@ const Dashboard = () => {
 
   const allMeets = () => {
     const allMeets = [];
-    if (meetsFromMyCountry && showAllMeets) {
+    if (meetsFromMyCountry) {
       allMeets.push(...meetsFromMyCountry);
       return allMeets;
     }
@@ -62,7 +62,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="mt-4">
+    <div className="mt-2">
       <Card className="p-6 mb-4">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold">

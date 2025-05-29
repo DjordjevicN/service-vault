@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 
 const PrivateRoute = ({ children }: { children: ReactNode }) => {
   const auth = useSelector((state: RootState) => state.auth);
-  return auth ? children : <Navigate to="/login" />;
+  return auth ? children : <Navigate to="/" />;
 };
 
 export default PrivateRoute;

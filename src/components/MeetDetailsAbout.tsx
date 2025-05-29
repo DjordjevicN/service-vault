@@ -8,7 +8,7 @@ const MeetDetailsAbout = ({
   description: string;
 }) => {
   return (
-    <Card className="mt-4">
+    <Card className="mt-2">
       <CardTitle className="text-sm text-muted-foreground">{title}</CardTitle>
       <CardContent className="text-sm">{description}</CardContent>
     </Card>

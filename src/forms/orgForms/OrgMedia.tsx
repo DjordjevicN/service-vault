@@ -46,7 +46,7 @@ const OrgMedia = () => {
   }, [imageSrc, croppedAreaPixels, dispatch]);
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
       <Card className="px-6">
         <div>
           <h2 className="w-fit">
@@ -59,7 +59,7 @@ const OrgMedia = () => {
         <div>
           <div
             {...getRootProps()}
-            className="border-dashed border-2 p-4 mt-4 cursor-pointer"
+            className="border-dashed border-2 p-4 mt-2 cursor-pointer"
           >
             <input {...getInputProps()} />
             <p className="text-gray55">
@@ -82,7 +82,7 @@ const OrgMedia = () => {
             )}
           </div>
           {croppedImage && (
-            <div className="mt-4">
+            <div className="mt-2">
               <h4 className="text-sm text-white mb-1">Preview</h4>
               <img
                 src={croppedImage}

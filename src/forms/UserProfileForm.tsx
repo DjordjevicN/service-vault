@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { USER_TYPES } from "@/constants/userTypes";
 import { RootState } from "@/store";
@@ -56,7 +56,10 @@ const UserProfileForm = () => {
             id="username"
             value={editedUser.username}
             onChange={(e) =>
-              setEditedUser((prev) => ({ ...prev, username: e.target.value }))
+              setEditedUser((prev) => ({
+                ...prev,
+                username: e.target.value.toLowerCase(),
+              }))
             }
           />
           <Label htmlFor="email">Email</Label>
@@ -83,7 +86,10 @@ const UserProfileForm = () => {
             id="city"
             value={editedUser.city}
             onChange={(e) =>
-              setEditedUser((prev) => ({ ...prev, city: e.target.value }))
+              setEditedUser((prev) => ({
+                ...prev,
+                city: e.target.value.toLowerCase(),
+              }))
             }
           />
           <Label htmlFor="country">Country</Label>
@@ -91,7 +97,10 @@ const UserProfileForm = () => {
             id="country"
             value={editedUser.country}
             onChange={(e) =>
-              setEditedUser((prev) => ({ ...prev, country: e.target.value }))
+              setEditedUser((prev) => ({
+                ...prev,
+                country: e.target.value.toLowerCase(),
+              }))
             }
           />
 
@@ -107,7 +116,7 @@ const UserProfileForm = () => {
             }
           />
           <Button
-            className="mt-4"
+            className="mt-2"
             disabled={status === "pending"}
             onClick={(e) => handleSubmit(e)}
           >

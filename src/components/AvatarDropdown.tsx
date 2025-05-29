@@ -35,7 +35,7 @@ const AvatarDropdown = () => {
     <MyDropdownMenu
       trigger={
         <div>
-          <Avatar />
+          <Avatar url={user?.image} />
         </div>
       }
       options={[

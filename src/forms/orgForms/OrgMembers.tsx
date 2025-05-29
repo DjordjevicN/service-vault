@@ -59,7 +59,7 @@ const OrgMembers = () => {
     dispatch(updateOrgForm({ key: "members", value: updatedMemberList }));
   };
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
       <Card className="px-6">
         <div>
           <h2 className="w-fit">

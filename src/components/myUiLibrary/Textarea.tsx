@@ -20,7 +20,7 @@ const Textarea: React.FC<TextareaProps> = ({
   rows = 4,
 }) => {
   return (
-    <div className={`flex flex-col mt-4 ${wrapperClassName}`}>
+    <div className={`flex flex-col mt-2 ${wrapperClassName}`}>
       {label && (
         <label className="text-white capitalize font-bold mb-2">{label}</label>
       )}

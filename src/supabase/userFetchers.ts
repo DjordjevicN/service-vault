@@ -59,7 +59,7 @@ export const createUser = async (userData: CreateUserPayload) => {
   return data;
 };
 // update user profile
-export const updateUserProfile = async (id: number, updates: USER_TYPES) => {
+export const updateUserProfile = async (id: string, updates: USER_TYPES) => {
   const { data, error } = await supabase
     .from("profiles")
     .update(updates)

@@ -29,7 +29,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col mt-4 ${wrapperClassName} ${
+      className={`flex flex-col mt-2 ${wrapperClassName} ${
         disabled && "opacity-50"
       }`}
     >

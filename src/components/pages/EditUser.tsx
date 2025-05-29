@@ -21,7 +21,7 @@ const EditUser = () => {
               <p className="capitalize font-bold text-white">tip</p>
             </div>
             {tips.map((tip) => {
-              return <p className="text-gray55 mt-4">{tip}</p>;
+              return <p className="text-gray55 mt-2">{tip}</p>;
             })}
           </div>
         </Card>
