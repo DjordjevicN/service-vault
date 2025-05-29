@@ -1,7 +1,7 @@
 import moment from "moment";
 
 export const getDate = (date: string) => {
-  const humanReadable = moment(date).format("dddd, Do MMMM YYYY");
+  const humanReadable = moment(date).format("YYYY-MM-DD");
   return humanReadable;
 };
 export const getTime = (date: number) => {
