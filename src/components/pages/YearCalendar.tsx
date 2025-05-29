@@ -7,6 +7,7 @@ import {
   format,
   isSameDay,
   parseISO,
+  getDay,
 } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/Button";
@@ -22,18 +23,19 @@ const YearCalendar = () => {
   const year = new Date().getFullYear();
   const yearStart = startOfYear(new Date(year, 0, 1));
   const yearEnd = endOfYear(yearStart);
-  const events = [];
-  // get all months (1-12)
+  const events: Event[] = []; // Replace with actual events
+
   const months = Array.from({ length: 12 }, (_, i) => new Date(year, i, 1));
 
   const handleDayClick = (date: Date) => {
-    // redirect to your event list filtered by date (adjust URL as needed)
     navigate(`/events?date=${format(date, "yyyy-MM-dd")}`);
   };
 
   const handleCreateClick = () => {
     navigate("/meet-config");
   };
+
+  const getWeekdayIndex = (date: Date) => (getDay(date) + 6) % 7; // Monday = 0, Sunday = 6
 
   return (
     <div>
@@ -42,18 +44,42 @@ const YearCalendar = () => {
         <Button onClick={handleCreateClick}>+ Create Event</Button>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-8">
         {months.map((month) => {
           const monthStart = startOfMonth(month);
           const monthEnd = endOfMonth(month);
           const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
+          // Determine how many empty boxes before the 1st to align Monday as the first column
+          const leadingEmptyDays = Array.from({
+            length: getWeekdayIndex(monthStart),
+          });
+
           return (
-            <div key={month.toString()} className="">
-              <h3 className="text-center font-semibold mb-2">
+            <div key={month.toString()}>
+              <h3 className="text-center font-semibold mb-2 text-lg">
                 {format(month, "MMMM")}
               </h3>
+
               <div className="grid grid-cols-7 gap-1 text-xs">
+                {/* Weekday headers */}
+                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+                  (day) => (
+                    <div
+                      key={day}
+                      className="text-center font-semibold text-gray-600"
+                    >
+                      {day}
+                    </div>
+                  )
+                )}
+
+                {/* Leading empty days */}
+                {leadingEmptyDays.map((_, i) => (
+                  <div key={`empty-${i}`} className="p-1 h-[200px]" />
+                ))}
+
+                {/* Days of the month */}
                 {days.map((day) => {
                   const dayEvents = events.filter((ev) =>
                     isSameDay(parseISO(ev.date), day)
@@ -63,7 +89,7 @@ const YearCalendar = () => {
                     <div
                       key={day.toString()}
                       onClick={() => handleDayClick(day)}
-                      className={`cursor-pointer border rounded p-1 h-[200px] w-full hover:bg-black/40 ${
+                      className={`cursor-pointer border rounded p-1 h-[200px] hover:bg-black/10 ${
                         dayEvents.length ? "bg-blue-100" : ""
                       }`}
                       title={`${dayEvents.length} event(s)`}
