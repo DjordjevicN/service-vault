@@ -12,9 +12,6 @@ const tips = [
 const EditUser = () => {
   return (
     <div className="p-6 pb-20 ">
-      <h1 className="font-bold mt-10">
-        Edit your <span className="text-gradient">profile</span>
-      </h1>
       <div className="grid grid-cols-[2fr_1fr] gap-4 mt-16 items-start">
         <UserProfileForm />
         <Card className="px-6">
@@ -24,7 +21,7 @@ const EditUser = () => {
               <p className="capitalize font-bold text-white">tip</p>
             </div>
             {tips.map((tip) => {
-              return <p className="text-gray55 mt-4">{tip}</p>;
+              return <p className="text-gray55 mt-2">{tip}</p>;
             })}
           </div>
         </Card>

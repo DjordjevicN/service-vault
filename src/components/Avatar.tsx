@@ -8,7 +8,7 @@ const Avatar = ({
   size?: number;
 }) => {
   return (
-    <div className="box-gradient">
+    <div>
       <img
         style={{
           width: `${size}px`,

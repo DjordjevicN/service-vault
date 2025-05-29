@@ -33,7 +33,7 @@ const OrgsPage = () => {
     searchValue && searchValue.length > 3 ? foundOrgs : orgs;
   if (orgsLoading || foundLoading) return <LoadingModal show={true} />;
   return (
-    <div className="mt-4">
+    <div className="mt-2">
       <Card>
         <div className="flex gap-4">
           <div>
@@ -68,7 +68,7 @@ const OrgsPage = () => {
                       (group.description?.length > 150 ? "..." : "")}
                   </p>
                 </div>
-                <div className="text-sm text-muted-foreground flex flex-col gap-2 mt-4">
+                <div className="text-sm text-muted-foreground flex flex-col gap-2 mt-2">
                   <div className="text-xs text-white">
                     <p>
                       Members: <span>{group.members.length}</span>

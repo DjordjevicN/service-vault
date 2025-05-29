@@ -1,4 +1,3 @@
-import { getDate } from "@/components/utils/getDates";
 import { MeetType } from "@/constants/meetTypes";
 import { supabase } from "@/lib/supabase";
 import { storeUserMeets } from "@/store/meetSlice";
@@ -17,7 +16,7 @@ export const getAllMeets = async (dispatch: Dispatch) => {
   dispatch(storeUserMeets(meets));
   return meets;
 };
-export const getAllMeetsByUserId = async (id: number) => {
+export const getAllMeetsByUserId = async (id: number | string) => {
   const { data: meets, error } = await supabase
     .from("meets")
     .select("*")

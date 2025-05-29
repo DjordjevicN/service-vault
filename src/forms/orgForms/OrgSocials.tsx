@@ -10,7 +10,7 @@ const OrgSocials = () => {
   const dispatch = useDispatch();
   const orgForm = useSelector((state: RootState) => state.organizationForm);
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
       <Card className="p-6">
         <h2 className="text-gradient text-2xl w-fit">
           Organization Social Media

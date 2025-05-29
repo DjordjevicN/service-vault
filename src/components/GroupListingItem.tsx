@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
 import crown from "@/assets/crown-gold.svg";
-import { getDate } from "./utils/getDates";
 import { Card } from "./ui/card";
 import IconMoney from "./icons/IconMoney";
 import IconGps from "./icons/IconGps";
@@ -28,7 +27,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
 
   return (
     <Card
-      className="grid grid-cols-[1fr_2fr] mb-4 gap-4 cursor-pointer relative rounded-lg p-4 transition duration-200"
+      className="grid grid-cols-[1fr_2fr] mb-2 gap-4 cursor-pointer relative rounded-lg p-4 transition duration-200"
       onClick={() => handleNavigate(meet.id)}
     >
       {isMyMeet() && (
@@ -37,7 +36,11 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
         </div>
       )}
       <div>
-        <img src={placeholder} alt="meet image" />
+        <img
+          src={meet.image || placeholder}
+          alt="meet image"
+          className="w-full h-32 object-cover rounded-lg"
+        />
       </div>
       <div className="flex flex-col justify-between">
         <div>

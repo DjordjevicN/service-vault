@@ -11,7 +11,7 @@ const BasicOrgInformation = () => {
   const orgForm = useSelector((state: RootState) => state.organizationForm);
   if (!orgForm) return null;
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
       <Card className="p-6">
         <h2 className="text-gradient text-2xl w-fit">Basic Information</h2>
         <p className="text-gray55">

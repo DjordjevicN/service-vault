@@ -76,7 +76,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
   };
   return (
     <div className="">
-      <Card className="px-6 mt-4">
+      <Card className="px-6 mt-2">
         <div className="flex justify-between items-center">
           <h2 className="w-fit">
             <span className="text-gradient">Final check</span> before publishing
@@ -86,7 +86,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
           </Button>
         </div>
       </Card>
-      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
         <Card>
           <img
             src={orgForm.image || placeholder}
@@ -111,7 +111,7 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
               long={orgForm.gps.longitude || 20.4489}
             />
             <TextRow
-              className="capitalize mt-4"
+              className="capitalize mt-2"
               label="Address"
               details={orgForm.address}
             />

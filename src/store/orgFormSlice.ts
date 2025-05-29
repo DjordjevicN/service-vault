@@ -29,8 +29,6 @@ const orgFormSlice = createSlice({
       state,
       action: PayloadAction<{ key: keyof IOrganization; value: any }>
     ) => {
-      console.log("updateOrgForm", action.payload);
-
       const { key, value } = action.payload;
       (state[key] as any) = value;
     },

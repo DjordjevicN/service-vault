@@ -171,8 +171,8 @@ const OrgDetails = () => {
   };
   if (isLoading) return <LoadingModal show={true} />;
   return (
-    <div className="mt-4">
-      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+    <div className="mt-2">
+      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
         <div>
           <Card>
             <div>
@@ -190,7 +190,7 @@ const OrgDetails = () => {
                   {organization.city} <span>{organization.country}</span>
                 </p>
 
-                <p className="mt-4 text-muted-foreground">
+                <p className="mt-2 text-muted-foreground">
                   {organization.description}
                 </p>
                 <SocialMediaDisplay
@@ -206,7 +206,7 @@ const OrgDetails = () => {
               </div>
             </div>
           </Card>
-          <Card className="mt-4">
+          <Card className="mt-2">
             <p>
               Members: <span>{members?.length || 0}</span>
             </p>
@@ -315,7 +315,7 @@ const OrgDetails = () => {
         </div>
       </div>
       {isAdmin && (
-        <Card className="mt-4 bg-red-950">
+        <Card className="mt-2 bg-red-950">
           <div className="flex items-center gap-4">
             <p>Admin Zone</p>
             <Button

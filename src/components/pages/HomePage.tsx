@@ -34,7 +34,7 @@ const HomePage = () => {
           Get Started
         </Button>
       </Link>
-      <div className="flex justify-center mt-44 ">
+      <div className="flex justify-center mt-24 ">
         <div className="box-gradient w-fit">
           <img src={homepageBg} alt="" />
         </div>

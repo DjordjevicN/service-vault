@@ -8,7 +8,7 @@ import { createMeet, updateMeet } from "@/supabase/meetFetchers";
 import { storeUserMeets } from "@/store/meetSlice";
 import { MeetType } from "@/constants/meetTypes";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import TextRow from "@/components/TextRow";
 import { getDate } from "@/components/utils/getDates";
 const RuleRow = ({
@@ -89,7 +89,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
 
   return (
     <div>
-      <Card className="px-6 mt-4">
+      <Card className="px-6 mt-2">
         <div className="flex justify-between items-center">
           <h2 className=" w-fit">
             <span className="text-gradient">Final check</span> before publishing
@@ -99,7 +99,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
           </Button>
         </div>
       </Card>
-      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
         <div>
           <Card className="px-6">
             <h2 className="w-fit">Basic Information</h2>
@@ -126,7 +126,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
               </div>
             </div>
           </Card>
-          <Card className="mt-4 px-6">
+          <Card className="mt-2 px-6">
             <div>
               <h2 className="w-fit">Description</h2>
               <p className="text-white mt-6">
@@ -134,7 +134,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
               </p>
             </div>
           </Card>
-          <Card className="mt-4 px-6">
+          <Card className="mt-2 px-6">
             <div className="mt-6">
               <h2 className="w-fit mb-6">Rules</h2>
               {meetForm.rules.map((rule, index) => {
@@ -166,7 +166,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
                   <TextRow label="Country" details={meetForm.country} />
                 </div>
               </div>
-              <div className="overflow-hidden bg-gray55 mt-4">
+              <div className="overflow-hidden bg-gray55 mt-2">
                 <MyMap
                   lat={meetForm.gps.latitude || 44.7866}
                   long={meetForm.gps.longitude || 20.4489}

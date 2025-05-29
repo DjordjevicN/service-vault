@@ -3,7 +3,7 @@ import { RootState } from "@/store";
 import { updateMeetForm } from "@/store/meetFormSlice";
 
 import MyMap from "@/components/map/MyMap";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 
@@ -14,7 +14,7 @@ const LocationSection = () => {
   );
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-4">
+    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
       <Card className="px-6">
         <div>
           <h2 className="">
@@ -50,7 +50,7 @@ const LocationSection = () => {
                 dispatch(
                   updateMeetForm({
                     key: "startLocation",
-                    value: e.target.value,
+                    value: e.target.value.toLowerCase(),
                   })
                 )
               }
@@ -62,7 +62,10 @@ const LocationSection = () => {
             <Input
               onChange={(e) =>
                 dispatch(
-                  updateMeetForm({ key: "address", value: e.target.value })
+                  updateMeetForm({
+                    key: "address",
+                    value: e.target.value.toLowerCase(),
+                  })
                 )
               }
               value={address}
@@ -72,7 +75,12 @@ const LocationSection = () => {
             <Label htmlFor="City">City</Label>
             <Input
               onChange={(e) =>
-                dispatch(updateMeetForm({ key: "city", value: e.target.value }))
+                dispatch(
+                  updateMeetForm({
+                    key: "city",
+                    value: e.target.value.toLowerCase(),
+                  })
+                )
               }
               value={city}
               id="City"
@@ -82,7 +90,10 @@ const LocationSection = () => {
             <Input
               onChange={(e) =>
                 dispatch(
-                  updateMeetForm({ key: "country", value: e.target.value })
+                  updateMeetForm({
+                    key: "country",
+                    value: e.target.value.toLowerCase(),
+                  })
                 )
               }
               value={country}

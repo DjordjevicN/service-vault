@@ -9,7 +9,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import placeholder from "../../assets/placeholder.png";
 import { useMutation } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
-import { getDate } from "../utils/getDates";
 import MyMap from "../map/MyMap";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
 import { updateMeet } from "@/supabase/meetFetchers";
@@ -105,7 +104,7 @@ const MeetDetails = () => {
     meet?.rules && meet.rules.length > 0 && meet.rules[0] !== "";
   return (
     <>
-      <div className="mt-4">
+      <div className="mt-2">
         <Card>
           <div className="flex gap-6">
             <img
@@ -145,7 +144,7 @@ const MeetDetails = () => {
             </div>
           </div>
         </Card>
-        <div className="grid grid-cols-[2fr_1fr] gap-4">
+        <div className="grid grid-cols-[2fr_1fr] gap-2">
           <div>
             {meet.description && (
               <MeetDetailsAbout
@@ -154,7 +153,7 @@ const MeetDetails = () => {
               />
             )}
             {areThereAnyRules && (
-              <Card className="mt-4">
+              <Card className="mt-2">
                 <p className="text-sm font-bold text-muted-foreground capitalize">
                   Rules:
                 </p>
@@ -167,10 +166,18 @@ const MeetDetails = () => {
                 })}
               </Card>
             )}
-            <Card className="mt-4">
-              <div className="flex gap-9">
+            <div className="flex gap-2">
+              <Card className="mt-2 w-full">
                 <Counter label="total" count={totalParticipants} />
-              </div>
+              </Card>
+              <Card className="mt-2 w-full">
+                <Counter label="pending" count={totalParticipants} />
+              </Card>
+              <Card className="mt-2 w-full">
+                <Counter label="confirmed" count={totalParticipants} />
+              </Card>
+            </div>
+            <Card className="mt-2">
               <div className="overflow-auto">
                 {meet &&
                   participants?.map((user) => (
@@ -185,7 +192,7 @@ const MeetDetails = () => {
             </Card>
           </div>
 
-          <div className="flex flex-col gap-3 mt-4">
+          <div className="flex flex-col gap-2 mt-2">
             <Card className="px-6 text-sm">
               <div className="flex flex-col gap-4">
                 {meet.startDate && (
@@ -194,7 +201,7 @@ const MeetDetails = () => {
                       <img src={clock} alt="clock" />
                     </div>
                     <div className="flex gap-2">
-                      <p>{getDate(meet.startDate)}</p>
+                      <p>{meet.startDate}</p>
                       <p>{meet.startTime}h</p>
                     </div>
                   </div>
@@ -231,7 +238,7 @@ const MeetDetails = () => {
                   </div>
                 </div>
                 {meet?.rideType && (
-                  <div className="flex items-start gap-3 ">
+                  <div className="flex items-start gap-2 ">
                     <div className="w-5">
                       <img src={shield} alt="moto" />
                     </div>
