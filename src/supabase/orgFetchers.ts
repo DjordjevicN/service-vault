@@ -1,6 +1,5 @@
 import { IMember, IOrganization } from "@/constants/orgTypes";
 import { supabase } from "@/lib/supabase";
-
 import { storeOrg } from "@/store/orgSlice";
 import { Dispatch } from "@reduxjs/toolkit";
 
@@ -157,8 +156,6 @@ export const deleteOrg = async (id: number) => {
   return { success: true };
 };
 export const getAllOrganizationByMemberId = async (memberId: number) => {
-  console.log("Fetching organizations for member id:", memberId);
-
   const { data: orgs, error } = await supabase
     .from("organization")
     .select("*")

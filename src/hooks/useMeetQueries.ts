@@ -46,7 +46,7 @@ export const useUsersMeets = (meetIds: number[]) => {
 };
 export const useMeetsFromMyCountry = (country: string) => {
   return useQuery({
-    queryKey: ["meetsFromMyCountry"],
+    queryKey: ["meetsFromMyCountry", country],
     queryFn: () => getMeetsByTheCountry(country),
     enabled: !!country,
   });

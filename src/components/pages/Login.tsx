@@ -1,14 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { registerUser, loginUser, createUser } from "@/supabase/userFetchers";
 import { storeAuth } from "@/store/authSlice";
 import { storeUser } from "@/store/userSlice";
-import { supabase } from "@/lib/supabase";
-import { RootState } from "@/store";
 import { Input } from "@/components/ui/Input";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import {
   Card,
@@ -19,6 +17,9 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Loader2 } from "lucide-react";
+import { authSchema, registerSchema } from "@/validation/loginSchema";
+import { validateForm } from "@/validation/validateForm";
+import { CountrySelect } from "../CountrySelect";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -26,11 +27,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [country, setCountry] = useState("");
-
-  const auth = useSelector((state: RootState) => state.auth);
-  if (auth) {
-    window.location.href = "/";
-  }
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const { mutate: createNewUser } = useMutation({
     mutationFn: (newUser: {
@@ -41,6 +38,7 @@ const Login = () => {
     }) => createUser(newUser),
     onSuccess: (data) => {
       dispatch(storeUser(data));
+      window.location.href = "/";
     },
     onError: (error) => {
       console.log("Error creating user:", error);
@@ -81,29 +79,36 @@ const Login = () => {
       alert(`Auth failed: ${error.message}`);
     },
   });
-
-  const handleRegister = (e: React.FormEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = { email, password, username, country };
+    const { isValid, errors } = await validateForm(registerSchema, formData);
+    if (!isValid) return alert(Object.values(errors).join("\n"));
     register({ email, password });
   };
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = { email, password };
+    const { isValid, errors } = await validateForm(authSchema, formData);
+    if (!isValid) return setFormErrors(errors);
     login({ email, password });
-  };
-  const resendEmail = async () => {
-    await supabase.auth.resend({
-      type: "signup",
-      email: email,
-    });
-    alert("Confirmation email sent");
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Tabs defaultValue="login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="login">Login</TabsTrigger>
-          <TabsTrigger value="register">Register</TabsTrigger>
+          <TabsTrigger value="login" onKeyDown={handleKeyDown}>
+            Login
+          </TabsTrigger>
+          <TabsTrigger value="register" onKeyDown={handleKeyDown}>
+            Register
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="login">
           <Card>
@@ -121,6 +126,8 @@ const Login = () => {
                   placeholder="example@gmail.com"
                   onChange={(e) => setEmail(e.target.value)}
                   value={email}
+                  type="email"
+                  error={formErrors.email ? formErrors.email : undefined}
                 />
               </div>
               <div className="space-y-1">
@@ -144,9 +151,6 @@ const Login = () => {
                 Login
               </Button>
             </CardFooter>
-            <Button variant="ghost" className="mt-3" onClick={resendEmail}>
-              Re-send confirmation email
-            </Button>
           </Card>
         </TabsContent>
         <TabsContent value="register">
@@ -168,12 +172,7 @@ const Login = () => {
                 />
               </div>
               <div className="space-y-1">
-                <Label htmlFor="country">Country</Label>
-                <Input
-                  placeholder="Country"
-                  onChange={(e) => setCountry(e.target.value)}
-                  value={country}
-                />
+                <CountrySelect onSelect={(code) => setCountry(code)} />
               </div>
               <div className="space-y-1">
                 <Label htmlFor="email">Email</Label>

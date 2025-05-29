@@ -14,9 +14,10 @@ import { Card } from "../ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
-import { getMeetsByDate } from "@/supabase/meetFetchers";
-import { getDate } from "../utils/getDates";
+import { Button } from "../ui/Button";
+import { getMeetsByFilterQuery } from "@/supabase/meetFetchers";
+
+import { CountrySelect } from "../CountrySelect";
 
 const Dashboard = () => {
   const [value, onChange] = useState<Date | undefined>(new Date());
@@ -25,6 +26,9 @@ const Dashboard = () => {
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
   );
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+  const [selectedCity, setSelectedCity] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const { data: orgsIAmMember } = useQuery({
     queryKey: ["orgsIAmMember", user?.id],
@@ -32,38 +36,48 @@ const Dashboard = () => {
     enabled: !!user?.id && !showAllMeets,
   });
 
-  const { data: meetsByDate, isLoading: meetsByDateLoading } = useQuery({
-    queryKey: ["meetsByDate", value],
-    queryFn: () => getMeetsByDate(getDate(value)),
-    enabled: !!value,
-  });
+  // const { data: meetsByDate, isLoading: meetsByDateLoading } = useQuery({
+  //   queryKey: ["meetsByDate", value],
+  //   queryFn: () => getMeetsByDate(getDate(value)),
+  //   enabled: !!value,
+  // });
 
   useLoggedUser(auth);
   const meetIds = useMeetIdsFromUser(user);
   useUsersMeets(meetIds);
 
-  const { data: meetsFromMyCountry, isLoading: meetsIsLoading } =
-    useMeetsFromMyCountry(user?.country || "");
+  const { data: meetFilterQuery, isLoading: meetFilterLoading } = useQuery({
+    queryKey: ["meetsFilterQuery", selectedCountry, showAllMeets],
+    queryFn: () =>
+      getMeetsByFilterQuery(
+        selectedCountry || "",
+        user?.country || "",
+        selectedCity || "",
+        selectedType || "",
+        showAllMeets || false
+      ),
+  });
 
-  const allMeets = () => {
-    const allMeets = [];
-    if (meetsFromMyCountry) {
-      allMeets.push(...meetsFromMyCountry);
-      return allMeets;
-    }
-    if (meetsByDate) {
-      allMeets.push(...meetsByDate);
-      return allMeets;
-    }
-  };
+  // const allMeets = () => {
+  //   const allMeets = [] as MeetType[];
+  //   if (meetsFromMyCountry && showAllMeets) {
+  //     allMeets.push(...meetsFromMyCountry);
+  //     return allMeets;
+  //   }
+  //   if (meetsByDate && !showAllMeets) {
+  //     allMeets.push(...meetsByDate);
+  //     return allMeets;
+  //   }
+  //   return allMeets;
+  // };
 
-  if (meetsIsLoading || meetsByDateLoading) {
+  if (meetFilterLoading) {
     return <LoadingModal show />;
   }
 
   return (
     <div className="mt-2">
-      <Card className="p-6 mb-4">
+      <Card className="p-6 mb-2">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold">
             {`Welcome, ${user?.username || auth?.email}`}
@@ -82,9 +96,10 @@ const Dashboard = () => {
         </div>
       </Card>
       <div>
-        <div className="grid grid-cols-[1fr_2fr] gap-4">
+        <div className="grid grid-cols-[1fr_2fr] gap-2">
           <div>
             <Card>
+              <Link to="/calendar">Full calendar</Link>
               <Calendar
                 mode="single"
                 selected={value}
@@ -99,7 +114,17 @@ const Dashboard = () => {
             <DashboardGroups orgs={orgsIAmMember ?? null} />
           </div>
           <div>
-            <DashboardListing meets={allMeets()} />
+            <Card className="mb-2">
+              <div className="grid grid-cols-3 text-center font-bold">
+                <CountrySelect
+                  value={selectedCountry || user?.country || ""}
+                  onSelect={(code) => setSelectedCountry(code)}
+                />
+                <div>Type</div>
+                <div>City</div>
+              </div>
+            </Card>
+            <DashboardListing meets={meetFilterQuery} />
           </div>
         </div>
       </div>

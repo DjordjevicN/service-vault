@@ -19,6 +19,7 @@ import OrgsPage from "./components/pages/OrgsPage";
 import OrgDetails from "./components/pages/OrgDetails";
 import OrgConfiguration from "./components/pages/OrgConfiguration";
 import EditAvatar from "./forms/EditAvatar";
+import YearCalendar from "./components/pages/YearCalendar";
 
 const App = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -43,6 +44,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <Meets />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/calendar"
+            element={
+              <PrivateRoute>
+                <YearCalendar />
               </PrivateRoute>
             }
           />

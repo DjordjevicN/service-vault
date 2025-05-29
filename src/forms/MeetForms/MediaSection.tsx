@@ -24,20 +24,21 @@ const MediaSection = () => {
       <Card>
         <ImageUploaderCropper onCropped={handleImageCropped} />
       </Card>
-      <Card className="p-6 flex justify-center items-center flex-col">
-        {croppedImage ||
-          (meetForm.image && (
-            <>
-              <div className="mt-2">
-                <img
-                  src={croppedImage || meetForm.image || ""}
-                  alt="Cropped"
-                  className="w-48 h-48 object-cover"
-                />
-              </div>
-              <Button onClick={handleSaveImage}>Save</Button>
-            </>
-          ))}
+      <Card className="p-6 flex justify-center items-center flex-col ">
+        {meetForm.image || croppedImage ? (
+          <>
+            <div className="mt-2">
+              <img
+                src={croppedImage || meetForm.image || ""}
+                alt="Cropped"
+                className="w-48 h-48 object-cover"
+              />
+            </div>
+            <Button onClick={handleSaveImage}>Save</Button>
+          </>
+        ) : (
+          ""
+        )}
       </Card>
     </div>
   );

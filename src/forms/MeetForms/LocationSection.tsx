@@ -6,6 +6,7 @@ import MyMap from "@/components/map/MyMap";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
+import { CountrySelect } from "@/components/CountrySelect";
 
 const LocationSection = () => {
   const dispatch = useDispatch();
@@ -86,20 +87,18 @@ const LocationSection = () => {
               id="City"
               placeholder="Enter the city"
             />
-            <Label htmlFor="Country">Country</Label>
-            <Input
-              onChange={(e) =>
-                dispatch(
-                  updateMeetForm({
-                    key: "country",
-                    value: e.target.value.toLowerCase(),
-                  })
-                )
-              }
-              value={country}
-              id="Country"
-              placeholder="Enter the country"
-            />
+            <div className="space-y-1">
+              <CountrySelect
+                onSelect={(code) =>
+                  dispatch(
+                    updateMeetForm({
+                      key: "country",
+                      value: code,
+                    })
+                  )
+                }
+              />
+            </div>
           </div>
         </Card>
       </div>

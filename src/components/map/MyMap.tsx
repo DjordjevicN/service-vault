@@ -42,12 +42,12 @@ const MyMap = ({
     <MapContainer
       center={markerPos}
       zoom={13}
-      style={{ height: "400px", width: "100%" }}
+      style={{
+        height: "400px",
+        width: "100%",
+      }}
     >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <Marker position={markerPos}>
         <Popup>Meet here!</Popup>
       </Marker>

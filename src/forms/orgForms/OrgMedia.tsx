@@ -5,7 +5,7 @@ import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Cropper from "react-easy-crop";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { updateOrgForm } from "@/store/orgFormSlice";
 
 const OrgMedia = () => {

@@ -186,3 +186,47 @@ export const getMeetsByDate = async (date: string | undefined) => {
 
   return data;
 };
+
+export const getMeetsByFilterQuery = async (
+  selectedCountry: string,
+  userCountry: string,
+  selectedCity: string,
+  selectedType: string,
+  showAllMeets: boolean
+) => {
+  let query = supabase
+    .from("meets")
+    .select("*")
+    .order("startDate", { ascending: true });
+
+  if (!showAllMeets) {
+    // If not showing all meets, filter by country, city, type
+    if (selectedCountry) {
+      query = query.eq("country", selectedCountry);
+    } else if (userCountry) {
+      query = query.eq("country", userCountry);
+    }
+
+    if (selectedCity) {
+      query = query.eq("city", selectedCity);
+    }
+
+    if (selectedType) {
+      query = query.eq("type", selectedType);
+    }
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error fetching meets by filter query:", error);
+    return [];
+  }
+
+  if (!data) {
+    console.error("No meets found for the filter query");
+    return [];
+  }
+
+  return data;
+};

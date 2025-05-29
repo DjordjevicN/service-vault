@@ -2,10 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 import MyMap from "@/components/map/MyMap";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { updateOrgForm } from "@/store/orgFormSlice";
+import { CountrySelect } from "@/components/CountrySelect";
 
 const LocationOrgInformation = () => {
   const { address, city, country, gps } = useSelector(
@@ -63,17 +64,19 @@ const LocationOrgInformation = () => {
               id="City"
               placeholder="Enter the city"
             />
-            <Label htmlFor="Country">Country</Label>
-            <Input
-              onChange={(e) =>
-                dispatch(
-                  updateOrgForm({ key: "country", value: e.target.value })
-                )
-              }
-              value={country}
-              id="Country"
-              placeholder="Enter the country"
-            />
+            <div className="space-y-1">
+              <CountrySelect
+                value={country}
+                onSelect={(code) =>
+                  dispatch(
+                    updateOrgForm({
+                      key: "country",
+                      value: code,
+                    })
+                  )
+                }
+              />
+            </div>
           </div>
         </Card>
       </div>

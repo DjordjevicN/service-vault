@@ -54,7 +54,7 @@ export const createUser = async (userData: CreateUserPayload) => {
     .from("profiles")
     .insert([userData])
     .select()
-    .single();
+    .maybeSingle();
   if (error) throw error;
   return data;
 };
@@ -82,8 +82,6 @@ export const getUserById = async (id: string) => {
 };
 
 export const getAllUsersByIds = async (userIds: string[]) => {
-  console.log("userIds", userIds);
-
   const { data: users, error } = await supabase
     .from("profiles")
     .select("*")
