@@ -1,6 +1,4 @@
 import {
-  startOfYear,
-  endOfYear,
   startOfMonth,
   endOfMonth,
   eachDayOfInterval,
@@ -11,24 +9,32 @@ import {
 } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/Button";
-
-type Event = {
-  id: string;
-  date: string; // ISO string
-  title: string;
-};
+import { useQuery } from "@tanstack/react-query";
+import { getAllMeets } from "@/supabase/meetFetchers";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import LoadingModal from "../LoadingModal";
+import placeholder from "@/assets/placeholder.png";
 
 const YearCalendar = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const year = new Date().getFullYear();
-  const yearStart = startOfYear(new Date(year, 0, 1));
-  const yearEnd = endOfYear(yearStart);
-  const events: Event[] = []; // Replace with actual events
-
+  const user = useSelector((state: RootState) => state.user);
   const months = Array.from({ length: 12 }, (_, i) => new Date(year, i, 1));
 
-  const handleDayClick = (date: Date) => {
-    navigate(`/events?date=${format(date, "yyyy-MM-dd")}`);
+  const { data: meets } = useQuery({
+    queryKey: ["meets", user.country],
+    queryFn: () => getAllMeets(dispatch),
+    // queryFn: () => getMeetsByTheCountry(user.country),
+  });
+  console.log("Meets data:", meets);
+
+  const handleDayClick = (id: number) => {
+    navigate(`/meet-config/${id}`);
+  };
+  const handleMeetRedirect = (id: number) => {
+    navigate(`/meet/${id}`);
   };
 
   const handleCreateClick = () => {
@@ -36,15 +42,15 @@ const YearCalendar = () => {
   };
 
   const getWeekdayIndex = (date: Date) => (getDay(date) + 6) % 7; // Monday = 0, Sunday = 6
-
+  if (!meets) return <LoadingModal show />;
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
+    <div className="">
+      <div className="flex justify-between items-center mb-4 ">
         <h2 className="text-xl font-bold">Year {year}</h2>
         <Button onClick={handleCreateClick}>+ Create Event</Button>
       </div>
 
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 h-screen overflow-y-scroll">
         {months.map((month) => {
           const monthStart = startOfMonth(month);
           const monthEnd = endOfMonth(month);
@@ -81,16 +87,15 @@ const YearCalendar = () => {
 
                 {/* Days of the month */}
                 {days.map((day) => {
-                  const dayEvents = events.filter((ev) =>
-                    isSameDay(parseISO(ev.date), day)
+                  const dayEvents = meets.filter((ev) =>
+                    isSameDay(parseISO(ev.startDate), day)
                   );
 
                   return (
                     <div
                       key={day.toString()}
-                      onClick={() => handleDayClick(day)}
-                      className={`cursor-pointer border rounded p-1 h-[200px] hover:bg-black/10 ${
-                        dayEvents.length ? "bg-blue-100" : ""
+                      className={`cursor-pointer border rounded p-1 min-h-[200px] hover:bg-black/10 ${
+                        dayEvents.length ? "" : ""
                       }`}
                       title={`${dayEvents.length} event(s)`}
                     >
@@ -101,8 +106,31 @@ const YearCalendar = () => {
                         </span>
                       </div>
                       {dayEvents.length > 0 && (
-                        <div className="text-blue-600 font-bold text-center">
-                          {dayEvents.length}
+                        <div className="mt-2 overflow-y-scroll max-h-[300px]">
+                          {dayEvents.map((event) => {
+                            return (
+                              <div
+                                className="w-full bg-border p-1 mb-1 "
+                                onClick={() => handleMeetRedirect(event.id)}
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  <img
+                                    src={event.image || placeholder}
+                                    className="w-5 h-5 rounded-full object-cover"
+                                    alt=""
+                                  />
+                                  <div>
+                                    <p className="w-full overflow-auto truncate text-xs">
+                                      {event.name}
+                                    </p>
+                                    <p>
+                                      by: <span>{event.organizerName}</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>

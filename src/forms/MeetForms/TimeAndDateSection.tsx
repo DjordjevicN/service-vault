@@ -6,7 +6,7 @@ import { useState } from "react";
 import MyDatePicker from "@/components/myUiLibrary/MyDatePicker";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { combineDateAndTime, getDate } from "@/components/utils/getDates";
+import { getDate } from "@/components/utils/getDates";
 
 const TimeAndDateSection = () => {
   const dispatch = useDispatch();
@@ -22,8 +22,9 @@ const TimeAndDateSection = () => {
   );
 
   const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
+    console.log(getDate(date));
 
+    setSelectedDate(date);
     dispatch(updateMeetForm({ key: "startDate", value: getDate(date) }));
   };
 
@@ -31,9 +32,6 @@ const TimeAndDateSection = () => {
     setSelectedTime(time);
     dispatch(updateMeetForm({ key: "startTime", value: time }));
   };
-
-  const fullDateTime = combineDateAndTime(selectedDate);
-  console.log("Full date-time", fullDateTime);
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
@@ -55,7 +53,10 @@ const TimeAndDateSection = () => {
           <Label className="text-gray55" htmlFor="date">
             Pick a date
           </Label>
-          <MyDatePicker onChange={(date) => handleDateChange(date)} />
+          <MyDatePicker
+            value={selectedDate}
+            onChange={(date) => handleDateChange(date)}
+          />
 
           <div>
             <Label className="mt-2 text-gray55" htmlFor="time">

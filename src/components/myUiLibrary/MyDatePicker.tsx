@@ -1,17 +1,18 @@
 import React from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "../ui/calendar";
 
 type MyDatePickerProps = {
+  value?: Date;
   onChange?: (date: Date | undefined) => void;
 };
 
-const MyDatePicker = ({ onChange }: MyDatePickerProps) => {
-  const [date, setDate] = React.useState<Date>();
+const MyDatePicker = ({ value, onChange }: MyDatePickerProps) => {
+  const [date, setDate] = React.useState<Date | undefined>(value);
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
