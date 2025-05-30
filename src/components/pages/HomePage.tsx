@@ -14,7 +14,7 @@ const HomePage = () => {
     window.location.href = "/edit-profile";
   }
   return (
-    <div>
+    <div className="px-12">
       <div className="flex justify-between items-center p-4">
         <Logo />
         <Link to="/login">Login / Register</Link>

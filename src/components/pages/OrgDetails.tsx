@@ -24,7 +24,7 @@ import { Label } from "../ui/label";
 import { Input } from "@/components/ui/Input";
 import { searchUsersByEmailOrUsername } from "@/supabase/userFetchers";
 import SearchUserResultItem from "../SearchUserResultItem";
-import { Button } from "../ui/button";
+import { Button } from "../ui/Button";
 import LoadingModal from "../LoadingModal";
 
 const OrgDetails = () => {
@@ -162,6 +162,10 @@ const OrgDetails = () => {
     }
     removeOrganization(organization.id);
   };
+  const memberAdmin = members?.find(
+    (member) => member.userId === user?.id && member.status === 1
+  );
+
   const isAdmin = user && user.id === organization.admin;
 
   const handleOrgMeetCreation = () => {
@@ -172,7 +176,7 @@ const OrgDetails = () => {
   if (isLoading) return <LoadingModal show={true} />;
   return (
     <div className="mt-2">
-      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
+      <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
         <div>
           <Card>
             <div>
@@ -212,7 +216,7 @@ const OrgDetails = () => {
             </p>
             <div>
               <div>
-                {isAdmin && (
+                {isAdmin || memberAdmin ? (
                   <div>
                     <Label htmlFor="org-search">
                       Search for members by email
@@ -223,7 +227,7 @@ const OrgDetails = () => {
                       onChange={(e) => setSearchValue(e.target.value)}
                     />
                   </div>
-                )}
+                ) : null}
                 {foundUsers && (
                   <div className="relative">
                     <div className="absolute w-full bg-card border rounded p-2 text-xs">
@@ -279,7 +283,7 @@ const OrgDetails = () => {
                       ) : (
                         <p>{ORG_MEMBER_STATUS_LABELS[member.status]}</p>
                       )}
-                      {isAdmin && (
+                      {isAdmin || memberAdmin ? (
                         <Button
                           className="ml-auto text-red-400"
                           variant="ghost"
@@ -287,7 +291,7 @@ const OrgDetails = () => {
                         >
                           Remove
                         </Button>
-                      )}
+                      ) : null}
                     </div>
                   );
                 })
@@ -298,8 +302,8 @@ const OrgDetails = () => {
           </Card>
         </div>
         <div>
-          {isAdmin && (
-            <Card className="mb-4">
+          {isAdmin || memberAdmin ? (
+            <Card className="mb-2">
               <div className="flex gap-4 items-center">
                 <Button onClick={handleOrgMeetCreation} className="w-fit">
                   Create Meet as an Organization
@@ -309,9 +313,12 @@ const OrgDetails = () => {
                 </Link>
               </div>
             </Card>
-          )}
+          ) : null}
 
-          <DashboardListing meets={allMeets || []} />
+          <Card className="">
+            <p className="text-lg">Meets created by {organization.name}</p>
+            <DashboardListing meets={allMeets || []} />
+          </Card>
         </div>
       </div>
       {isAdmin && (

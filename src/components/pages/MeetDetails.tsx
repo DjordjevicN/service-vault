@@ -19,6 +19,7 @@ import { USER_TYPES } from "@/constants/userTypes";
 import shield from "../../assets/shield.svg";
 import moto from "../../assets/moto.svg";
 import { storeUser } from "@/store/userSlice";
+import money from "../../assets/money.svg";
 import {
   useDeleteMeet,
   useMeetDetails,
@@ -234,6 +235,16 @@ const MeetDetails = () => {
                   <div>
                     <p className="capitalize">
                       Max riders: <span>{meet?.maxRiders || "Unlimited"}</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3 ">
+                  <div className="w-5">
+                    <img src={money} alt="money" />
+                  </div>
+                  <div>
+                    <p className="capitalize">
+                      <span>{meet?.price || "FREE"}</span>
                     </p>
                   </div>
                 </div>

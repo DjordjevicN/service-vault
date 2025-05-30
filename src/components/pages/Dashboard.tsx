@@ -7,7 +7,6 @@ import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useLoggedUser, useMeetIdsFromUser } from "@/hooks/useUser";
 import { useUsersMeets } from "@/hooks/useMeetQueries";
-import { Calendar } from "../ui/calendar";
 import { AuthUser } from "@supabase/supabase-js";
 import { Card } from "../ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -46,9 +45,6 @@ const Dashboard = () => {
             {`Welcome, ${user?.username || auth?.email}`}
           </h1>
           <div className="flex flex-col text-right gap-2 ml-auto">
-            <Link to="/edit-profile" className="text-gradient text-sm ml-auto">
-              <Button>Edit profile</Button>
-            </Link>
             <Link to="/meet-config">
               <Button>Create a Meet</Button>
             </Link>
@@ -63,22 +59,19 @@ const Dashboard = () => {
           <div>
             <Card>
               <Button onClick={handleRedirectToCalendar}>Full calendar</Button>
-              {/* <Calendar
-                mode="single"
-                selected={value}
-                onSelect={onChange}
-                className="rounded-md mx-auto"
-              /> */}
-              {/* <Button onClick={() => setShowAllMeets(!showAllMeets)}>
-                {showAllMeets ? "Show by date" : "Show all meets"}
-              </Button> */}
             </Card>
 
-            <DashboardGroups orgs={orgsIAmMember ?? null} />
+            <div className="mt-2">
+              <DashboardGroups orgs={orgsIAmMember ?? null} />
+            </div>
           </div>
-          <div>
+          <Card>
+            {meets && (
+              <p className="mt-6 ml-4 text-xl">Meets you are attending</p>
+            )}
+
             <DashboardListing meets={meets || []} />
-          </div>
+          </Card>
         </div>
       </div>
     </div>

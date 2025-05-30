@@ -11,6 +11,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/Button";
 import TextRow from "@/components/TextRow";
 import { getDate } from "@/components/utils/getDates";
+import { USER_TYPES } from "@/constants/userTypes";
+import { IOrganization } from "@/constants/orgTypes";
 const RuleRow = ({
   ruleNumber,
   rule,
@@ -30,9 +32,12 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const meetForm = useSelector((state: RootState) => state.meetForm);
-  const user = useSelector((state: RootState) => state.user) as {
-    id: string;
-  } | null;
+  const organization = useSelector(
+    (state: RootState) => state.organization
+  ) as IOrganization | null;
+  const user = useSelector(
+    (state: RootState) => state.user
+  ) as USER_TYPES | null;
   const orgId = localStorage.getItem("orgId");
   const { mutate } = useMutation({
     mutationFn: (meet: MeetType) => createMeet(meet),
@@ -83,6 +88,7 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
       organizerId: user.uuid,
       organizationId: orgId ? Number(orgId) : null,
       country: meetForm.country || user.country || "world",
+      organizerName: orgId ? organization?.name : user.username,
     };
     mutate(updatedMeetForm);
   };

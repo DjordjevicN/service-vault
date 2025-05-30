@@ -6,9 +6,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
 import crown from "@/assets/crown-gold.svg";
-import { Card } from "./ui/card";
 import IconMoney from "./icons/IconMoney";
 import IconGps from "./icons/IconGps";
+import { getFormattedDate } from "./utils/getDates";
 
 const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   const navigate = useNavigate();
@@ -46,26 +46,33 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
         <div>
           <div className="flex items-center gap-2">
             <p className="uppercase text-sm text-muted-foreground">
-              {meet.startDate}
+              {getFormattedDate(meet.startDate)}
             </p>
             <p className=" text-muted-foreground uppercase text-sm">
               {meet.startTime}
             </p>
           </div>
           <p className="text-xl capitalize">{meet.name}</p>
-          <a
-            onClick={(e) => e.stopPropagation()}
-            target="_blank"
-            href={googleMapsPinLink(meet.gps.latitude, meet.gps.longitude)}
-            className="flex items-center gap-2 mt-2 w-fit"
-          >
+          <div className="flex items-center gap-2">
             <div className="w-6">
               <IconGps className="text-muted-foreground" />
             </div>
             <p className="text-white text-sm capitalize">
-              {meet.address} {meet.city}, {meet.country}
+              {meet.address} {meet.city} {meet.country}
             </p>
-          </a>
+            {meet.gps.latitude && (
+              <a
+                onClick={(e) => e.stopPropagation()}
+                target="_blank"
+                href={googleMapsPinLink(meet.gps.latitude, meet.gps.longitude)}
+                className="w-fit ml-auto"
+              >
+                <p className="text-xs">
+                  Show <span className="text-blue-400">GoogleMaps</span>
+                </p>
+              </a>
+            )}
+          </div>
 
           <div className="flex items-center gap-2">
             <div className="w-6 mt-1">

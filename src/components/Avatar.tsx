@@ -1,7 +1,7 @@
-import { USER_AVATAR_PLACEHOLDER } from "@/constants/placeholders";
+import avatarBackup from "@/assets/placeholderAvatars/male.webp";
 
 const Avatar = ({
-  url = USER_AVATAR_PLACEHOLDER,
+  url = avatarBackup,
   size = 48,
 }: {
   url?: string;
@@ -16,7 +16,7 @@ const Avatar = ({
           objectFit: "cover",
         }}
         className="rounded-full"
-        src={url ? url : USER_AVATAR_PLACEHOLDER}
+        src={url ? url : avatarBackup}
         alt="avatar"
       />
     </div>

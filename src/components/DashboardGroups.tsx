@@ -6,9 +6,9 @@ import DashboardGroupItem from "./DashboardGroupItem";
 const DashboardGroups = ({ orgs }: { orgs: IOrganization[] | null }) => {
   const hasGroups = orgs && orgs.length > 0;
   return (
-    <Card className="mt-2">
+    <Card className="px-4">
       <div className="rounded">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between px-4">
           <h2 className=" text-white">Your groups</h2>
           <Link to="/orgs" className="text-gray55 text-sm cursor-pointer">
             See all groups

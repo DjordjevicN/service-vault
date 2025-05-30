@@ -33,4 +33,5 @@ export type MeetType = {
   price?: number | null;
   onSale?: number | null;
   image: string;
+  organizerName?: string;
 };

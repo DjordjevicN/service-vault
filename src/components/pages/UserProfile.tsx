@@ -11,6 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Card } from "../ui/card";
 import { AuthUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/Button";
+import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
+import DashboardGroups from "../DashboardGroups";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -20,6 +22,11 @@ const UserProfile = () => {
 
   const auth = useSelector((state: RootState) => state.auth) as AuthUser | null;
 
+  const { data: orgsIAmMember } = useQuery({
+    queryKey: ["orgsIAmMember", user?.id],
+    queryFn: () => getAllOrganizationByMemberId((user?.id as number) || 0),
+    enabled: !!user?.id,
+  });
   const { data: usersMeets } = useQuery({
     queryKey: ["meets", user?.uuid],
     queryFn: () =>
@@ -80,31 +87,15 @@ const UserProfile = () => {
       </Card>
       <div className="grid grid-cols-[1fr_2fr] gap-2 mt-2">
         <div>
-          <Card className="px-6">
-            <div className=" flex items-center justify-between">
-              <div className="text-center">
-                <p className="text-gray50 text-2xl">
-                  {user?.myMeets?.length || 0}
-                </p>
-                <p className="text-gray55">Meets</p>
-              </div>
-              <div className="text-center">
-                <p className="text-gray50 text-2xl">30</p>
-                <p className="text-gray55">Members</p>
-              </div>
-              <div className="text-center">
-                <p className="text-gray50 text-2xl">30k</p>
-                <p className="text-gray55">Followers</p>
-              </div>
-            </div>
-          </Card>
+          <DashboardGroups orgs={orgsIAmMember ?? null} />
         </div>
         <div>
-          <div>
+          <Card className="gap-0">
+            <p className="mb-6">Meets you have created</p>
             {usersMeets?.map((meet) => {
               return <GroupListingItem key={meet.id} meet={meet} />;
             })}
-          </div>
+          </Card>
         </div>
       </div>
     </div>

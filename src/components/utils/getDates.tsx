@@ -11,3 +11,8 @@ export const getTime = (date: number) => {
 export const combineDateAndTime = (date: Date) => {
   return new Date(date);
 };
+
+export const getFormattedDate = (date: string) => {
+  const formattedDate = moment(date).format("DD MM YYYY");
+  return formattedDate;
+};
