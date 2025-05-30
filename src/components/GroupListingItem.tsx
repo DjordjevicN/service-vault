@@ -26,8 +26,8 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   };
 
   return (
-    <Card
-      className="grid grid-cols-[1fr_2fr] mb-2 gap-4 cursor-pointer relative rounded-lg p-4 transition duration-200"
+    <div
+      className="grid grid-cols-[1fr_2fr] mb-2 gap-4 cursor-pointer relative rounded-lg p-4 transition duration-200 bg-accent/30 hover:bg-accent/50 shadow-md hover:shadow-lg"
       onClick={() => handleNavigate(meet.id)}
     >
       {isMyMeet() && (
@@ -82,7 +82,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
           </p>
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 

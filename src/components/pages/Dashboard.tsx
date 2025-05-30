@@ -5,7 +5,6 @@ import DashboardListing from "../DashboardListing";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
-import LoadingModal from "../LoadingModal";
 import { useLoggedUser, useMeetIdsFromUser } from "@/hooks/useUser";
 import { useUsersMeets } from "@/hooks/useMeetQueries";
 import { Calendar } from "../ui/calendar";
@@ -15,8 +14,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/Button";
-import { getMeetsByFilterQuery } from "@/supabase/meetFetchers";
-import { CountrySelect } from "../CountrySelect";
 
 const Dashboard = () => {
   const [value, onChange] = useState<Date | undefined>(new Date());
@@ -25,9 +22,7 @@ const Dashboard = () => {
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
   );
-  const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
-  const [selectedCity, setSelectedCity] = useState<string | null>(null);
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const meets = useSelector((state: RootState) => state.meets);
 
   const { data: orgsIAmMember } = useQuery({
     queryKey: ["orgsIAmMember", user?.id],
@@ -39,24 +34,9 @@ const Dashboard = () => {
   const meetIds = useMeetIdsFromUser(user);
   useUsersMeets(meetIds);
 
-  const { data: meetFilterQuery, isLoading: meetFilterLoading } = useQuery({
-    queryKey: ["meetsFilterQuery", selectedCountry, showAllMeets],
-    queryFn: () =>
-      getMeetsByFilterQuery(
-        selectedCountry || "",
-        user?.country || "",
-        selectedCity || "",
-        selectedType || "",
-        showAllMeets || false
-      ),
-  });
   const handleRedirectToCalendar = () => {
     window.location.href = "/calendar";
   };
-
-  if (meetFilterLoading) {
-    return <LoadingModal show />;
-  }
 
   return (
     <div className="mt-2">
@@ -83,31 +63,21 @@ const Dashboard = () => {
           <div>
             <Card>
               <Button onClick={handleRedirectToCalendar}>Full calendar</Button>
-              <Calendar
+              {/* <Calendar
                 mode="single"
                 selected={value}
                 onSelect={onChange}
                 className="rounded-md mx-auto"
-              />
-              <Button onClick={() => setShowAllMeets(!showAllMeets)}>
+              /> */}
+              {/* <Button onClick={() => setShowAllMeets(!showAllMeets)}>
                 {showAllMeets ? "Show by date" : "Show all meets"}
-              </Button>
+              </Button> */}
             </Card>
 
             <DashboardGroups orgs={orgsIAmMember ?? null} />
           </div>
           <div>
-            <Card className="mb-2">
-              <div className="grid grid-cols-3 text-center font-bold">
-                <CountrySelect
-                  value={selectedCountry || user?.country || ""}
-                  onSelect={(code) => setSelectedCountry(code)}
-                />
-                <div>Type</div>
-                <div>City</div>
-              </div>
-            </Card>
-            <DashboardListing meets={meetFilterQuery || []} />
+            <DashboardListing meets={meets || []} />
           </div>
         </div>
       </div>
