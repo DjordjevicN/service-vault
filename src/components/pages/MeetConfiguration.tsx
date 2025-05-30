@@ -10,6 +10,7 @@ import { resetMeetForm, setEntireMeetForm } from "@/store/meetFormSlice";
 import { useParams } from "react-router-dom";
 import { useMeetDetails } from "@/hooks/useMeetQueries";
 import StepController from "../StepController";
+import TopSteper from "../TopSteper";
 
 const MeetConfiguration = () => {
   const { meetId } = useParams();
@@ -41,6 +42,14 @@ const MeetConfiguration = () => {
 
   return (
     <div>
+      <TopSteper
+        section={section}
+        handleNext={handleNext}
+        handleReset={handleReset}
+        handlePrevious={handlePrevious}
+        maxSection={5}
+        onStepClick={(step) => setSection(step)}
+      />
       {section === 0 && <BasicInfoSection />}
       {section === 1 && <LocationSection />}
       {section === 2 && <TimeAndDateSection />}

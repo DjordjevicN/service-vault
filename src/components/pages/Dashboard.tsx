@@ -7,7 +7,7 @@ import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
 import LoadingModal from "../LoadingModal";
 import { useLoggedUser, useMeetIdsFromUser } from "@/hooks/useUser";
-import { useMeetsFromMyCountry, useUsersMeets } from "@/hooks/useMeetQueries";
+import { useUsersMeets } from "@/hooks/useMeetQueries";
 import { Calendar } from "../ui/calendar";
 import { AuthUser } from "@supabase/supabase-js";
 import { Card } from "../ui/card";
@@ -16,7 +16,6 @@ import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/Button";
 import { getMeetsByFilterQuery } from "@/supabase/meetFetchers";
-
 import { CountrySelect } from "../CountrySelect";
 
 const Dashboard = () => {
@@ -36,12 +35,6 @@ const Dashboard = () => {
     enabled: !!user?.id && !showAllMeets,
   });
 
-  // const { data: meetsByDate, isLoading: meetsByDateLoading } = useQuery({
-  //   queryKey: ["meetsByDate", value],
-  //   queryFn: () => getMeetsByDate(getDate(value)),
-  //   enabled: !!value,
-  // });
-
   useLoggedUser(auth);
   const meetIds = useMeetIdsFromUser(user);
   useUsersMeets(meetIds);
@@ -57,19 +50,9 @@ const Dashboard = () => {
         showAllMeets || false
       ),
   });
-
-  // const allMeets = () => {
-  //   const allMeets = [] as MeetType[];
-  //   if (meetsFromMyCountry && showAllMeets) {
-  //     allMeets.push(...meetsFromMyCountry);
-  //     return allMeets;
-  //   }
-  //   if (meetsByDate && !showAllMeets) {
-  //     allMeets.push(...meetsByDate);
-  //     return allMeets;
-  //   }
-  //   return allMeets;
-  // };
+  const handleRedirectToCalendar = () => {
+    window.location.href = "/calendar";
+  };
 
   if (meetFilterLoading) {
     return <LoadingModal show />;
@@ -99,7 +82,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-[1fr_2fr] gap-2">
           <div>
             <Card>
-              <Link to="/calendar">Full calendar</Link>
+              <Button onClick={handleRedirectToCalendar}>Full calendar</Button>
               <Calendar
                 mode="single"
                 selected={value}
@@ -124,7 +107,7 @@ const Dashboard = () => {
                 <div>City</div>
               </div>
             </Card>
-            <DashboardListing meets={meetFilterQuery} />
+            <DashboardListing meets={meetFilterQuery || []} />
           </div>
         </div>
       </div>

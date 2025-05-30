@@ -7,6 +7,7 @@ import {
   parseISO,
   getDay,
 } from "date-fns";
+import { useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/Button";
 import { useQuery } from "@tanstack/react-query";
@@ -15,8 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import LoadingModal from "../LoadingModal";
 import placeholder from "@/assets/placeholder.png";
+import { useEffect, useRef } from "react";
 
 const YearCalendar = () => {
+  const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const year = new Date().getFullYear();
@@ -30,9 +33,6 @@ const YearCalendar = () => {
   });
   console.log("Meets data:", meets);
 
-  const handleDayClick = (id: number) => {
-    navigate(`/meet-config/${id}`);
-  };
   const handleMeetRedirect = (id: number) => {
     navigate(`/meet/${id}`);
   };
@@ -41,17 +41,29 @@ const YearCalendar = () => {
     navigate("/meet-config");
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const currentMonthIndex = new Date().getMonth();
+      const target = monthRefs.current[currentMonthIndex];
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const getWeekdayIndex = (date: Date) => (getDay(date) + 6) % 7; // Monday = 0, Sunday = 6
   if (!meets) return <LoadingModal show />;
   return (
-    <div className="">
-      <div className="flex justify-between items-center mb-4 ">
+    <div className="mt-4">
+      {/* <div className="flex justify-between items-center mb-4 ">
         <h2 className="text-xl font-bold">Year {year}</h2>
         <Button onClick={handleCreateClick}>+ Create Event</Button>
-      </div>
+      </div> */}
 
-      <div className="flex flex-col gap-8 h-screen overflow-y-scroll">
-        {months.map((month) => {
+      <div className="flex flex-col gap-8 h-screen overflow-y-auto">
+        {months.map((month, index) => {
           const monthStart = startOfMonth(month);
           const monthEnd = endOfMonth(month);
           const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
@@ -62,11 +74,15 @@ const YearCalendar = () => {
           });
 
           return (
-            <div key={month.toString()}>
+            <div
+              key={month.toString()}
+              ref={(el) => {
+                monthRefs.current[index] = el;
+              }}
+            >
               <h3 className="text-center font-semibold mb-2 text-lg">
-                {format(month, "MMMM")}
+                {format(month, "MMMM")} {year}
               </h3>
-
               <div className="grid grid-cols-7 gap-1 text-xs">
                 {/* Weekday headers */}
                 {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
@@ -110,6 +126,7 @@ const YearCalendar = () => {
                           {dayEvents.map((event) => {
                             return (
                               <div
+                                key={event.id}
                                 className="w-full bg-border p-1 mb-1 "
                                 onClick={() => handleMeetRedirect(event.id)}
                               >
