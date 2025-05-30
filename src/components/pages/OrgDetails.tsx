@@ -326,6 +326,7 @@ const OrgDetails = () => {
               {isAdminZoneLocked ? "Unlock Admin Zone" : "Lock Admin Zone"}
             </Button>
             <Button
+              disabled={isAdminZoneLocked}
               onClick={deleteOrganization}
               className={`${isAdminZoneLocked ? "text-muted" : "text-white"}`}
               variant={isAdminZoneLocked ? "ghost" : "destructive"}
