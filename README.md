@@ -1,97 +1,103 @@
-🏍️ MotoNexus Plan rides. Meet riders. Ride together.
+# 🏍️ MotoNexus
+
+**Plan rides. Meet riders. Ride together.**
 
 MotoNexus is a modern platform for motorcycle enthusiasts to organize local
 meetups, multi-day rides, and collaborate inside riding organizations. Whether
 you're coordinating a small group ride or managing logistics for a road trip
 across borders — MotoNexus keeps everything in sync.
 
-Built with: React, TypeScript, TailwindCSS, Redux, Supabase, React Query
+---
 
-🚀 Features ✅ Effortless Ride Meetups Create and join motorcycle events with
-ease
+## 🛠️ Built With
 
-Manage open or invite-only meetups
+- React
+- TypeScript
+- TailwindCSS
+- Redux
+- Supabase
+- React Query
 
-Track RSVP status of each participant
+---
 
-Add location pins, time slots, and more
+## 🚀 Features
 
-🛡️ Riding Organizations Create or join organizations (clubs, groups, crews)
+### ✅ Effortless Ride Meetups
 
-Assign roles and manage access
+- Create and join motorcycle events with ease
+- Manage open or invite-only meetups
+- Track RSVP status of each participant
+- Add location pins, time slots, and more
 
-Schedule events within orgs and restrict them to members
+### 🛡️ Riding Organizations
 
-One user can belong to multiple organizations
+- Create or join organizations (clubs, groups, crews)
+- Assign roles and manage access
+- Schedule events within orgs and restrict them to members
+- One user can belong to multiple organizations
 
-🗺️ Advanced Trip Planning (Coming Soon) Plan multi-day rides with detailed
-day-by-day itineraries
+### 🗺️ Advanced Trip Planning _(Coming Soon)_
 
-Assign sleeping arrangements, routes, and stopovers
+- Plan multi-day rides with detailed day-by-day itineraries
+- Assign sleeping arrangements, routes, and stopovers
+- Share tasks (who brings what) and split expenses automatically
+- Track live location and access nearby mechanics
 
-Share tasks (who brings what) and split expenses automatically
+---
 
-Track live location and access nearby mechanics
+## 🖥️ Tech Stack
 
-🖥️ Tech Stack Tech Use Case React + Vite Frontend UI & development server
-TypeScript Static typing & safer code Tailwind CSS Utility-first styling Redux
-Toolkit Global state management Supabase Auth & backend-as-a-service React Query
-API state/data caching Storybook UI component development & documentation
-Leaflet Interactive maps Yup Form validation
+| Tech          | Use Case                                 |
+| ------------- | ---------------------------------------- |
+| React + Vite  | Frontend UI & development server         |
+| TypeScript    | Static typing & safer code               |
+| Tailwind CSS  | Utility-first styling                    |
+| Redux Toolkit | Global state management                  |
+| Supabase      | Auth & backend-as-a-service              |
+| React Query   | API state/data caching                   |
+| Storybook     | UI component development & documentation |
+| Leaflet       | Interactive maps                         |
+| Yup           | Form validation                          |
 
-🧠 Project Philosophy This project is built with a scalable, clean architecture
-in mind — suitable for real-world production apps. The emphasis is on:
+---
 
-User Experience – fast access, minimal friction
+## 🧠 Project Philosophy
 
-Collaboration – organize with other riders easily
+This project is built with a scalable, clean architecture in mind — suitable for
+real-world production apps. The emphasis is on:
 
-Mobility – supports on-the-go users with responsive design
+- **User Experience** – fast access, minimal friction
+- **Collaboration** – organize with other riders easily
+- **Mobility** – supports on-the-go users with responsive design
 
-📸 Screenshots Coming soon – screenshots or Loom walkthroughs.
+---
 
-🧪 Run Locally bash Copy Edit
+## 📸 Screenshots
 
+Coming soon – screenshots or Loom walkthroughs.
+
+---
+
+## 🧪 Run Locally
+
+```bash
 # Install dependencies
-
 npm install
 
 # Start development server
-
 npm run dev
+```
 
-# Run Storybook
+## ✍️ Roadmap
 
-npm run storybook 🔐 Auth Google Authentication (via Supabase)
+- Auth (Login/Register/Update/Delete)
 
-Redux state persisted with redux-persist
+- Meetup scheduling
 
-✍️ Roadmap Auth (Login/Register/Update/Delete)
+- Organization structure
 
-Meetup scheduling
+- Advanced trip planner
 
-Organization structure
+- In-app chat (WebSocket)
 
-Advanced trip planner
-
-In-app chat (WebSocket)
-
-Mobile app (React Native)
-
-🤝 Contributing PRs welcome! Please open issues for bugs or feature requests.
-Planned structure uses clear separation between:
-
-Pages (/pages)
-
-Components (/components)
-
-State (/store)
-
-API logic (/lib/api)
-
-Validation (/lib/validation)
-
-🧑‍💻 Author DzoniCam Motorcycle vlogger & front-end developer Follow my ride:
-YouTube | Instagram
-
-📜 License This project is licensed under the MIT License.
+- Mobile app (React Native)
