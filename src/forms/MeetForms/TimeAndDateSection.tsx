@@ -50,7 +50,7 @@ const TimeAndDateSection = () => {
       </Card>
       <Card className="px-6">
         <div>
-          <Label className="text-gray55" htmlFor="date">
+          <Label required className="text-gray55" htmlFor="date">
             Pick a date
           </Label>
           <MyDatePicker
@@ -59,7 +59,7 @@ const TimeAndDateSection = () => {
           />
 
           <div>
-            <Label className="mt-2 text-gray55" htmlFor="time">
+            <Label required className="mt-4 text-gray55" htmlFor="time">
               Select the time
             </Label>
             <TimePicker

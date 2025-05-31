@@ -21,10 +21,10 @@ const MediaSection = () => {
   };
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
-      <Card>
+      <Card className="mx-auto">
         <ImageUploaderCropper onCropped={handleImageCropped} />
       </Card>
-      <Card className="p-6 flex justify-center items-center flex-col ">
+      <Card className="p-6 flex justify-center items-center flex-col">
         {meetForm.image || croppedImage ? (
           <>
             <div className="mt-2">

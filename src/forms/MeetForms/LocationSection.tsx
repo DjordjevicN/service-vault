@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { CountrySelect } from "@/components/CountrySelect";
+import { useUserLocation } from "@/hooks/useUserLocation";
 
 const LocationSection = () => {
   const dispatch = useDispatch();
-  const { startLocation, address, city, country, gps } = useSelector(
+  const { startLocation, address, city, gps } = useSelector(
     (state: RootState) => state.meetForm
   );
+  const location = useUserLocation();
 
   return (
     <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
@@ -31,8 +33,8 @@ const LocationSection = () => {
       <div className="">
         <Card className="px-4 py-4 mb-4">
           <MyMap
-            lat={gps?.latitude || 44.7866}
-            long={gps?.longitude || 20.4489}
+            lat={gps?.latitude || location?.latitude}
+            long={gps?.longitude || location?.longitude}
             onChange={(lat, lng) => {
               dispatch(
                 updateMeetForm({
