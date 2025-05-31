@@ -19,6 +19,9 @@ import { USER_TYPES } from "@/constants/userTypes";
 import CalendarEventSlip from "./CalendarEventSlip";
 import { motoGP } from "@/data/motoGP";
 import { Card } from "../ui/card";
+import { CountrySelect } from "../CountrySelect";
+import { Button } from "../ui/Button";
+import CalendarCountryFilter from "./CalendarCountryFilter";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -53,7 +56,7 @@ const YearCalendar = () => {
     <div className="mt-4 h-screen flex flex-col">
       <div className="">
         <Card className="sticky top-0 z-10 shadow ">
-          <p>Filters</p>
+          <CalendarCountryFilter />
         </Card>
       </div>
       <div className="flex flex-col gap-8 h-screen overflow-y-auto">

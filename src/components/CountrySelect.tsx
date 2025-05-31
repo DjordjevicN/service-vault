@@ -11,9 +11,11 @@ import {
 export const CountrySelect = ({
   value,
   onSelect,
+  disabled = false,
 }: {
   onSelect: (countryCode: string) => void;
   value?: string;
+  disabled?: boolean;
 }) => {
   const countries = Country.getAllCountries();
 
@@ -21,6 +23,7 @@ export const CountrySelect = ({
     <div className="space-y-1 relative z-50">
       <Label htmlFor="country">Country</Label>
       <Select
+        disabled={disabled}
         value={value}
         onValueChange={(val) => {
           onSelect(val);
