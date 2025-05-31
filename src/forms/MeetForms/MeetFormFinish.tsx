@@ -13,6 +13,7 @@ import TextRow from "@/components/TextRow";
 import { getDate } from "@/components/utils/getDates";
 import { USER_TYPES } from "@/constants/userTypes";
 import { IOrganization } from "@/constants/orgTypes";
+import StepController from "@/components/StepController";
 const RuleRow = ({
   ruleNumber,
   rule,
@@ -28,7 +29,21 @@ const RuleRow = ({
   );
 };
 
-const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
+const MeetFormFinish = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+  isUpdate,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+  isUpdate: boolean;
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const meetForm = useSelector((state: RootState) => state.meetForm);
@@ -206,6 +221,15 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
                 />
               </div>
             </div>
+          </div>{" "}
+          <div className="ml-auto">
+            <StepController
+              section={section}
+              handleNext={handleNext}
+              handleReset={handleReset}
+              handlePrevious={handlePrevious}
+              maxSection={maxSection}
+            />
           </div>
         </Card>
       </div>

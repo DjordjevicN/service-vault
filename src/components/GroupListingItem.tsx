@@ -9,6 +9,7 @@ import crown from "@/assets/crown-gold.svg";
 import IconMoney from "./icons/IconMoney";
 import IconGps from "./icons/IconGps";
 import { getFormattedDate } from "./utils/getDates";
+import { Country } from "country-state-city";
 
 const GroupListingItem = ({ meet }: { meet: MeetType }) => {
   const navigate = useNavigate();
@@ -58,7 +59,8 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
               <IconGps className="text-muted-foreground" />
             </div>
             <p className="text-white text-sm capitalize">
-              {meet.address} {meet.city} {meet.country}
+              {meet.address} {meet.city}{" "}
+              {Country.getCountryByCode(meet.country)?.name}
             </p>
             {meet.gps.latitude && (
               <a

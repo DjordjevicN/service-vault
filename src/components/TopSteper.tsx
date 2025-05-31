@@ -8,21 +8,14 @@ type TopSteperProps = {
   handlePrevious: () => void;
   handleReset: () => void;
   onStepClick?: (step: number) => void;
+  stepLabels?: string[];
 };
-
-const stepLabels = [
-  "Basic Info",
-  "Location",
-  "Time & Date",
-  "Rules",
-  "Media",
-  "Finish",
-];
 
 const TopSteper: React.FC<TopSteperProps> = ({
   section,
   maxSection,
   onStepClick,
+  stepLabels = [],
 }) => {
   return (
     <div className="flex justify-center gap-4 mt-2">

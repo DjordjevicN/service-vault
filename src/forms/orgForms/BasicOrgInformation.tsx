@@ -1,17 +1,30 @@
+import StepController from "@/components/StepController";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RootState } from "@/store";
 import { updateOrgForm } from "@/store/orgFormSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const BasicOrgInformation = () => {
+const BasicOrgInformation = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const orgForm = useSelector((state: RootState) => state.organizationForm);
   if (!orgForm) return null;
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
+    <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
       <Card className="p-6">
         <h2 className="text-gradient text-2xl w-fit">Basic Information</h2>
         <p className="text-gray55">
@@ -22,7 +35,9 @@ const BasicOrgInformation = () => {
       </Card>
       <Card className="p-6">
         <div>
-          <Label htmlFor="org-name">Organization name</Label>
+          <Label required htmlFor="org-name">
+            Organization name
+          </Label>
           <Input
             id="org-name"
             type="text"
@@ -55,6 +70,15 @@ const BasicOrgInformation = () => {
             placeholder="Describe the organization"
           />
         </div>
+
+        <StepController
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={maxSection}
+          disableNext={!orgForm.name}
+        />
       </Card>
     </div>
   );

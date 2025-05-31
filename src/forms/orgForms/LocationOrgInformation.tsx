@@ -7,14 +7,27 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { updateOrgForm } from "@/store/orgFormSlice";
 import { CountrySelect } from "@/components/CountrySelect";
+import StepController from "@/components/StepController";
 
-const LocationOrgInformation = () => {
+const LocationOrgInformation = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const { address, city, country, gps } = useSelector(
     (state: RootState) => state.organizationForm
   );
   const dispatch = useDispatch();
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
+    <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
       <Card className="px-6">
         <div>
           <h2 className="">
@@ -77,7 +90,15 @@ const LocationOrgInformation = () => {
                 }
               />
             </div>
-          </div>
+          </div>{" "}
+          <StepController
+            section={section}
+            handleNext={handleNext}
+            handleReset={handleReset}
+            handlePrevious={handlePrevious}
+            maxSection={maxSection}
+            disableNext={!(gps?.latitude && gps?.longitude)}
+          />
         </Card>
       </div>
     </div>
