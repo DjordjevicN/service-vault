@@ -3,7 +3,7 @@ import { RootState } from "@/store";
 import Select from "@/components/myUiLibrary/Select";
 import { updateMeetForm } from "@/store/meetFormSlice";
 
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -23,8 +23,11 @@ const BasicInfoSection = () => {
       </Card>
       <Card className="p-6">
         <div>
-          <Label htmlFor="meet-name">Meet name</Label>
+          <Label required htmlFor="meet-name">
+            Meet name
+          </Label>
           <Input
+            required
             id="meet-name"
             type="text"
             placeholder="Meet name"

@@ -17,10 +17,14 @@ export const getAllMeets = async (dispatch: Dispatch) => {
   return meets;
 };
 export const getAllMeetsByUserId = async (id: number | string) => {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const isoDate = sevenDaysAgo.toISOString();
   const { data: meets, error } = await supabase
     .from("meets")
     .select("*")
-    .in("organizerId", [id]);
+    .in("organizerId", [id])
+    .gt("startDate", isoDate); // keep meets newer than 7 days ago
   if (error) {
     console.error("Error fetching meets:", error);
     return [];
@@ -53,10 +57,16 @@ export const getAllMeetsByIds = async (
   meetIds: number[],
   dispatch: Dispatch
 ) => {
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const isoDate = sevenDaysAgo.toISOString();
+
   const { data: meets, error } = await supabase
     .from("meets")
     .select("*")
-    .in("id", meetIds);
+    .in("id", meetIds)
+    .gt("startDate", isoDate); // keep meets newer than 7 days ago
+
   if (error) {
     console.error("Error fetching meets:", error);
     return [];
@@ -65,6 +75,7 @@ export const getAllMeetsByIds = async (
     console.error("No meets found");
     return [];
   }
+
   dispatch(storeUserMeets(meets));
   return meets;
 };

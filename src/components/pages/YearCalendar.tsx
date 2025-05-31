@@ -6,6 +6,7 @@ import {
   isSameDay,
   parseISO,
   getDay,
+  isToday,
 } from "date-fns";
 
 import { useQuery } from "@tanstack/react-query";
@@ -17,6 +18,7 @@ import { useEffect, useRef } from "react";
 import { USER_TYPES } from "@/constants/userTypes";
 import CalendarEventSlip from "./CalendarEventSlip";
 import { motoGP } from "@/data/motoGP";
+import { Card } from "../ui/card";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -48,7 +50,12 @@ const YearCalendar = () => {
   const externalEvents = motoGP;
   if (!meets) return <LoadingModal show />;
   return (
-    <div className="mt-4">
+    <div className="mt-4 h-screen flex flex-col">
+      <div className="">
+        <Card className="sticky top-0 z-10 shadow ">
+          <p>Filters</p>
+        </Card>
+      </div>
       <div className="flex flex-col gap-8 h-screen overflow-y-auto">
         {months.map((month, index) => {
           const monthStart = startOfMonth(month);
@@ -92,7 +99,7 @@ const YearCalendar = () => {
                   const dayEvents = [...externalEvents, ...meets].filter((ev) =>
                     isSameDay(parseISO(ev.startDate), day)
                   );
-
+                  const isCurrentDay = isToday(day);
                   return (
                     <div
                       key={day.toString()}
@@ -101,7 +108,11 @@ const YearCalendar = () => {
                       }`}
                       title={`${dayEvents.length} event(s)`}
                     >
-                      <div className="flex gap-2">
+                      <div
+                        className={`flex gap-2 items-center mb-2 ${
+                          isCurrentDay ? "bg-blue-300/10" : ""
+                        }`}
+                      >
                         <span>{format(day, "d")}</span>
                         <span className="text-gray-500">
                           {format(day, "EEE")}

@@ -35,7 +35,6 @@ const UserProfile = () => {
         : Promise.reject("User UUID is undefined"),
     enabled: !!user?.uuid,
   });
-  console.log("usersMeets", usersMeets);
 
   if (!user) {
     return <LoadingModal show={true} />;

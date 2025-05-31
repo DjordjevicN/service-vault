@@ -93,16 +93,43 @@ const MeetFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
     mutate(updatedMeetForm);
   };
 
+  const validateMeetForm = () => {
+    if (!meetForm.name || !meetForm.startDate) {
+      return false;
+    }
+    if (!meetForm.gps.latitude || !meetForm.gps.longitude) {
+      return false;
+    }
+
+    return true;
+  };
+
   return (
-    <div>
+    <div className="text-sm">
       <Card className="px-6 mt-2">
         <div className="flex justify-between items-center">
           <h2 className=" w-fit">
             <span className="text-gradient">Final check</span> before publishing
           </h2>
-          <Button className="div-gradient" onClick={handlePublish}>
-            Publish
-          </Button>
+          <div
+            className="flex flex-row-reverse
+          items-center gap-4"
+          >
+            <Button
+              disabled={!validateMeetForm()}
+              className="div-gradient"
+              onClick={handlePublish}
+            >
+              Publish
+            </Button>
+            {!validateMeetForm() && (
+              <div>
+                <p className="text-red-500 text-xs">
+                  Please fill in all required fields.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </Card>
       <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
