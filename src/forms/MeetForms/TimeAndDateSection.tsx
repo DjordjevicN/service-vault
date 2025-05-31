@@ -7,8 +7,21 @@ import MyDatePicker from "@/components/myUiLibrary/MyDatePicker";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { getDate } from "@/components/utils/getDates";
+import StepController from "@/components/StepController";
 
-const TimeAndDateSection = () => {
+const TimeAndDateSection = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const { startTime, startDate } = useSelector(
     (state: RootState) => state.meetForm
@@ -22,8 +35,6 @@ const TimeAndDateSection = () => {
   );
 
   const handleDateChange = (date: Date) => {
-    console.log(getDate(date));
-
     setSelectedDate(date);
     dispatch(updateMeetForm({ key: "startDate", value: getDate(date) }));
   };
@@ -69,6 +80,16 @@ const TimeAndDateSection = () => {
               format="HH:mm"
             />
           </div>
+        </div>{" "}
+        <div className="ml-auto">
+          <StepController
+            section={section}
+            handleNext={handleNext}
+            handleReset={handleReset}
+            handlePrevious={handlePrevious}
+            maxSection={maxSection}
+            disableNext={!startTime || !startDate}
+          />
         </div>
       </Card>
     </div>

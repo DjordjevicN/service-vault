@@ -1,5 +1,5 @@
 import TextRow from "@/components/TextRow";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/card";
 import { IOrganization } from "@/constants/orgTypes";
 import { RootState } from "@/store";
@@ -11,8 +11,23 @@ import placeholder from "@/assets/placeholder.png";
 import MyMap from "@/components/map/MyMap";
 import { USER_TYPES } from "@/constants/userTypes";
 import { resetOrgForm } from "@/store/orgFormSlice";
+import StepController from "@/components/StepController";
 
-const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
+const OrgFormFinish = ({
+  isUpdate,
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  isUpdate: boolean;
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const orgForm = useSelector((state: RootState) => state.organizationForm);
@@ -81,12 +96,16 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
           <h2 className="w-fit">
             <span className="text-gradient">Final check</span> before publishing
           </h2>
-          <Button className="div-gradient" onClick={handleSubmit}>
+          <Button
+            disabled={!orgForm.name}
+            className="div-gradient"
+            onClick={handleSubmit}
+          >
             Publish
           </Button>
         </div>
       </Card>
-      <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
+      <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
         <Card>
           <img
             src={orgForm.image || placeholder}
@@ -131,7 +150,14 @@ const OrgFormFinish = ({ isUpdate }: { isUpdate: boolean }) => {
             <TextRow label="Facebook" details={orgForm?.facebook || ""} />
             <TextRow label="Twitter" details={orgForm?.twitter || ""} />
             <TextRow label="YouTube" details={orgForm?.youtube || ""} />
-          </div>
+          </div>{" "}
+          <StepController
+            section={section}
+            handleNext={handleNext}
+            handleReset={handleReset}
+            handlePrevious={handlePrevious}
+            maxSection={maxSection}
+          />
         </Card>
       </div>
     </div>

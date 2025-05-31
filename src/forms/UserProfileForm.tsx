@@ -1,3 +1,4 @@
+import { CountrySelect } from "@/components/CountrySelect";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/Input";
@@ -14,8 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UserProfileForm = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user);
-  const auth = useSelector((state: RootState) => state.auth);
+  const user = useSelector(
+    (state: RootState) => state.user
+  ) as USER_TYPES | null;
+  const auth = useSelector((state: RootState) => state.auth) as AuthUser | null;
   const [editedUser, setEditedUser] = useState({ ...user });
 
   const { mutate: createNewUser } = useMutation({
@@ -92,19 +95,19 @@ const UserProfileForm = () => {
               }))
             }
           />
-          <Label htmlFor="country">Country</Label>
-          <Input
-            id="country"
+
+          <CountrySelect
             value={editedUser.country}
-            onChange={(e) =>
+            onSelect={(country) =>
               setEditedUser((prev) => ({
                 ...prev,
-                country: e.target.value.toLowerCase(),
+                country: country,
               }))
             }
           />
-
-          <Label htmlFor="motorcycle">Motorcycle</Label>
+          <Label className="mt-4" htmlFor="motorcycle">
+            Motorcycle
+          </Label>
           <Input
             id="motorcycle"
             value={editedUser.currentMotorcycle}
@@ -117,7 +120,11 @@ const UserProfileForm = () => {
           />
           <Button
             className="mt-2"
-            disabled={status === "pending"}
+            disabled={
+              status === "pending" ||
+              !editedUser.username ||
+              !editedUser.country
+            }
             onClick={(e) => handleSubmit(e)}
           >
             {status === "pending" && <Loader2 className="mr-2 animate-spin" />}

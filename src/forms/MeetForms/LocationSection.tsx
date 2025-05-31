@@ -8,8 +8,21 @@ import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { CountrySelect } from "@/components/CountrySelect";
 import { useUserLocation } from "@/hooks/useUserLocation";
+import StepController from "@/components/StepController";
 
-const LocationSection = () => {
+const LocationSection = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const { startLocation, address, city, gps } = useSelector(
     (state: RootState) => state.meetForm
@@ -44,10 +57,14 @@ const LocationSection = () => {
               );
             }}
           />
+          <p className="text-muted-foreground">
+            Pin the location on the map, so users can set the google maps
+            location accurately.<span className="text-red-500 ml-2">*</span>
+          </p>
         </Card>
         <Card className="px-6">
           <div>
-            <Label htmlFor="location">Location</Label>
+            <Label htmlFor="location">Location </Label>
             <Input
               onChange={(e) =>
                 dispatch(
@@ -59,7 +76,7 @@ const LocationSection = () => {
               }
               value={startLocation}
               id="location"
-              placeholder="Enter the location"
+              placeholder="Describe the location eg. Park, Mall, etc."
             />
             <Label htmlFor="Address">Address</Label>
             <Input
@@ -101,6 +118,16 @@ const LocationSection = () => {
                 }
               />
             </div>
+          </div>
+          <div className="ml-auto">
+            <StepController
+              section={section}
+              handleNext={handleNext}
+              handleReset={handleReset}
+              handlePrevious={handlePrevious}
+              maxSection={maxSection}
+              disableNext={!gps.latitude || !gps.longitude}
+            />
           </div>
         </Card>
       </div>

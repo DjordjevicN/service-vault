@@ -2,11 +2,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 import { addRule, deleteRule, updateRule } from "@/store/meetFormSlice";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import StepController from "@/components/StepController";
 
-const RulesSection = () => {
+const RulesSection = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const rules = useSelector((state: RootState) => state.meetForm.rules);
 
@@ -61,6 +74,15 @@ const RulesSection = () => {
           ))}
 
           <Button onClick={handleAddRule}>+ Add Rule</Button>
+        </div>
+        <div className="ml-auto">
+          <StepController
+            section={section}
+            handleNext={handleNext}
+            handleReset={handleReset}
+            handlePrevious={handlePrevious}
+            maxSection={maxSection}
+          />
         </div>
       </Card>
     </div>

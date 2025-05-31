@@ -1,4 +1,4 @@
-import { Button } from "./ui/button";
+import { Button } from "./ui/Button";
 
 const StepController = ({
   section,
@@ -6,15 +6,17 @@ const StepController = ({
   handlePrevious,
   handleNext,
   maxSection,
+  disableNext = false,
 }: {
   section: number;
   handleReset: () => void;
   handlePrevious: () => void;
   handleNext: () => void;
   maxSection: number;
+  disableNext?: boolean;
 }) => {
   return (
-    <div className="flex gap-4 p-6">
+    <div className="flex gap-4">
       {section === 0 && (
         <Button variant={"ghost"} onClick={handleReset}>
           Reset
@@ -25,7 +27,11 @@ const StepController = ({
           Previous
         </Button>
       )}
-      {section !== maxSection && <Button onClick={handleNext}>Next</Button>}
+      {section !== maxSection && (
+        <Button disabled={disableNext} onClick={handleNext}>
+          Next
+        </Button>
+      )}
     </div>
   );
 };

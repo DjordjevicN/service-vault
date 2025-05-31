@@ -1,16 +1,29 @@
+import StepController from "@/components/StepController";
 import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { RootState } from "@/store";
 import { updateOrgForm } from "@/store/orgFormSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 
-const OrgSocials = () => {
+const OrgSocials = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const orgForm = useSelector((state: RootState) => state.organizationForm);
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
+    <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
       <Card className="p-6">
         <h2 className="text-gradient text-2xl w-fit">
           Organization Social Media
@@ -89,7 +102,14 @@ const OrgSocials = () => {
             }
             value={orgForm.customLink}
           />
-        </div>
+        </div>{" "}
+        <StepController
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={maxSection}
+        />
       </Card>
     </div>
   );

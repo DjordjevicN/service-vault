@@ -15,7 +15,7 @@ const EditUser = () => {
       <div className="grid grid-cols-[2fr_1fr] gap-4 mt-16 items-start">
         <UserProfileForm />
         <Card className="px-6">
-          <div className="">
+          <div>
             <div className="flex items-center gap-2">
               <img src={grom} alt="icom" />
               <p className="capitalize font-bold text-white">tip</p>

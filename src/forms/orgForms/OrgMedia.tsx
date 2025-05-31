@@ -7,8 +7,21 @@ import Cropper from "react-easy-crop";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/Button";
 import { updateOrgForm } from "@/store/orgFormSlice";
+import StepController from "@/components/StepController";
 
-const OrgMedia = () => {
+const OrgMedia = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const { image } = useSelector((state: RootState) => state.organizationForm);
 
@@ -46,7 +59,7 @@ const OrgMedia = () => {
   }, [imageSrc, croppedAreaPixels, dispatch]);
 
   return (
-    <div className="grid grid-cols-[1fr_1fr] gap-4 mt-2">
+    <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
       <Card className="px-6">
         <div>
           <h2 className="w-fit">
@@ -94,7 +107,14 @@ const OrgMedia = () => {
           <Button className="mt-6" onClick={showCroppedImage}>
             Crop Image
           </Button>
-        </div>
+        </div>{" "}
+        <StepController
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={maxSection}
+        />
       </Card>
     </div>
   );

@@ -7,8 +7,21 @@ import { Input } from "@/components/ui/Input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
+import StepController from "@/components/StepController";
 
-const BasicInfoSection = () => {
+const BasicInfoSection = ({
+  section,
+  handleReset,
+  handlePrevious,
+  handleNext,
+  maxSection,
+}: {
+  section: number;
+  handleReset: () => void;
+  handlePrevious: () => void;
+  handleNext: () => void;
+  maxSection: number;
+}) => {
   const dispatch = useDispatch();
   const meetForm = useSelector((state: RootState) => state.meetForm);
   return (
@@ -92,6 +105,16 @@ const BasicInfoSection = () => {
             value={meetForm.description}
             rows={5}
             placeholder="Describe the ride"
+          />
+        </div>
+        <div className="ml-auto">
+          <StepController
+            section={section}
+            handleNext={handleNext}
+            handleReset={handleReset}
+            handlePrevious={handlePrevious}
+            maxSection={maxSection}
+            disableNext={!meetForm.name}
           />
         </div>
       </Card>

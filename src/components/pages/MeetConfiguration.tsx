@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { resetMeetForm, setEntireMeetForm } from "@/store/meetFormSlice";
 import { useParams } from "react-router-dom";
 import { useMeetDetails } from "@/hooks/useMeetQueries";
-import StepController from "../StepController";
 import TopSteper from "../TopSteper";
 
 const MeetConfiguration = () => {
@@ -39,7 +38,14 @@ const MeetConfiguration = () => {
     dispatch(resetMeetForm());
     setSection(0);
   };
-
+  const stepLabels = [
+    "Basic Info",
+    "Location",
+    "Time & Date",
+    "Rules",
+    "Media",
+    "Finish",
+  ];
   return (
     <div>
       <TopSteper
@@ -49,22 +55,64 @@ const MeetConfiguration = () => {
         handlePrevious={handlePrevious}
         maxSection={5}
         onStepClick={(step) => setSection(step)}
+        stepLabels={stepLabels}
       />
-      {section === 0 && <BasicInfoSection />}
-      {section === 1 && <LocationSection />}
-      {section === 2 && <TimeAndDateSection />}
-      {section === 3 && <RulesSection />}
-      {section === 4 && <MediaSection />}
-      {section === 5 && <MeetFormFinish isUpdate={!!meetId} />}
-      <div className="flex justify-end">
-        <StepController
+      {section === 0 && (
+        <BasicInfoSection
           section={section}
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
           maxSection={5}
         />
-      </div>
+      )}
+      {section === 1 && (
+        <LocationSection
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={5}
+        />
+      )}
+      {section === 2 && (
+        <TimeAndDateSection
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={5}
+        />
+      )}
+      {section === 3 && (
+        <RulesSection
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={5}
+        />
+      )}
+      {section === 4 && (
+        <MediaSection
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={5}
+        />
+      )}
+      {section === 5 && (
+        <MeetFormFinish
+          section={section}
+          handleNext={handleNext}
+          handleReset={handleReset}
+          handlePrevious={handlePrevious}
+          maxSection={5}
+          isUpdate={!!meetId}
+        />
+      )}
+      <div className="flex justify-end"></div>
     </div>
   );
 };
