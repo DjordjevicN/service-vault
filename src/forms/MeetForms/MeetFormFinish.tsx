@@ -99,8 +99,7 @@ const MeetFormFinish = ({
 
     const updatedMeetForm = {
       ...meetForm,
-      participants: [user.id],
-      organizerId: user.uuid,
+      organizerId: orgId ? null : user.uuid,
       organizationId: orgId ? Number(orgId) : null,
       country: meetForm.country || user.country || "world",
       organizerName: orgId ? organization?.name : user.username,
@@ -177,7 +176,7 @@ const MeetFormFinish = ({
           <Card className="mt-2 px-6">
             <div>
               <h2 className="w-fit">Description</h2>
-              <p className="text-white mt-6">
+              <p className="whitespace-pre-line text-base mt-6">
                 {meetForm.description || "No description"}
               </p>
             </div>

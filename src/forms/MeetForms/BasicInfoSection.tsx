@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import StepController from "@/components/StepController";
+import { meetRideOptions } from "@/constants/meetConstants";
 
 const BasicInfoSection = ({
   section,
@@ -51,12 +52,7 @@ const BasicInfoSection = ({
           />
           <Label htmlFor="type">Ride Type</Label>
           <Select
-            options={[
-              { label: "Show off", value: "show-off" },
-              { label: "Casual", value: "casual" },
-              { label: "Spirit", value: "spirit" },
-              { label: "Reckless", value: "reckless" },
-            ]}
+            options={meetRideOptions}
             onChange={(value) =>
               dispatch(updateMeetForm({ key: "rideType", value }))
             }

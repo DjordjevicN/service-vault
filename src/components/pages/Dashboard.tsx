@@ -77,8 +77,6 @@ const Dashboard = () => {
                 </p>
               </div>
             )}
-
-            <DashboardListing meets={meets || []} />
           </Card>
         </div>
       </div>

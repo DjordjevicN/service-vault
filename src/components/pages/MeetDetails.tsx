@@ -7,7 +7,7 @@ import Counter from "../Counter";
 import Button from "../myUiLibrary/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import placeholder from "../../assets/placeholder.png";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
 import MyMap from "../map/MyMap";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
@@ -24,6 +24,7 @@ import {
   useDeleteMeet,
   useMeetDetails,
   useOrganizer,
+  useOrganizerOrg,
   useParticipants,
 } from "@/hooks/useMeetQueries";
 import { MeetType } from "@/constants/meetTypes";
@@ -32,6 +33,9 @@ import { useState } from "react";
 import { AuthUser } from "@supabase/supabase-js";
 import { Card, CardContent } from "../ui/card";
 import MyDropdownMenu from "../myUiLibrary/MyDropdownMenu";
+import { Country } from "country-state-city";
+import { getOrgMembers } from "@/supabase/orgFetchers";
+import { ORG_MEMBER_STATUS } from "@/constants/orgMemberStatus";
 
 const MeetDetails = () => {
   const navigate = useNavigate();
@@ -46,6 +50,15 @@ const MeetDetails = () => {
   const { mutate: deleteMeet } = useDeleteMeet();
   const { data: participants } = useParticipants(meet?.participants);
   const { data: organizer } = useOrganizer(meet?.organizerId);
+  const { data: eventOrganizerIsOrganization } = useOrganizerOrg(
+    meet?.organizationId,
+    dispatch
+  );
+  const { data: members } = useQuery({
+    queryKey: ["orgMembers"],
+    queryFn: () => getOrgMembers(Number(meet?.organizationId)),
+    enabled: !!meet?.organizationId,
+  });
 
   const { mutate: userAttend } = useMutation({
     mutationFn: async ({
@@ -82,12 +95,20 @@ const MeetDetails = () => {
     deleteMeet(meetId);
   };
 
-  const permissionToRemoveMeet = (auth: AuthUser, meet: MeetType) => {
+  const isAdmin = (auth: AuthUser, meet: MeetType) => {
+    const isCurrentUserMemberOfOrg = members?.find(
+      (member) => member.userId === user.id
+    );
+    if (isCurrentUserMemberOfOrg?.status === ORG_MEMBER_STATUS.ADMIN) {
+      return true;
+    }
+
     if (auth?.id === meet?.organizerId) {
       return true;
     }
     return false;
   };
+
   const totalParticipants = meet?.participants.length;
 
   const isMaxRidersReached =
@@ -116,7 +137,7 @@ const MeetDetails = () => {
             <div className="flex flex-col w-full">
               <div className="flex justify-between items-baseline">
                 <h1 className="text-2xl font-bold mb-5">{meet.name}</h1>
-                {auth && !permissionToRemoveMeet(auth, meet) && (
+                {auth && (
                   <Button
                     onClick={handleAttend}
                     disabled={isMaxRidersReached || isUserAttending}
@@ -128,7 +149,7 @@ const MeetDetails = () => {
                       : "Attend"}
                   </Button>
                 )}
-                {auth && permissionToRemoveMeet(auth, meet) && (
+                {auth && isAdmin(auth, meet) && (
                   <MyDropdownMenu
                     trigger="Admin Actions"
                     options={[
@@ -141,7 +162,9 @@ const MeetDetails = () => {
                   />
                 )}
               </div>
-              <HostedByCard organizedBy={organizer} />
+              <HostedByCard
+                organizedBy={organizer || eventOrganizerIsOrganization}
+              />
             </div>
           </div>
         </Card>
@@ -213,17 +236,30 @@ const MeetDetails = () => {
                       <img src={location} alt="moto" />
                     </div>
                     <div>
-                      <a
-                        onClick={(e) => e.stopPropagation()}
-                        target="_blank"
-                        href={googleMapsPinLink(
-                          meet.gps.latitude,
-                          meet.gps.longitude
-                        )}
-                        className="flex items-center gap-2"
-                      >
-                        <p className="capitalize">{meet.address}</p>
-                      </a>
+                      <p className="capitalize">
+                        Address:{" "}
+                        <span>
+                          {meet.address} {meet.city}{" "}
+                          {Country.getCountryByCode(meet.country)?.name}
+                        </span>
+                      </p>
+
+                      {meet.gps.latitude && (
+                        <a
+                          onClick={(e) => e.stopPropagation()}
+                          target="_blank"
+                          href={googleMapsPinLink(
+                            meet.gps.latitude,
+                            meet.gps.longitude
+                          )}
+                          className="w-fit ml-auto"
+                        >
+                          <p className="text-xs">
+                            Show{" "}
+                            <span className="text-blue-400">GoogleMaps</span>
+                          </p>
+                        </a>
+                      )}
                     </div>
                   </div>
                 )}

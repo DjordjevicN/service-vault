@@ -8,6 +8,7 @@ import {
 import { getAllUsersByIds, getUserById } from "@/supabase/userFetchers";
 import { useDispatch } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
+import { fetchOrgById, getAllOrgsByIds } from "@/supabase/orgFetchers";
 
 export const useMeetDetails = (id?: string) => {
   return useQuery({
@@ -31,6 +32,17 @@ export const useOrganizer = (organizerId?: string) => {
     queryFn: () =>
       organizerId
         ? getUserById(organizerId)
+        : Promise.reject("Organizer ID is undefined"),
+    enabled: !!organizerId,
+  });
+};
+
+export const useOrganizerOrg = (organizerId?: string, dispatch?: any) => {
+  return useQuery({
+    queryKey: ["organizerOrg", organizerId],
+    queryFn: () =>
+      organizerId
+        ? fetchOrgById(Number(organizerId), dispatch)
         : Promise.reject("Organizer ID is undefined"),
     enabled: !!organizerId,
   });
