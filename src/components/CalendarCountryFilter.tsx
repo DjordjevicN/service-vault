@@ -1,7 +1,8 @@
 import React from "react";
-import { CountrySelect } from "../CountrySelect";
+
 import { X } from "lucide-react";
 import { Country } from "country-state-city";
+import { CountrySelect } from "./CountrySelect";
 
 const CalendarCountryFilter = () => {
   const [selectedCountries, setSelectedCountries] = React.useState<string[]>(

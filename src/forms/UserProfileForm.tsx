@@ -4,39 +4,20 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/label";
 import { USER_TYPES } from "@/constants/userTypes";
+import { useCreateUser, useUpdateUser } from "@/hooks/useUser";
 import { RootState } from "@/store";
-import { storeUser } from "@/store/userSlice";
-import { createUser, updateUserProfile } from "@/supabase/userFetchers";
 import { AuthUser } from "@supabase/supabase-js";
-import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
 const UserProfileForm = () => {
-  const dispatch = useDispatch();
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const auth = useSelector((state: RootState) => state.auth) as AuthUser | null;
   const [editedUser, setEditedUser] = useState({ ...user });
-
-  const { mutate: createNewUser } = useMutation({
-    mutationFn: (newUser: USER_TYPES) => createUser(newUser),
-    onSuccess: (data) => {
-      dispatch(storeUser(data));
-    },
-  });
-
-  const { mutate: updateUser, status } = useMutation({
-    mutationFn: ({ auth, newUser }: { auth: AuthUser; newUser: USER_TYPES }) =>
-      updateUserProfile(auth.id, newUser),
-    onSuccess: (data) => {
-      dispatch(storeUser(data));
-      window.location.href = "/profile";
-    },
-  });
-
+  const { mutate: createNewUser } = useCreateUser();
+  const { mutate: updateUser, status } = useUpdateUser();
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newUser = {

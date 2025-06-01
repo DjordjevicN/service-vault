@@ -139,7 +139,7 @@ export const deleteOrg = async (id: number) => {
 
   for (const user of affectedUsers) {
     const updatedOrgs = user.attendingOrgs.filter(
-      (orgId: string) => orgId !== id
+      (orgId: string) => Number(orgId) !== id
     );
 
     const { error: updateError } = await supabase

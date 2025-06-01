@@ -16,12 +16,10 @@ import { RootState } from "@/store";
 import LoadingModal from "../LoadingModal";
 import { useEffect, useRef } from "react";
 import { USER_TYPES } from "@/constants/userTypes";
-import CalendarEventSlip from "./CalendarEventSlip";
 import { motoGP } from "@/data/motoGP";
 import { Card } from "../ui/card";
-import { CountrySelect } from "../CountrySelect";
-import { Button } from "../ui/Button";
-import CalendarCountryFilter from "./CalendarCountryFilter";
+import CalendarCountryFilter from "@/components/CalendarCountryFilter";
+import CalendarEventSlip from "../CalendarEventSlip";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);

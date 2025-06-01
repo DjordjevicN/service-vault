@@ -12,10 +12,11 @@ import { useMeetDetails } from "@/hooks/useMeetQueries";
 import TopSteper from "../TopSteper";
 
 const MeetConfiguration = () => {
-  const { meetId } = useParams();
-  const { data: meet } = useMeetDetails(meetId);
   const dispatch = useDispatch();
+  const { meetId } = useParams();
   const [section, setSection] = useState(0);
+  const { data: meet } = useMeetDetails(meetId);
+
   useEffect(() => {
     if (!meetId) return;
     dispatch(setEntireMeetForm(meet));
@@ -46,6 +47,7 @@ const MeetConfiguration = () => {
     "Media",
     "Finish",
   ];
+  const maxSection = 5;
   return (
     <div>
       <TopSteper
@@ -53,7 +55,7 @@ const MeetConfiguration = () => {
         handleNext={handleNext}
         handleReset={handleReset}
         handlePrevious={handlePrevious}
-        maxSection={5}
+        maxSection={maxSection}
         onStepClick={(step) => setSection(step)}
         stepLabels={stepLabels}
       />
@@ -63,7 +65,7 @@ const MeetConfiguration = () => {
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
-          maxSection={5}
+          maxSection={maxSection}
         />
       )}
       {section === 1 && (
@@ -72,7 +74,7 @@ const MeetConfiguration = () => {
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
-          maxSection={5}
+          maxSection={maxSection}
         />
       )}
       {section === 2 && (
@@ -81,7 +83,7 @@ const MeetConfiguration = () => {
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
-          maxSection={5}
+          maxSection={maxSection}
         />
       )}
       {section === 3 && (
@@ -90,7 +92,7 @@ const MeetConfiguration = () => {
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
-          maxSection={5}
+          maxSection={maxSection}
         />
       )}
       {section === 4 && (
@@ -99,7 +101,7 @@ const MeetConfiguration = () => {
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
-          maxSection={5}
+          maxSection={maxSection}
         />
       )}
       {section === 5 && (
@@ -108,11 +110,10 @@ const MeetConfiguration = () => {
           handleNext={handleNext}
           handleReset={handleReset}
           handlePrevious={handlePrevious}
-          maxSection={5}
+          maxSection={maxSection}
           isUpdate={!!meetId}
         />
       )}
-      <div className="flex justify-end"></div>
     </div>
   );
 };
