@@ -119,6 +119,22 @@ export const getMeetsByTheCountry = async (country: string) => {
 
   return data;
 };
+export const getMeetsByTheCountries = async (countries: string[]) => {
+  const { data, error } = await supabase
+    .from("meets")
+    .select("*")
+    .in("country", countries);
+  if (error) {
+    console.error("Error fetching meets:", error);
+    return [];
+  }
+  if (!data) {
+    console.error("No meets found");
+    return [];
+  }
+
+  return data;
+};
 // update meet
 export const updateMeet = async (id: number, updates: object) => {
   const { data, error } = await supabase

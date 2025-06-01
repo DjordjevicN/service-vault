@@ -4,7 +4,7 @@ import clock from "../../assets/clock.svg";
 import location from "../../assets/gps.svg";
 import MeetDetailsAbout from "../MeetDetailsAbout";
 import Counter from "../Counter";
-import Button from "../myUiLibrary/Button";
+
 import { useNavigate, useParams } from "react-router-dom";
 import placeholder from "../../assets/placeholder.png";
 import LoadingModal from "../LoadingModal";
@@ -33,6 +33,7 @@ import { Country } from "country-state-city";
 import { ORG_MEMBER_STATUS } from "@/constants/orgMemberStatus";
 import { useOrgMembers } from "@/hooks/useOrgQueries";
 import { useUserAttend } from "@/hooks/useUser";
+import { Button } from "../ui/Button";
 
 const MeetDetails = () => {
   const navigate = useNavigate();
@@ -108,19 +109,22 @@ const MeetDetails = () => {
             />
             <div className="flex flex-col w-full">
               <div className="flex justify-between items-baseline">
-                <h1 className="text-2xl font-bold mb-5">{meet.name}</h1>
-                {auth && (
-                  <Button
-                    onClick={handleAttend}
-                    disabled={isMaxRidersReached || isUserAttending}
-                  >
-                    {isMaxRidersReached
-                      ? "Full"
-                      : isUserAttending
-                      ? "Attending"
-                      : "Attend"}
-                  </Button>
-                )}
+                <div className="flex gap-4">
+                  <h1 className="text-2xl font-bold mb-5">{meet.name}</h1>
+                  {auth && (
+                    <Button
+                      onClick={handleAttend}
+                      disabled={isMaxRidersReached || isUserAttending}
+                    >
+                      {isMaxRidersReached
+                        ? "Full"
+                        : isUserAttending
+                        ? "Attending"
+                        : "Attend"}
+                    </Button>
+                  )}
+                </div>
+
                 {auth && isAdmin(auth, meet) && (
                   <MyDropdownMenu
                     trigger="Admin Actions"

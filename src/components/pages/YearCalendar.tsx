@@ -10,20 +10,25 @@ import {
 } from "date-fns";
 
 import { useQuery } from "@tanstack/react-query";
-import { getAllMeets } from "@/supabase/meetFetchers";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import LoadingModal from "../LoadingModal";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { USER_TYPES } from "@/constants/userTypes";
 import { motoGP } from "@/data/motoGP";
 import { Card } from "../ui/card";
 import CalendarCountryFilter from "@/components/CalendarCountryFilter";
 import CalendarEventSlip from "../CalendarEventSlip";
+import { useSelector } from "react-redux";
+import { getMeetsByTheCountries } from "@/supabase/meetFetchers";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const dispatch = useDispatch();
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  console.log(
+    "YearCalendar rendered with selectedCountries:",
+    selectedCountries
+  );
+
   const year = new Date().getFullYear();
   const user = useSelector(
     (state: RootState) => state.user
@@ -31,8 +36,8 @@ const YearCalendar = () => {
   const months = Array.from({ length: 12 }, (_, i) => new Date(year, i, 1));
 
   const { data: meets } = useQuery({
-    queryKey: ["meets", user?.country],
-    queryFn: () => getAllMeets(dispatch),
+    queryKey: ["meets", selectedCountries],
+    queryFn: () => getMeetsByTheCountries(selectedCountries),
   });
 
   useEffect(() => {
@@ -47,6 +52,23 @@ const YearCalendar = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  const addCountry = (country: string) => {
+    if (selectedCountries.includes(country)) return;
+    setSelectedCountries((prev) => [...prev, country]);
+  };
+
+  const removeCountry = (country: string) => {
+    setSelectedCountries((prev) => prev.filter((c) => c !== country));
+  };
+  useEffect(() => {
+    if (user?.country) {
+      setSelectedCountries((prev) => {
+        if (prev.includes(user.country!)) return prev;
+        return [...prev, user.country!];
+      });
+    }
+  }, [user]);
+
   const getWeekdayIndex = (date: Date) => (getDay(date) + 6) % 7;
   const externalEvents = motoGP;
   if (!meets) return <LoadingModal show />;
@@ -54,7 +76,11 @@ const YearCalendar = () => {
     <div className="mt-4 h-screen flex flex-col">
       <div className="">
         <Card className="sticky top-0 z-10 shadow ">
-          <CalendarCountryFilter />
+          <CalendarCountryFilter
+            selectedCountries={selectedCountries}
+            onCountryChange={addCountry}
+            onCountryRemove={removeCountry}
+          />
         </Card>
       </div>
       <div className="flex flex-col gap-8 h-screen overflow-y-auto">

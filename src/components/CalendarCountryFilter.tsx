@@ -1,24 +1,22 @@
-import React from "react";
-
 import { X } from "lucide-react";
 import { Country } from "country-state-city";
 import { CountrySelect } from "./CountrySelect";
 
-const CalendarCountryFilter = () => {
-  const [selectedCountries, setSelectedCountries] = React.useState<string[]>(
-    []
-  );
-
+const CalendarCountryFilter = ({
+  selectedCountries,
+  onCountryChange,
+  onCountryRemove,
+}: {
+  selectedCountries: string[];
+  onCountryChange: (country: string) => void;
+  onCountryRemove: (country: string) => void;
+}) => {
   const addCountryToFilter = (country: string) => {
-    setSelectedCountries((prev) =>
-      prev.includes(country)
-        ? prev.filter((c) => c !== country)
-        : [...prev, country]
-    );
+    onCountryChange(country);
   };
 
   const removeFilterCountry = (country: string) => {
-    setSelectedCountries((prev) => prev.filter((c) => c !== country));
+    onCountryRemove(country);
   };
   const maxCountries = selectedCountries.length >= 10;
   return (
