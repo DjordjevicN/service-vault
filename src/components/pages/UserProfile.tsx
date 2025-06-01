@@ -94,6 +94,14 @@ const UserProfile = () => {
             {usersMeets?.map((meet) => {
               return <GroupListingItem key={meet.id} meet={meet} />;
             })}
+            {usersMeets?.length === 0 && (
+              <div className="text-center">
+                <p className="text-xl font-semibold mb-4">No Meets Found</p>
+                <p className="text-muted-foreground">
+                  You have not created any meets yet.
+                </p>
+              </div>
+            )}
           </Card>
         </div>
       </div>

@@ -66,8 +66,16 @@ const Dashboard = () => {
             </div>
           </div>
           <Card>
-            {meets && (
-              <p className="mt-6 ml-4 text-xl">Meets you are attending</p>
+            <p className="mt-6 ml-4 text-xl">Meets you are attending</p>
+            {meets ? (
+              <DashboardListing meets={meets || []} />
+            ) : (
+              <div className="flex flex-col items-center justify-center p-6 text-center">
+                <h2 className="text-xl font-semibold mb-4">No Meets Found</h2>
+                <p className="text-muted-foreground">
+                  You are not attending any meets.
+                </p>
+              </div>
             )}
 
             <DashboardListing meets={meets || []} />

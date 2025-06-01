@@ -9,14 +9,23 @@ import { Input } from "../ui/Input";
 import { useState } from "react";
 import { getOrgSearchInformation } from "@/supabase/searchFetchers";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { USER_TYPES } from "@/constants/userTypes";
+import { Country } from "country-state-city";
 
 const OrgsPage = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const debounceSearch = useDebounce(searchValue, 1000);
+  const user = useSelector(
+    (state: RootState) => state.user
+  ) as USER_TYPES | null;
+
   const { data: orgs, isLoading: orgsLoading } = useQuery({
     queryKey: ["all Orgs"],
-    queryFn: () => getOrgsByTheCountry("Serbia"),
+    queryFn: () => getOrgsByTheCountry(user?.country || ""),
+    enabled: !!user?.country,
   });
 
   const { data: foundOrgs, isLoading: foundLoading } = useQuery({
@@ -28,9 +37,11 @@ const OrgsPage = () => {
   const goToOrgDetails = (orgId: number) => {
     navigate(`/org/${orgId}`);
   };
+  console.log(foundOrgs);
 
   const orgsToDisplay =
     searchValue && searchValue.length > 3 ? foundOrgs : orgs;
+
   if (orgsLoading || foundLoading) return <LoadingModal show={true} />;
   return (
     <div className="mt-2">
@@ -51,14 +62,27 @@ const OrgsPage = () => {
             return (
               <div
                 key={group.id}
-                className="p-6 border rounded w-[320px] bg-accent cursor-pointer"
+                className="p-6 border rounded w-[320px] bg-accent cursor-pointer flex flex-col justify-between"
                 onClick={() => goToOrgDetails(group.id)}
               >
                 <div>
                   <div>
-                    <p className="text-xl font-semibold">{group.name}</p>
+                    {group.image ? (
+                      <img
+                        src={group.image}
+                        className="rounded w-[320px] "
+                        alt=""
+                      />
+                    ) : (
+                      ""
+                    )}
+                    <p className="text-xl font-semibold mt-4 capitalize">
+                      {group.name}
+                    </p>
                     <p className="text-xs text-muted-foreground font-light">
-                      {`${group.city} ${group.country}`}
+                      {`${group.city} ${
+                        Country.getCountryByCode(group.country)?.name || ""
+                      }`}
                     </p>
                   </div>
 

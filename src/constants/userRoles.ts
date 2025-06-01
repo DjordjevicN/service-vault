@@ -4,4 +4,5 @@ export const USER_ROLES = {
   MODERATOR: 2,
   ADMIN: 3,
   SUPERADMIN: 4,
+  FOLLOWER: 5,
 };

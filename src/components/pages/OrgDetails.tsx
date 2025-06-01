@@ -17,7 +17,10 @@ import placeholder from "@/assets/placeholder.png";
 import SocialMediaDisplay from "../SocialMediaDisplay";
 import DashboardListing from "../DashboardListing";
 import { getAllOrgMeets } from "@/supabase/meetFetchers";
-import { ORG_MEMBER_STATUS_LABELS } from "@/constants/orgMemberStatus";
+import {
+  ORG_MEMBER_STATUS,
+  ORG_MEMBER_STATUS_LABELS,
+} from "@/constants/orgMemberStatus";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useState } from "react";
 import { Label } from "../ui/label";
@@ -32,12 +35,12 @@ const OrgDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [isAdminZoneLocked, setIsAdminZoneLocked] = useState(true);
-
+  const [hideFollowers, setHideFollowers] = useState(false);
+  const [memberSearchValue, setMemberSearchValue] = useState("");
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const [searchValue, setSearchValue] = useState("");
-
   const { data: organization, isLoading } = useQuery({
     queryKey: ["orgDetails", id],
     queryFn: () => fetchOrgById(Number(id), dispatch),
@@ -51,6 +54,7 @@ const OrgDetails = () => {
         : Promise.reject("Organization ID is undefined"),
     enabled: !!organization?.id,
   });
+
   const { data: members, refetch } = useQuery({
     queryKey: ["orgMembers"],
     queryFn: () => getOrgMembers(Number(id)),
@@ -113,6 +117,22 @@ const OrgDetails = () => {
     queryFn: () => searchUsersByEmailOrUsername(searchValue),
     enabled: !!searchValue && searchValue.length > 3,
   });
+
+  const handleSearchMembers = () => {
+    if (!memberSearchValue || memberSearchValue.length < 3) return;
+    const filteredMembers = members?.filter((member) =>
+      member.username.toLowerCase().includes(memberSearchValue.toLowerCase())
+    );
+    if (filteredMembers && filteredMembers.length > 0) {
+      return filteredMembers;
+    } else {
+      return [];
+    }
+  };
+
+  const isCurrentUserAlreadyMember = members?.some(
+    (member) => member.userId === user?.id
+  );
   const handleAddMember = (user: USER_TYPES) => {
     if (!organization || !user) return;
     const isAlreadyMember = members?.find(
@@ -126,7 +146,7 @@ const OrgDetails = () => {
     const newMember = {
       userId: user.id,
       username: user.username,
-      status: 1,
+      status: ORG_MEMBER_STATUS.FOLLOWER,
       image: user.image,
       orgId: organization.id,
     };
@@ -173,6 +193,29 @@ const OrgDetails = () => {
     localStorage.setItem("orgId", String(organization.id));
     navigate(`/meet-config`);
   };
+  const membersToDisplay = () => {
+    if (!members) return [];
+
+    const filtered =
+      memberSearchValue && memberSearchValue.length >= 3
+        ? handleSearchMembers()
+        : members;
+
+    return filtered?.sort((a, b) => {
+      if (
+        a.status === ORG_MEMBER_STATUS.FOLLOWER &&
+        b.status !== ORG_MEMBER_STATUS.FOLLOWER
+      )
+        return 1;
+      if (
+        a.status !== ORG_MEMBER_STATUS.FOLLOWER &&
+        b.status === ORG_MEMBER_STATUS.FOLLOWER
+      )
+        return -1;
+      return 0;
+    });
+  };
+
   if (isLoading) return <LoadingModal show={true} />;
   return (
     <div className="mt-2">
@@ -210,24 +253,61 @@ const OrgDetails = () => {
               </div>
             </div>
           </Card>
+          {isAdmin || memberAdmin ? (
+            <Card className="mt-2">
+              <div>
+                <Label htmlFor="org-search">Add New Member</Label>
+                <Input
+                  id="org-search"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder="Search by email or username"
+                />
+              </div>
+            </Card>
+          ) : null}
           <Card className="mt-2">
-            <p>
-              Members: <span>{members?.length || 0}</span>
-            </p>
+            <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between gap-2 w-full">
+                <p>
+                  Members: <span>{members?.length || 0}</span>
+                </p>
+                {isAdmin ||
+                  (memberAdmin && (
+                    <div>
+                      <Label htmlFor="member-search">Search Members</Label>
+                      <Input
+                        id="member-search"
+                        placeholder="Search by username"
+                        onChange={(e) => setMemberSearchValue(e.target.value)}
+                      />
+                    </div>
+                  ))}
+              </div>
+              {!isAdmin && (
+                <div>
+                  {isCurrentUserAlreadyMember ? (
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleRemoveMember(user?.id || 0)}
+                      className="text-blue-400"
+                    >
+                      Leave Organization
+                    </Button>
+                  ) : (
+                    <Button
+                      className="text-blue-400"
+                      variant="ghost"
+                      onClick={() => handleAddMember(user)}
+                    >
+                      Follow
+                    </Button>
+                  )}
+                </div>
+              )}
+            </div>
             <div>
               <div>
-                {isAdmin || memberAdmin ? (
-                  <div>
-                    <Label htmlFor="org-search">
-                      Search for members by email
-                    </Label>
-                    <Input
-                      id="org-search"
-                      value={searchValue}
-                      onChange={(e) => setSearchValue(e.target.value)}
-                    />
-                  </div>
-                ) : null}
                 {foundUsers && (
                   <div className="relative">
                     <div className="absolute w-full bg-card border rounded p-2 text-xs">
@@ -245,8 +325,13 @@ const OrgDetails = () => {
                 )}
               </div>
 
-              {members && members.length > 0 ? (
-                members.map((member) => {
+              <div className="max-h-[300px] overflow-y-auto">
+                {membersToDisplay()?.map((member) => {
+                  if (
+                    member.status === ORG_MEMBER_STATUS.FOLLOWER &&
+                    hideFollowers
+                  )
+                    return;
                   return (
                     <div
                       key={member.id}
@@ -294,10 +379,8 @@ const OrgDetails = () => {
                       ) : null}
                     </div>
                   );
-                })
-              ) : (
-                <div>No members found.</div>
-              )}
+                })}
+              </div>
             </div>
           </Card>
         </div>
@@ -315,14 +398,23 @@ const OrgDetails = () => {
             </Card>
           ) : null}
 
-          <Card className="">
+          <Card>
             <p className="text-lg">Meets created by {organization.name}</p>
-            <DashboardListing meets={allMeets || []} />
+            {allMeets && allMeets.length > 0 ? (
+              <DashboardListing meets={allMeets} />
+            ) : (
+              <div className="flex flex-col items-center justify-center p-6 text-center">
+                <h2 className="text-xl font-semibold mb-4">No Meets Found</h2>
+                <p className="text-muted-foreground mb-2">
+                  This group did not create any meets yet.
+                </p>
+              </div>
+            )}
           </Card>
         </div>
       </div>
       {isAdmin && (
-        <Card className="mt-2 bg-red-950">
+        <Card className="mt-2 border-red-400">
           <div className="flex items-center gap-4">
             <p>Admin Zone</p>
             <Button

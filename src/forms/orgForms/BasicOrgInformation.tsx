@@ -43,7 +43,12 @@ const BasicOrgInformation = ({
             type="text"
             placeholder="Organization name"
             onChange={(e) =>
-              dispatch(updateOrgForm({ key: "name", value: e.target.value }))
+              dispatch(
+                updateOrgForm({
+                  key: "name",
+                  value: e.target.value.toLowerCase(),
+                })
+              )
             }
             value={orgForm.name}
           />

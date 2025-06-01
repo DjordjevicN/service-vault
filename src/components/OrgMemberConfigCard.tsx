@@ -1,5 +1,5 @@
 import { ORG_MEMBER_STATUS } from "@/constants/orgMemberStatus";
-import { Button } from "./ui/button";
+import { Button } from "./ui/Button";
 
 const OrgMemberConfigCard = ({
   member,

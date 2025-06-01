@@ -28,7 +28,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
 
   return (
     <div
-      className="grid grid-cols-[1fr_2fr] mb-2 gap-4 cursor-pointer relative rounded-lg p-4 transition duration-200 bg-accent/30 hover:bg-accent/50 shadow-md hover:shadow-lg"
+      className="flex mb-2 gap-4 cursor-pointer relative rounded-lg p-4 transition duration-200 bg-accent/30 hover:bg-accent/50 shadow-md hover:shadow-lg"
       onClick={() => handleNavigate(meet.id)}
     >
       {isMyMeet() && (
@@ -36,13 +36,13 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
           <img width={24} height={24} src={crown} alt="" />
         </div>
       )}
-      <div>
-        <img
-          src={meet.image || placeholder}
-          alt="meet image"
-          className="w-full h-32 object-cover rounded-lg"
-        />
-      </div>
+
+      <img
+        src={meet.image || placeholder}
+        alt="meet image"
+        className="w-32 rounded-lg object-cover"
+      />
+
       <div className="flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2">

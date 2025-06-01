@@ -14,7 +14,11 @@ const DashboardGroupItem = ({ group }: { group: IOrganization }) => {
       className="flex gap-4 rounded p-4 cursor-pointer hover:bg-accent/50"
       onClick={() => handleRedirect(group.id!)}
     >
-      <img src={placeholder} alt="group banner" className="w-[100px]" />
+      <img
+        src={group.image || placeholder}
+        alt="group banner"
+        className="w-32 h-32 rounded object-cover"
+      />
       <div>
         <h2>{group.name}</h2>
         <p className="text-xs text-muted-foreground">
