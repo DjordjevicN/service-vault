@@ -6,8 +6,6 @@ import TopBar from "./components/TopBar";
 import Meets from "./components/pages/Meets";
 import Trips from "./components/pages/Trips";
 import UserProfile from "./components/pages/UserProfile";
-import Register from "./components/pages/Register";
-import SuperAdmin from "./components/pages/SuperAdmin";
 import Login from "./components/pages/Login";
 import { useSelector } from "react-redux";
 import { RootState } from "./store";
@@ -35,7 +33,6 @@ const App = () => {
           />
           <Route path="/orgs" element={<OrgsPage />} />
           <Route path="/org/:id" element={<OrgDetails />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/meet/:id" element={<MeetDetails />} />
           <Route
@@ -115,14 +112,6 @@ const App = () => {
             element={
               <PrivateRoute>
                 <EditAvatar />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/superadmin"
-            element={
-              <PrivateRoute>
-                <SuperAdmin />
               </PrivateRoute>
             }
           />

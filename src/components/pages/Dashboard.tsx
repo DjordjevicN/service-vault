@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "react-calendar/dist/Calendar.css";
 import DashboardGroups from "../DashboardGroups";
 import DashboardListing from "../DashboardListing";
@@ -9,28 +8,19 @@ import { useLoggedUser, useMeetIdsFromUser } from "@/hooks/useUser";
 import { useUsersMeets } from "@/hooks/useMeetQueries";
 import { AuthUser } from "@supabase/supabase-js";
 import { Card } from "../ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/Button";
+import { useMyOrgs } from "@/hooks/useOrgQueries";
 
 const Dashboard = () => {
-  const [value, onChange] = useState<Date | undefined>(new Date());
-  const [showAllMeets, setShowAllMeets] = useState(false);
   const auth = useSelector((state: RootState) => state.auth as AuthUser | null);
   const user = useSelector(
     (state: RootState) => state.user as USER_TYPES | null
   );
   const meets = useSelector((state: RootState) => state.meets);
-
-  const { data: orgsIAmMember } = useQuery({
-    queryKey: ["orgsIAmMember", user?.id],
-    queryFn: () => getAllOrganizationByMemberId((user?.id as number) || 0),
-    enabled: !!user?.id && !showAllMeets,
-  });
-
-  useLoggedUser(auth);
   const meetIds = useMeetIdsFromUser(user);
+  const { data: orgsIAmMember } = useMyOrgs(user?.id || null);
+  useLoggedUser(auth || null);
   useUsersMeets(meetIds);
 
   const handleRedirectToCalendar = () => {

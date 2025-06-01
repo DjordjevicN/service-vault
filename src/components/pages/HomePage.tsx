@@ -5,10 +5,14 @@ import { Link } from "react-router-dom";
 import homepageBg from "@/assets/homepageBg.png";
 import Logo from "../Logo";
 import Footer from "../Footer";
+import { USER_TYPES } from "@/constants/userTypes";
+import { AuthUser } from "@supabase/supabase-js";
 
 const HomePage = () => {
-  const user = useSelector((state: RootState) => state.user);
-  const auth = useSelector((state: RootState) => state.auth);
+  const user = useSelector(
+    (state: RootState) => state.user
+  ) as USER_TYPES | null;
+  const auth = useSelector((state: RootState) => state.auth) as AuthUser | null;
 
   if (auth && !user) {
     window.location.href = "/edit-profile";

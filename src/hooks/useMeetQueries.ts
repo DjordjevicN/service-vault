@@ -8,7 +8,8 @@ import {
 import { getAllUsersByIds, getUserById } from "@/supabase/userFetchers";
 import { useDispatch } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchOrgById, getAllOrgsByIds } from "@/supabase/orgFetchers";
+import { fetchOrgById } from "@/supabase/orgFetchers";
+import { Dispatch } from "@reduxjs/toolkit";
 
 export const useMeetDetails = (id?: string) => {
   return useQuery({
@@ -37,7 +38,7 @@ export const useOrganizer = (organizerId?: string) => {
   });
 };
 
-export const useOrganizerOrg = (organizerId?: string, dispatch?: any) => {
+export const useOrganizerOrg = (dispatch: Dispatch, organizerId?: string) => {
   return useQuery({
     queryKey: ["organizerOrg", organizerId],
     queryFn: () =>

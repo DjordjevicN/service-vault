@@ -7,18 +7,14 @@ import Counter from "../Counter";
 import Button from "../myUiLibrary/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import placeholder from "../../assets/placeholder.png";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import LoadingModal from "../LoadingModal";
 import MyMap from "../map/MyMap";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
-import { updateMeet } from "@/supabase/meetFetchers";
-import { updateUserProfile } from "@/supabase/userFetchers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
 import shield from "../../assets/shield.svg";
 import moto from "../../assets/moto.svg";
-import { storeUser } from "@/store/userSlice";
 import money from "../../assets/money.svg";
 import {
   useDeleteMeet,
@@ -34,8 +30,9 @@ import { AuthUser } from "@supabase/supabase-js";
 import { Card, CardContent } from "../ui/card";
 import MyDropdownMenu from "../myUiLibrary/MyDropdownMenu";
 import { Country } from "country-state-city";
-import { getOrgMembers } from "@/supabase/orgFetchers";
 import { ORG_MEMBER_STATUS } from "@/constants/orgMemberStatus";
+import { useOrgMembers } from "@/hooks/useOrgQueries";
+import { useUserAttend } from "@/hooks/useUser";
 
 const MeetDetails = () => {
   const navigate = useNavigate();
@@ -46,48 +43,24 @@ const MeetDetails = () => {
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const auth = useSelector((state: RootState) => state.auth) as AuthUser | null;
-  const { data: meet, isLoading: isMeetLoading, refetch } = useMeetDetails(id);
+  const {
+    data: meet,
+    isLoading: isMeetLoading,
+    refetch: refetchMeetDetails,
+  } = useMeetDetails(id);
   const { mutate: deleteMeet } = useDeleteMeet();
   const { data: participants } = useParticipants(meet?.participants);
   const { data: organizer } = useOrganizer(meet?.organizerId);
   const { data: eventOrganizerIsOrganization } = useOrganizerOrg(
-    meet?.organizationId,
-    dispatch
+    dispatch,
+    meet?.organizationId
   );
-  const { data: members } = useQuery({
-    queryKey: ["orgMembers"],
-    queryFn: () => getOrgMembers(Number(meet?.organizationId)),
-    enabled: !!meet?.organizationId,
-  });
+  const { data: members } = useOrgMembers(meet?.organizationId);
+  const { mutate: userAttend } = useUserAttend(refetchMeetDetails);
 
-  const { mutate: userAttend } = useMutation({
-    mutationFn: async ({
-      user,
-      meet,
-    }: {
-      user: USER_TYPES;
-      meet: MeetType;
-    }) => {
-      const updatedUser = await updateUserProfile(user.uuid, {
-        attendingMeets: [...(user.attendingMeets ?? []), meet.id],
-      });
-      const updatedMeet = await updateMeet(meet.id, {
-        participants: [...(meet.participants ?? []), user.id],
-      });
-      return { updatedUser, updatedMeet };
-    },
-    onSuccess: (data) => {
-      dispatch(storeUser(data.updatedUser));
-      refetch();
-    },
-    onError: (error) => {
-      console.error("Error attending meet", error);
-    },
-  });
-
-  const handleAttend = () => {
+  const handleAttend = async () => {
     if (user && meet) {
-      userAttend({ user, meet });
+      await userAttend({ user, meet });
     }
   };
 
@@ -96,34 +69,33 @@ const MeetDetails = () => {
   };
 
   const isAdmin = (auth: AuthUser, meet: MeetType) => {
-    const isCurrentUserMemberOfOrg = members?.find(
-      (member) => member.userId === user.id
-    );
+    const isCurrentUserMemberOfOrg = user
+      ? members?.find((member) => member.userId === user.id)
+      : undefined;
     if (isCurrentUserMemberOfOrg?.status === ORG_MEMBER_STATUS.ADMIN) {
       return true;
     }
-
     if (auth?.id === meet?.organizerId) {
       return true;
     }
     return false;
   };
 
-  const totalParticipants = meet?.participants.length;
-
-  const isMaxRidersReached =
-    meet?.maxRiders === 0 ? false : meet?.maxRiders === totalParticipants;
-  const isUserAttending = meet && user?.attendingMeets?.includes(meet?.id);
-
   const toggleConfirmationModal = () => {
     setIsConfirmationModalOpen((prev) => !prev);
   };
-  if (isMeetLoading) return <LoadingModal show={isMeetLoading} />;
+
   const handleEditMeet = () => {
     navigate(`/meet-config/${meet.id}`);
   };
   const areThereAnyRules =
     meet?.rules && meet.rules.length > 0 && meet.rules[0] !== "";
+  const totalParticipants = meet?.participants.length;
+  const isMaxRidersReached =
+    meet?.maxRiders === 0 ? false : meet?.maxRiders === totalParticipants;
+  const isUserAttending = meet && user?.attendingMeets?.includes(meet?.id);
+
+  if (isMeetLoading) return <LoadingModal show={isMeetLoading} />;
   return (
     <>
       <div className="mt-2">
@@ -209,7 +181,7 @@ const MeetDetails = () => {
                       key={user.id}
                       user={user}
                       meet={meet}
-                      updateUser={refetch}
+                      updateUser={refetchMeetDetails}
                     />
                   ))}
               </div>

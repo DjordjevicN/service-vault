@@ -1,9 +1,5 @@
-import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { registerUser, loginUser, createUser } from "@/supabase/userFetchers";
-import { storeAuth } from "@/store/authSlice";
-import { storeUser } from "@/store/userSlice";
+
 import { Input } from "@/components/ui/Input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/Button";
@@ -20,65 +16,17 @@ import { Loader2 } from "lucide-react";
 import { authSchema, registerSchema } from "@/validation/loginSchema";
 import { validateForm } from "@/validation/validateForm";
 import { CountrySelect } from "../CountrySelect";
+import { useLogin, useRegister } from "@/hooks/useUser";
 
 const Login = () => {
-  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [country, setCountry] = useState("");
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const { mutate: login } = useLogin();
+  const { mutate: register, status } = useRegister();
 
-  const { mutate: createNewUser } = useMutation({
-    mutationFn: (newUser: {
-      username: string;
-      email: string;
-      country: string;
-      uuid: string;
-    }) => createUser(newUser),
-    onSuccess: (data) => {
-      dispatch(storeUser(data));
-      window.location.href = "/";
-    },
-    onError: (error) => {
-      console.log("Error creating user:", error);
-    },
-  });
-
-  const { mutate: login } = useMutation({
-    mutationFn: ({ email, password }: { email: string; password: string }) =>
-      loginUser(email, password),
-    onSuccess: (data) => {
-      dispatch(storeAuth(data.user));
-      window.location.href = "/";
-    },
-    onError: (error) => {
-      console.log("Error logging in:", error);
-      alert(`Login failed: ${error.message}`);
-    },
-  });
-
-  const { mutate: register, status } = useMutation({
-    mutationFn: async ({
-      email,
-      password,
-    }: {
-      email: string;
-      password: string;
-    }) => registerUser(email, password),
-    onSuccess: (data) => {
-      dispatch(storeAuth(data.user));
-      createNewUser({
-        username,
-        email,
-        country,
-        uuid: data.user.id,
-      });
-    },
-    onError: (error: Error) => {
-      alert(`Auth failed: ${error.message}`);
-    },
-  });
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -89,14 +37,14 @@ const Login = () => {
     const formData = { email, password, username, country };
     const { isValid, errors } = await validateForm(registerSchema, formData);
     if (!isValid) return alert(Object.values(errors).join("\n"));
-    register({ email, password });
+    register(formData);
   };
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = { email, password };
     const { isValid, errors } = await validateForm(authSchema, formData);
     if (!isValid) return setFormErrors(errors);
-    login({ email, password });
+    login(formData);
   };
 
   return (
