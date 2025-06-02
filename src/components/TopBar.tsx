@@ -24,7 +24,7 @@ const TopBar = () => {
   });
 
   return (
-    <Card className="px-6 py-4 mt-2">
+    <Card className="px-6 py-4 mt-2 standardMaxWidth">
       <div className="flex items-center justify-between">
         <Logo />
         <div className="relative">

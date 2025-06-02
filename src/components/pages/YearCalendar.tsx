@@ -3,10 +3,10 @@ import {
   endOfMonth,
   eachDayOfInterval,
   format,
-  isSameDay,
   parseISO,
   getDay,
   isToday,
+  isWithinInterval,
 } from "date-fns";
 
 import { useQuery } from "@tanstack/react-query";
@@ -20,14 +20,12 @@ import CalendarCountryFilter from "@/components/CalendarCountryFilter";
 import CalendarEventSlip from "../CalendarEventSlip";
 import { useSelector } from "react-redux";
 import { getMeetsByTheCountries } from "@/supabase/meetFetchers";
+import TodaysEventsModal from "../TodaysEventsModal";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  console.log(
-    "YearCalendar rendered with selectedCountries:",
-    selectedCountries
-  );
+  const [todaysEvents, setTodaysEvents] = useState<any[]>([]);
 
   const year = new Date().getFullYear();
   const user = useSelector(
@@ -70,99 +68,123 @@ const YearCalendar = () => {
   }, [user]);
 
   const getWeekdayIndex = (date: Date) => (getDay(date) + 6) % 7;
-  const externalEvents = motoGP;
+  const externalEvents = [];
+  console.log("todaysEvents", todaysEvents);
+
   if (!meets) return <LoadingModal show />;
   return (
-    <div className="mt-4 h-screen flex flex-col">
-      <div className="">
-        <Card className="sticky top-0 z-10 shadow ">
-          <CalendarCountryFilter
-            selectedCountries={selectedCountries}
-            onCountryChange={addCountry}
-            onCountryRemove={removeCountry}
-          />
-        </Card>
-      </div>
-      <div className="flex flex-col gap-8 h-screen overflow-y-auto">
-        {months.map((month, index) => {
-          const monthStart = startOfMonth(month);
-          const monthEnd = endOfMonth(month);
-          const days = eachDayOfInterval({ start: monthStart, end: monthEnd });
+    <>
+      <TodaysEventsModal
+        events={todaysEvents}
+        setTodaysEvents={setTodaysEvents}
+      />
+      <div className="mt-4 h-screen flex flex-col">
+        <div className="">
+          <Card className="sticky top-0 z-10 shadow ">
+            <CalendarCountryFilter
+              selectedCountries={selectedCountries}
+              onCountryChange={addCountry}
+              onCountryRemove={removeCountry}
+            />
+          </Card>
+        </div>
+        <div className="flex flex-col gap-8 h-screen overflow-y-auto">
+          {months.map((month, index) => {
+            const monthStart = startOfMonth(month);
+            const monthEnd = endOfMonth(month);
+            const days = eachDayOfInterval({
+              start: monthStart,
+              end: monthEnd,
+            });
 
-          const leadingEmptyDays = Array.from({
-            length: getWeekdayIndex(monthStart),
-          });
+            const leadingEmptyDays = Array.from({
+              length: getWeekdayIndex(monthStart),
+            });
 
-          return (
-            <div
-              key={month.toString()}
-              ref={(el) => {
-                monthRefs.current[index] = el;
-              }}
-            >
-              <h3 className="text-center font-semibold mb-2 text-lg">
-                {format(month, "MMMM")} {year}
-              </h3>
-              <div className="grid grid-cols-7 gap-1 text-xs">
-                {/* Weekday headers */}
-                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
-                  (day) => (
-                    <div
-                      key={day}
-                      className="text-center font-semibold text-gray-600"
-                    >
-                      {day}
-                    </div>
-                  )
-                )}
-
-                {/* Leading empty days */}
-                {leadingEmptyDays.map((_, i) => (
-                  <div key={`empty-${i}`} className="p-1 h-[200px]" />
-                ))}
-
-                {/* Days of the month */}
-                {days.map((day) => {
-                  const dayEvents = [...externalEvents, ...meets].filter((ev) =>
-                    isSameDay(parseISO(ev.startDate), day)
-                  );
-                  const isCurrentDay = isToday(day);
-                  return (
-                    <div
-                      key={day.toString()}
-                      className={`cursor-pointer border rounded p-1 min-h-[200px]  ${
-                        dayEvents.length ? "" : ""
-                      }`}
-                      title={`${dayEvents.length} event(s)`}
-                    >
+            return (
+              <div
+                key={month.toString()}
+                ref={(el) => {
+                  monthRefs.current[index] = el;
+                }}
+              >
+                <h3 className="text-center font-semibold mb-2 text-lg">
+                  {format(month, "MMMM")} {year}
+                </h3>
+                <div className="grid grid-cols-7 gap-1 text-xs">
+                  {/* Weekday headers */}
+                  {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+                    (day) => (
                       <div
-                        className={`flex gap-2 items-center mb-2 ${
-                          isCurrentDay ? "bg-blue-300/10" : ""
-                        }`}
+                        key={day}
+                        className="text-center font-semibold text-gray-600"
                       >
-                        <span>{format(day, "d")}</span>
-                        <span className="text-gray-500">
-                          {format(day, "EEE")}
-                        </span>
+                        {day}
                       </div>
-                      {dayEvents.length > 0 && (
-                        <div className="mt-2 overflow-y-scroll max-h-[300px]">
-                          {dayEvents.map((event) => {
-                            return (
-                              <CalendarEventSlip key={event.id} event={event} />
-                            );
-                          })}
+                    )
+                  )}
+
+                  {/* Leading empty days */}
+                  {leadingEmptyDays.map((_, i) => (
+                    <div key={`empty-${i}`} className="p-1 h-[200px]" />
+                  ))}
+
+                  {/* Days of the month */}
+                  {days.map((day) => {
+                    const dayEvents = [...externalEvents, ...meets].filter(
+                      (ev) => {
+                        const eventStart = parseISO(ev.startDate);
+                        const eventEnd = parseISO(ev.endDate);
+                        return isWithinInterval(day, {
+                          start: eventStart,
+                          end: eventEnd,
+                        });
+                      }
+                    );
+                    const isCurrentDay = isToday(day);
+                    return (
+                      <div
+                        key={day.toString()}
+                        className={`cursor-pointer border rounded p-1 min-h-[200px]  ${
+                          dayEvents.length ? "" : ""
+                        }`}
+                        title={`${dayEvents.length} event(s)`}
+                        onClick={() => {
+                          setTodaysEvents(dayEvents);
+                        }}
+                      >
+                        <div
+                          className={`flex gap-2 items-center mb-2 ${
+                            isCurrentDay ? "bg-blue-300/50" : ""
+                          }`}
+                        >
+                          <span>{format(day, "d")}</span>
+                          <span className="text-gray-500">
+                            {format(day, "EEE")}
+                          </span>
                         </div>
-                      )}
-                    </div>
-                  );
-                })}
+                        {dayEvents.length > 0 && (
+                          <div className="mt-2 overflow-y-scroll max-h-[300px]">
+                            {dayEvents.map((event) => {
+                              return (
+                                <CalendarEventSlip
+                                  key={event.id}
+                                  event={event}
+                                />
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

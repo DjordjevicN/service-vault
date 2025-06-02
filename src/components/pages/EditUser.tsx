@@ -5,7 +5,7 @@ import { EditUserTips } from "@/constants/tips";
 
 const EditUser = () => {
   return (
-    <div className="p-6 pb-20 ">
+    <div className="p-6 pb-20 standardMaxWidth">
       <div className="grid grid-cols-[2fr_1fr] gap-4 mt-16 items-start">
         <UserProfileForm />
         <Card className="px-6">
