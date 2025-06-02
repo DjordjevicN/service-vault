@@ -19,6 +19,7 @@ export type MeetType = {
   startLocation: string;
   startTime: string;
   startDate: string;
+  endDate: string;
   rideType: "relaxed" | "spirited" | "mixed" | "";
   participants: string[];
   maxRiders: number;

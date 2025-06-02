@@ -23,11 +23,14 @@ const TimeAndDateSection = ({
   maxSection: number;
 }) => {
   const dispatch = useDispatch();
-  const { startTime, startDate } = useSelector(
+  const { startTime, startDate, endDate } = useSelector(
     (state: RootState) => state.meetForm
   );
 
   const [selectedDate, setSelectedDate] = useState<Date>(
+    startDate ? new Date(startDate) : new Date()
+  );
+  const [selectedEndDate, setSelectedEndDate] = useState<Date>(
     startDate ? new Date(startDate) : new Date()
   );
   const [selectedTime, setSelectedTime] = useState<string>(
@@ -37,6 +40,10 @@ const TimeAndDateSection = ({
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
     dispatch(updateMeetForm({ key: "startDate", value: getDate(date) }));
+  };
+  const handleEndDateChange = (date: Date) => {
+    setSelectedEndDate(date);
+    dispatch(updateMeetForm({ key: "endDate", value: getDate(date) }));
   };
 
   const handleTimeChange = (time: string) => {
@@ -61,13 +68,26 @@ const TimeAndDateSection = ({
       </Card>
       <Card className="px-6">
         <div>
-          <Label required className="text-gray55" htmlFor="date">
-            Pick a date
-          </Label>
-          <MyDatePicker
-            value={selectedDate}
-            onChange={(date) => handleDateChange(date)}
-          />
+          <div className="flex items-center gap-4">
+            <div>
+              <Label required className="text-gray55" htmlFor="date">
+                Pick a date
+              </Label>
+              <MyDatePicker
+                value={selectedDate}
+                onChange={(date) => handleDateChange(date)}
+              />
+            </div>
+            <div>
+              <Label className="text-gray55" htmlFor="end-date">
+                Pick an end date
+              </Label>
+              <MyDatePicker
+                value={selectedEndDate}
+                onChange={(date) => handleEndDateChange(date)}
+              />
+            </div>
+          </div>
 
           <div>
             <Label required className="mt-4 text-gray55" htmlFor="time">

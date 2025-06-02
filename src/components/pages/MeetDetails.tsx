@@ -4,7 +4,6 @@ import clock from "../../assets/clock.svg";
 import location from "../../assets/gps.svg";
 import MeetDetailsAbout from "../MeetDetailsAbout";
 import Counter from "../Counter";
-
 import { useNavigate, useParams } from "react-router-dom";
 import placeholder from "../../assets/placeholder.png";
 import LoadingModal from "../LoadingModal";

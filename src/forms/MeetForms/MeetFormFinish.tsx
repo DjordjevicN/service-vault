@@ -10,7 +10,7 @@ import { MeetType } from "@/constants/meetTypes";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/Button";
 import TextRow from "@/components/TextRow";
-import { getDate } from "@/components/utils/getDates";
+import { getDate, getFormattedDate } from "@/components/utils/getDates";
 import { USER_TYPES } from "@/constants/userTypes";
 import { IOrganization } from "@/constants/orgTypes";
 import StepController from "@/components/StepController";
@@ -168,7 +168,13 @@ const MeetFormFinish = ({
                   details={meetForm.maxRiders || "Unlimited"}
                 />
                 <TextRow label="Meet type" details={meetForm.rideType} />
-                <TextRow label="Date" details={getDate(meetForm.startDate)} />
+                <TextRow
+                  label="Date"
+                  details={`${getFormattedDate(meetForm.startDate)} ${
+                    meetForm.endDate &&
+                    `- ${getFormattedDate(meetForm.endDate)}`
+                  }`}
+                />
                 <TextRow label="Time" details={meetForm.startTime} />
               </div>
             </div>
