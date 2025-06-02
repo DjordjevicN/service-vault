@@ -50,7 +50,7 @@ const OrgConfiguration = () => {
   const stepLabels = ["Basic Info", "Location", "Socials", "Media", "Finish"];
   const maxSection = 4;
   return (
-    <div>
+    <div className="standardMaxWidth">
       <TopSteper
         stepLabels={stepLabels}
         section={section}

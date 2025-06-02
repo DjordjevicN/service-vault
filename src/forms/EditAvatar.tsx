@@ -42,7 +42,7 @@ const EditAvatar = () => {
   };
 
   return (
-    <div className="flex justify-center gap-6 p-6">
+    <div className="flex justify-center gap-6 p-6 standardMaxWidth">
       <Card>
         <ImageUploaderCropper onCropped={handleImageCropped} />
       </Card>

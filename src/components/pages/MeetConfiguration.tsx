@@ -49,7 +49,7 @@ const MeetConfiguration = () => {
   ];
   const maxSection = 5;
   return (
-    <div>
+    <div className="standardMaxWidth">
       <TopSteper
         section={section}
         handleNext={handleNext}

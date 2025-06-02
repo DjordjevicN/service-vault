@@ -218,7 +218,7 @@ const OrgDetails = () => {
 
   if (isLoading) return <LoadingModal show={true} />;
   return (
-    <div className="mt-2">
+    <div className="mt-2 standardMaxWidth">
       <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
         <div>
           <Card>
@@ -272,17 +272,16 @@ const OrgDetails = () => {
                 <p>
                   Members: <span>{members?.length || 0}</span>
                 </p>
-                {isAdmin ||
-                  (memberAdmin && (
-                    <div>
-                      <Label htmlFor="member-search">Search Members</Label>
-                      <Input
-                        id="member-search"
-                        placeholder="Search by username"
-                        onChange={(e) => setMemberSearchValue(e.target.value)}
-                      />
-                    </div>
-                  ))}
+                {isAdmin || memberAdmin ? (
+                  <div>
+                    <Label htmlFor="member-search">Search Members</Label>
+                    <Input
+                      id="member-search"
+                      placeholder="Search by username"
+                      onChange={(e) => setMemberSearchValue(e.target.value)}
+                    />
+                  </div>
+                ) : null}
               </div>
               {!isAdmin && (
                 <div>

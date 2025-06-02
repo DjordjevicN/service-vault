@@ -46,7 +46,7 @@ const UserProfile = () => {
   const formatted = formatToMonthYear(auth?.created_at || "");
 
   return (
-    <div className="mt-2">
+    <div className="mt-2 standardMaxWidth">
       <Card className="px-6">
         <div className="flex gap-6 text-white">
           <div className="relative">

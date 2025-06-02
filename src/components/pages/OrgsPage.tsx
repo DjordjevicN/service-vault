@@ -44,7 +44,7 @@ const OrgsPage = () => {
 
   if (orgsLoading || foundLoading) return <LoadingModal show={true} />;
   return (
-    <div className="mt-2">
+    <div className="mt-2 standardMaxWidth">
       <Card>
         <div className="flex gap-4">
           <div>

@@ -43,7 +43,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
         className="w-32 rounded-lg object-cover"
       />
 
-      <div className="flex flex-col justify-between">
+      <div className="flex flex-col justify-between w-full">
         <div>
           <div className="flex items-center gap-2">
             <p className="uppercase text-sm text-muted-foreground">
@@ -54,7 +54,7 @@ const GroupListingItem = ({ meet }: { meet: MeetType }) => {
             </p>
           </div>
           <p className="text-xl capitalize">{meet.name}</p>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full">
             <div className="w-6">
               <IconGps className="text-muted-foreground" />
             </div>

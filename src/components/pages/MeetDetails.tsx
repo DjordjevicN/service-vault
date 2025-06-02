@@ -97,7 +97,7 @@ const MeetDetails = () => {
 
   if (isMeetLoading) return <LoadingModal show={isMeetLoading} />;
   return (
-    <>
+    <div className="standardMaxWidth">
       <div className="mt-2">
         <Card>
           <div className="flex gap-6">
@@ -297,7 +297,7 @@ const MeetDetails = () => {
         }}
         title="Are you sure you want to delete this meet?"
       />
-    </>
+    </div>
   );
 };
 
