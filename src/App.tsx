@@ -23,99 +23,101 @@ const App = () => {
   const isAuthenticated = !!auth;
 
   return (
-    <Router>
-      {isAuthenticated && <TopBar />}
-      <Routes>
-        <Route
-          path="/"
-          element={isAuthenticated ? <Dashboard /> : <HomePage />}
-        />
-        <Route path="/orgs" element={<OrgsPage />} />
-        <Route path="/org/:id" element={<OrgDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/meet/:id" element={<MeetDetails />} />
-        <Route
-          path="/meets"
-          element={
-            <PrivateRoute>
-              <Meets />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/calendar"
-          element={
-            <PrivateRoute>
-              <YearCalendar />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/org-config"
-          element={
-            <PrivateRoute>
-              <OrgConfiguration />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/org-config/:orgId"
-          element={
-            <PrivateRoute>
-              <OrgConfiguration />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/meet-config"
-          element={
-            <PrivateRoute>
-              <MeetConfiguration />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/meet-config/:meetId"
-          element={
-            <PrivateRoute>
-              <MeetConfiguration />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/trips"
-          element={
-            <PrivateRoute>
-              <Trips />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <UserProfile />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-profile"
-          element={
-            <PrivateRoute>
-              <EditUser />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-avatar"
-          element={
-            <PrivateRoute>
-              <EditAvatar />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </Router>
+    <div>
+      <Router>
+        {isAuthenticated && <TopBar />}
+        <Routes>
+          <Route
+            path="/"
+            element={isAuthenticated ? <Dashboard /> : <HomePage />}
+          />
+          <Route path="/orgs" element={<OrgsPage />} />
+          <Route path="/org/:id" element={<OrgDetails />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/meet/:id" element={<MeetDetails />} />
+          <Route
+            path="/meets"
+            element={
+              <PrivateRoute>
+                <Meets />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/calendar"
+            element={
+              <PrivateRoute>
+                <YearCalendar />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/org-config"
+            element={
+              <PrivateRoute>
+                <OrgConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/org-config/:orgId"
+            element={
+              <PrivateRoute>
+                <OrgConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/meet-config"
+            element={
+              <PrivateRoute>
+                <MeetConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/meet-config/:meetId"
+            element={
+              <PrivateRoute>
+                <MeetConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/trips"
+            element={
+              <PrivateRoute>
+                <Trips />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <UserProfile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-profile"
+            element={
+              <PrivateRoute>
+                <EditUser />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/edit-avatar"
+            element={
+              <PrivateRoute>
+                <EditAvatar />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 

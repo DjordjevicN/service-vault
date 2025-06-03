@@ -14,18 +14,18 @@ import { RootState } from "@/store";
 import LoadingModal from "../LoadingModal";
 import { useEffect, useRef, useState } from "react";
 import { USER_TYPES } from "@/constants/userTypes";
-import { motoGP } from "@/data/motoGP";
 import { Card } from "../ui/card";
 import CalendarCountryFilter from "@/components/CalendarCountryFilter";
 import CalendarEventSlip from "../CalendarEventSlip";
 import { useSelector } from "react-redux";
 import { getMeetsByTheCountries } from "@/supabase/meetFetchers";
 import TodaysEventsModal from "../TodaysEventsModal";
+import { MeetType } from "@/constants/meetTypes";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [todaysEvents, setTodaysEvents] = useState<any[]>([]);
+  const [todaysEvents, setTodaysEvents] = useState<MeetType[]>([]);
 
   const year = new Date().getFullYear();
   const user = useSelector(
@@ -68,8 +68,6 @@ const YearCalendar = () => {
   }, [user]);
 
   const getWeekdayIndex = (date: Date) => (getDay(date) + 6) % 7;
-  const externalEvents = [];
-  console.log("todaysEvents", todaysEvents);
 
   if (!meets) return <LoadingModal show />;
   return (
@@ -131,33 +129,27 @@ const YearCalendar = () => {
 
                   {/* Days of the month */}
                   {days.map((day) => {
-                    const dayEvents = [...externalEvents, ...meets].filter(
-                      (ev) => {
-                        const eventStart = parseISO(ev.startDate);
-                        const eventEnd = parseISO(ev.endDate);
-                        return isWithinInterval(day, {
-                          start: eventStart,
-                          end: eventEnd,
-                        });
-                      }
-                    );
+                    const dayEvents = [...meets].filter((ev) => {
+                      const eventStart = parseISO(ev.startDate);
+                      const eventEnd = parseISO(ev.endDate);
+                      return isWithinInterval(day, {
+                        start: eventStart,
+                        end: eventEnd,
+                      });
+                    });
                     const isCurrentDay = isToday(day);
                     return (
                       <div
                         key={day.toString()}
-                        className={`cursor-pointer border rounded p-1 min-h-[200px]  ${
-                          dayEvents.length ? "" : ""
-                        }`}
+                        className={`cursor-pointer border rounded p-1 min-h-[200px] ${
+                          isCurrentDay ? "border-orange-600" : ""
+                        } ${dayEvents.length ? "" : ""}`}
                         title={`${dayEvents.length} event(s)`}
                         onClick={() => {
                           setTodaysEvents(dayEvents);
                         }}
                       >
-                        <div
-                          className={`flex gap-2 items-center mb-2 ${
-                            isCurrentDay ? "bg-blue-300/50" : ""
-                          }`}
-                        >
+                        <div className={`flex gap-2 items-center mb-2 `}>
                           <span>{format(day, "d")}</span>
                           <span className="text-gray-500">
                             {format(day, "EEE")}

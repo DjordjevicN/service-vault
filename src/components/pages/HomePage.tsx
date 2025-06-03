@@ -7,6 +7,7 @@ import Logo from "../Logo";
 import Footer from "../Footer";
 import { USER_TYPES } from "@/constants/userTypes";
 import { AuthUser } from "@supabase/supabase-js";
+import PricingSection from "../PricingSection";
 
 const HomePage = () => {
   const user = useSelector(
@@ -134,6 +135,7 @@ const HomePage = () => {
           <img className="max-w-[600px]" src={homepageBg} alt="" />
         </div>
       </div>
+      <PricingSection />
       <Footer />
     </div>
   );

@@ -5,7 +5,7 @@ import AvatarDropdown from "./AvatarDropdown";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { Link } from "react-router-dom";
-import { ThemeSwitch } from "./ThemeSwitch";
+// import { ThemeSwitch } from "./ThemeSwitch";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/Input";
 import { useQuery } from "@tanstack/react-query";
@@ -44,7 +44,7 @@ const TopBar = () => {
           )}
         </div>
         <div className="flex items-center gap-4">
-          <ThemeSwitch />
+          {/* <ThemeSwitch /> */}
           {user ? (
             <AvatarDropdown />
           ) : (

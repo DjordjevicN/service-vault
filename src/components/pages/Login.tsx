@@ -49,6 +49,19 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen standardMaxWidth">
+      {/* <Card className="mb-10">
+        <h1 className="text-2xl font-bold">Built by riders, for riders.</h1>
+        <div className="text-muted-foreground">
+          <p>
+            We respect your inbox — no spam,{" "}
+            <span className="font-bold text-red-500">EVER</span>.
+          </p>
+          <p>
+            Your data stays with us; we'll{" "}
+            <span className="font-bold text-red-500">NEVER</span> sell it.
+          </p>
+        </div>
+      </Card> */}
       <Tabs defaultValue="login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login" onKeyDown={handleKeyDown}>
@@ -106,8 +119,9 @@ const Login = () => {
             <CardHeader>
               <CardTitle>Register</CardTitle>
               <CardDescription>
-                Create a new account by filling out the form below. A
-                confirmation email will be sent.
+                Built by riders, for riders.
+                <br />
+                We will never spam you, and your data stays with us.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
@@ -122,7 +136,7 @@ const Login = () => {
               <div className="space-y-1">
                 <CountrySelect onSelect={(code) => setCountry(code)} />
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 mt-4">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
