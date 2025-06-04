@@ -11,6 +11,7 @@ import "react-calendar/dist/Calendar.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "react-time-picker/dist/TimePicker.css"; // ← Required for time picker
 import "react-clock/dist/Clock.css";
+import "./i18n";
 
 const queryClient = new QueryClient();
 createRoot(document.getElementById("root")!).render(
