@@ -29,6 +29,7 @@ import { searchUsersByEmailOrUsername } from "@/supabase/userFetchers";
 import SearchUserResultItem from "../SearchUserResultItem";
 import { Button } from "../ui/Button";
 import LoadingModal from "../LoadingModal";
+import { useOrgDetails } from "@/hooks/useOrgQueries";
 
 const OrgDetails = () => {
   const dispatch = useDispatch();
@@ -41,11 +42,12 @@ const OrgDetails = () => {
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const [searchValue, setSearchValue] = useState("");
-  const { data: organization, isLoading } = useQuery({
-    queryKey: ["orgDetails", id],
-    queryFn: () => fetchOrgById(Number(id), dispatch),
-    enabled: !!id,
-  });
+
+  const { data: organization, isLoading } = useOrgDetails(
+    id ? Number(id) : null,
+    dispatch
+  );
+
   const { data: allMeets } = useQuery({
     queryKey: ["org meets", organization?.id],
     queryFn: () =>
@@ -60,6 +62,7 @@ const OrgDetails = () => {
     queryFn: () => getOrgMembers(Number(id)),
     enabled: !!id && !!organization,
   });
+
   const { mutate: updateStatus } = useMutation({
     mutationFn: ({ id, status }: { id: number; status: number }) =>
       updateMembersStatus(id, status),
@@ -71,6 +74,7 @@ const OrgDetails = () => {
       console.error("Error updating status:", error);
     },
   });
+
   const { mutate: updateOrganization } = useMutation({
     mutationFn: ({
       orgId,
@@ -87,6 +91,7 @@ const OrgDetails = () => {
       console.error("Error updating organization:", error);
     },
   });
+
   const { mutate: createMember } = useMutation({
     mutationFn: (member: IMember) => createNewMember(member),
     onSuccess: () => {
@@ -112,6 +117,7 @@ const OrgDetails = () => {
   const handleStatusChange = (memberId: number, status: number) => {
     updateStatus({ id: memberId, status });
   };
+
   const { data: foundUsers } = useQuery({
     queryKey: ["user search", searchValue],
     queryFn: () => searchUsersByEmailOrUsername(searchValue),
@@ -133,7 +139,8 @@ const OrgDetails = () => {
   const isCurrentUserAlreadyMember = members?.some(
     (member) => member.userId === user?.id
   );
-  const handleAddMember = (user: USER_TYPES) => {
+
+  const handleAddMember = (user: USER_TYPES | null) => {
     if (!organization || !user) return;
     const isAlreadyMember = members?.find(
       (member) => member.userId === user.id
@@ -153,6 +160,7 @@ const OrgDetails = () => {
     createMember(newMember);
     setSearchValue("");
   };
+
   const handleRemoveMember = (userId: number) => {
     if (!organization) return;
     const currentMembers = organization.members || [];
@@ -167,6 +175,7 @@ const OrgDetails = () => {
     deleteMember(userId);
     refetch();
   };
+
   const { mutate: removeOrganization } = useMutation({
     mutationFn: (orgId: number) => deleteOrg(orgId),
     onSuccess: () => {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDebounce } from "../hooks/useDebounce";
 import Logo from "./Logo";
 import AvatarDropdown from "./AvatarDropdown";
@@ -58,4 +58,4 @@ const TopBar = () => {
   );
 };
 
-export default TopBar;
+export default React.memo(TopBar);

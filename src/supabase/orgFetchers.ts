@@ -78,6 +78,7 @@ export const fetchOrgById = async (id: number, dispatch: Dispatch) => {
   dispatch(storeOrg(data));
   return data;
 };
+
 export const getOrgsByTheCountry = async (country: string) => {
   const { data, error } = await supabase
     .from("organization")

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
-import { fetchOrgById } from "@/supabase/orgFetchers";
 import BasicOrgInformation from "@/forms/orgForms/BasicOrgInformation";
 import LocationOrgInformation from "@/forms/orgForms/LocationOrgInformation";
 import OrgSocials from "@/forms/orgForms/OrgSocials";
@@ -10,20 +8,14 @@ import { useParams } from "react-router-dom";
 import OrgMedia from "@/forms/orgForms/OrgMedia";
 import OrgFormFinish from "@/forms/orgForms/OrgFormFinish";
 import TopSteper from "../TopSteper";
+import { useOrgDetails } from "@/hooks/useOrgQueries";
 
 const OrgConfiguration = () => {
   const { orgId } = useParams();
   const dispatch = useDispatch();
   const [section, setSection] = useState(0);
 
-  const { data: organization } = useQuery({
-    queryKey: ["organization", orgId],
-    queryFn: () =>
-      orgId
-        ? fetchOrgById(Number(orgId), dispatch)
-        : Promise.reject("Organization ID is undefined"),
-    enabled: !!orgId,
-  });
+  const { data: organization } = useOrgDetails(Number(orgId), dispatch);
 
   const handleNext = () => {
     if (section === 4) {

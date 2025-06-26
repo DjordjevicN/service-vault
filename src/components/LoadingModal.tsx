@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import React from "react";
 
 type LoadingModalProps = {
   show: boolean;
@@ -26,4 +27,4 @@ const LoadingModal = ({ show }: LoadingModalProps) => {
   );
 };
 
-export default LoadingModal;
+export default React.memo(LoadingModal);
