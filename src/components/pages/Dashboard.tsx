@@ -1,4 +1,3 @@
-import "react-calendar/dist/Calendar.css";
 import DashboardGroups from "../DashboardGroups";
 import DashboardListing from "../DashboardListing";
 import { useSelector } from "react-redux";
@@ -11,6 +10,7 @@ import { Card } from "../ui/card";
 import { Link } from "react-router-dom";
 import { Button } from "../ui/Button";
 import { useMyOrgs } from "@/hooks/useOrgQueries";
+import MeetEmptyState from "../MeetEmptyState";
 
 const Dashboard = () => {
   const auth = useSelector((state: RootState) => state.auth as AuthUser | null);
@@ -28,7 +28,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="mt-2 standardMaxWidth ">
+    <div className="mt-2 standardMaxWidth">
       <Card className="p-6 mb-2">
         <div className="flex justify-between">
           <h1 className="text-2xl font-bold">
@@ -60,12 +60,10 @@ const Dashboard = () => {
             {meets ? (
               <DashboardListing meets={meets || []} />
             ) : (
-              <div className="flex flex-col items-center justify-center p-6 text-center">
-                <h2 className="text-xl font-semibold mb-4">No Meets Found</h2>
-                <p className="text-muted-foreground">
-                  You are not attending any meets.
-                </p>
-              </div>
+              <MeetEmptyState
+                title="No Meets Found"
+                description="You are not attending any meets."
+              />
             )}
           </Card>
         </div>

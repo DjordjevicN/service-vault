@@ -8,8 +8,6 @@ import {
   isToday,
   isWithinInterval,
 } from "date-fns";
-
-import { useQuery } from "@tanstack/react-query";
 import { RootState } from "@/store";
 import LoadingModal from "../LoadingModal";
 import { useEffect, useRef, useState } from "react";
@@ -18,26 +16,20 @@ import { Card } from "../ui/card";
 import CalendarCountryFilter from "@/components/CalendarCountryFilter";
 import CalendarEventSlip from "../CalendarEventSlip";
 import { useSelector } from "react-redux";
-import { getMeetsByTheCountries } from "@/supabase/meetFetchers";
 import TodaysEventsModal from "../TodaysEventsModal";
 import { MeetType } from "@/constants/meetTypes";
+import { useMeetsFromCountries } from "@/hooks/useMeetQueries";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [todaysEvents, setTodaysEvents] = useState<MeetType[]>([]);
-
   const year = new Date().getFullYear();
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const months = Array.from({ length: 12 }, (_, i) => new Date(year, i, 1));
-
-  const { data: meets } = useQuery({
-    queryKey: ["meets", selectedCountries],
-    queryFn: () => getMeetsByTheCountries(selectedCountries),
-  });
-
+  const { data: meets } = useMeetsFromCountries(selectedCountries);
   useEffect(() => {
     const timeout = setTimeout(() => {
       const currentMonthIndex = new Date().getMonth();
@@ -78,7 +70,7 @@ const YearCalendar = () => {
       />
       <div className="mt-4 h-screen flex flex-col">
         <div className="">
-          <Card className="sticky top-0 z-10 shadow ">
+          <Card className="sticky top-0 z-10 shadow">
             <CalendarCountryFilter
               selectedCountries={selectedCountries}
               onCountryChange={addCountry}
@@ -149,7 +141,7 @@ const YearCalendar = () => {
                           setTodaysEvents(dayEvents);
                         }}
                       >
-                        <div className={`flex gap-2 items-center mb-2 `}>
+                        <div className={`flex gap-2 items-center mb-2`}>
                           <span>{format(day, "d")}</span>
                           <span className="text-gray-500">
                             {format(day, "EEE")}
