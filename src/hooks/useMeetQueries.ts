@@ -3,6 +3,7 @@ import {
   deleteMeet,
   fetchMeetById,
   getAllMeetsByIds,
+  getMeetsByTheCountries,
   getMeetsByTheCountry,
 } from "@/supabase/meetFetchers";
 import { getAllUsersByIds, getUserById } from "@/supabase/userFetchers";
@@ -64,6 +65,14 @@ export const useMeetsFromMyCountry = (country: string) => {
     enabled: !!country,
   });
 };
+
+export const useMeetsFromCountries = (selectedCountries: string[]) => {
+  return useQuery({
+    queryKey: ["meets", selectedCountries],
+    queryFn: () => getMeetsByTheCountries(selectedCountries),
+  });
+};
+
 export const useDeleteMeet = () => {
   const queryClient = useQueryClient();
 
