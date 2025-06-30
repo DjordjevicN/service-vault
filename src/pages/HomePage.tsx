@@ -3,11 +3,11 @@ import { RootState } from "@/store";
 import { Button } from "@/components/ui/Button";
 import { Link } from "react-router-dom";
 import homepageBg from "@/assets/homepageBg.png";
-import Logo from "../Logo";
-import Footer from "../Footer";
+import Logo from "../components/Logo";
+import Footer from "../components/Footer";
 import { USER_TYPES } from "@/constants/userTypes";
 import { AuthUser } from "@supabase/supabase-js";
-import PricingSection from "../PricingSection";
+import PricingSection from "../components/PricingSection";
 
 const HomePage = () => {
   const user = useSelector(

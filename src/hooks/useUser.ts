@@ -8,6 +8,7 @@ import {
   getUserById,
   loginUser,
   registerUser,
+  searchUsersByEmailOrUsername,
   updateUserProfile,
 } from "@/supabase/userFetchers";
 import { AuthUser } from "@supabase/supabase-js";
@@ -172,5 +173,13 @@ export const useUserAttend = (refetchMeetDetails: () => void) => {
     onError: (error) => {
       console.error("Error attending meet", error);
     },
+  });
+};
+
+export const useUserFinder = (searchValue: string) => {
+  return useQuery({
+    queryKey: ["user search", searchValue],
+    queryFn: () => searchUsersByEmailOrUsername(searchValue),
+    enabled: !!searchValue && searchValue.length > 3,
   });
 };

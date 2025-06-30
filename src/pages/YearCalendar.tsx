@@ -9,14 +9,14 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { RootState } from "@/store";
-import LoadingModal from "../LoadingModal";
+import LoadingModal from "../components/LoadingModal";
 import { useEffect, useRef, useState } from "react";
 import { USER_TYPES } from "@/constants/userTypes";
-import { Card } from "../ui/card";
+import { Card } from "../components/ui/card";
 import CalendarCountryFilter from "@/components/CalendarCountryFilter";
-import CalendarEventSlip from "../CalendarEventSlip";
+import CalendarEventSlip from "../components/CalendarEventSlip";
 import { useSelector } from "react-redux";
-import TodaysEventsModal from "../TodaysEventsModal";
+import TodaysEventsModal from "../components/TodaysEventsModal";
 import { MeetType } from "@/constants/meetTypes";
 import { useMeetsFromCountries } from "@/hooks/useMeetQueries";
 

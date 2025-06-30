@@ -11,7 +11,7 @@ export type USER_TYPES = {
   currentMotorcycle?: string;
   followers?: number[];
   myMeets?: number[];
-  attendingMeets?: number[];
+  attendingMeets?: string[];
   favoriteMeets?: number[];
   myTrips?: string[];
   favoriteTrips?: string[];

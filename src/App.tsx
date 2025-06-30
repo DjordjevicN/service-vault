@@ -4,24 +4,21 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store";
 import PrivateRoute from "./PrivateRoute";
 import LoadingModal from "./components/LoadingModal";
+import { routes } from "./constants/routes";
 
-const Dashboard = lazy(() => import("./components/pages/Dashboard"));
-const OrgConfiguration = lazy(
-  () => import("./components/pages/OrgConfiguration")
-);
-const MeetConfiguration = lazy(
-  () => import("./components/pages/MeetConfiguration")
-);
-const Trips = lazy(() => import("./components/pages/Trips"));
-const UserProfile = lazy(() => import("./components/pages/UserProfile"));
-const EditUser = lazy(() => import("./components/pages/EditUser"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const OrgConfiguration = lazy(() => import("./pages/OrgConfiguration"));
+const MeetConfiguration = lazy(() => import("./pages/MeetConfiguration"));
+const Trips = lazy(() => import("./pages/Trips"));
+const UserProfile = lazy(() => import("./pages/UserProfile"));
+const EditUser = lazy(() => import("./pages/EditUser"));
 const EditAvatar = lazy(() => import("./forms/EditAvatar"));
-const YearCalendar = lazy(() => import("./components/pages/YearCalendar"));
-const HomePage = lazy(() => import("./components/pages/HomePage"));
-const Login = lazy(() => import("./components/pages/Login"));
-const OrgsPage = lazy(() => import("./components/pages/OrgsPage"));
-const MeetDetails = lazy(() => import("./components/pages/MeetDetails"));
-const OrgDetails = lazy(() => import("./components/pages/OrgDetails"));
+const YearCalendar = lazy(() => import("./pages/YearCalendar"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const Login = lazy(() => import("./pages/Login"));
+const OrgsPage = lazy(() => import("./pages/OrgsPage"));
+const MeetDetails = lazy(() => import("./pages/MeetDetails"));
+const OrgDetails = lazy(() => import("./pages/OrgDetails"));
 const TopBar = lazy(() => import("./components/TopBar"));
 
 const App = () => {
@@ -29,96 +26,94 @@ const App = () => {
   const isAuthenticated = !!auth;
 
   return (
-    <div>
-      <Suspense fallback={<LoadingModal show />}>
-        <Router>
-          {isAuthenticated && <TopBar />}
-          <Routes>
-            <Route
-              path="/"
-              element={isAuthenticated ? <Dashboard /> : <HomePage />}
-            />
-            <Route path="/orgs" element={<OrgsPage />} />
-            <Route path="/org/:id" element={<OrgDetails />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/meet/:id" element={<MeetDetails />} />
+    <Suspense fallback={<LoadingModal show />}>
+      <Router>
+        {isAuthenticated && <TopBar />}
+        <Routes>
+          <Route
+            path={routes.home}
+            element={isAuthenticated ? <Dashboard /> : <HomePage />}
+          />
+          <Route path={routes.orgs} element={<OrgsPage />} />
+          <Route path={routes.orgDetails} element={<OrgDetails />} />
+          <Route path={routes.login} element={<Login />} />
+          <Route path={routes.meetDetails} element={<MeetDetails />} />
 
-            <Route
-              path="/calendar"
-              element={
-                <PrivateRoute>
-                  <YearCalendar />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/org-config"
-              element={
-                <PrivateRoute>
-                  <OrgConfiguration />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/org-config/:orgId"
-              element={
-                <PrivateRoute>
-                  <OrgConfiguration />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/meet-config"
-              element={
-                <PrivateRoute>
-                  <MeetConfiguration />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/meet-config/:meetId"
-              element={
-                <PrivateRoute>
-                  <MeetConfiguration />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/trips"
-              element={
-                <PrivateRoute>
-                  <Trips />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <UserProfile />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/edit-profile"
-              element={
-                <PrivateRoute>
-                  <EditUser />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/edit-avatar"
-              element={
-                <PrivateRoute>
-                  <EditAvatar />
-                </PrivateRoute>
-              }
-            />
-          </Routes>
-        </Router>
-      </Suspense>
-    </div>
+          <Route
+            path={routes.calendar}
+            element={
+              <PrivateRoute>
+                <YearCalendar />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.orgConfig}
+            element={
+              <PrivateRoute>
+                <OrgConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.orgEdit}
+            element={
+              <PrivateRoute>
+                <OrgConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.meetConfig}
+            element={
+              <PrivateRoute>
+                <MeetConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.meetEdit}
+            element={
+              <PrivateRoute>
+                <MeetConfiguration />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.trips}
+            element={
+              <PrivateRoute>
+                <Trips />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.userProfile}
+            element={
+              <PrivateRoute>
+                <UserProfile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.userEdit}
+            element={
+              <PrivateRoute>
+                <EditUser />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.userAvatarEdit}
+            element={
+              <PrivateRoute>
+                <EditAvatar />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+      </Router>
+    </Suspense>
   );
 };
 

@@ -1,18 +1,19 @@
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
 import { USER_TYPES } from "@/constants/userTypes";
-import Avatar from "../Avatar";
-import GroupListingItem from "../GroupListingItem";
+import Avatar from "../components/Avatar";
+import GroupListingItem from "../components/GroupListingItem";
 import { Link, useNavigate } from "react-router-dom";
-import LoadingModal from "../LoadingModal";
-import { formatToMonthYear } from "../utils/dateFormating";
-import { getAllMeetsByUserId } from "@/supabase/meetFetchers";
-import { useQuery } from "@tanstack/react-query";
-import { Card } from "../ui/card";
+import LoadingModal from "../components/LoadingModal";
+import { formatToMonthYear } from "../components/utils/dateFormating";
+import { Card } from "../components/ui/card";
 import { AuthUser } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/Button";
-import { getAllOrganizationByMemberId } from "@/supabase/orgFetchers";
-import DashboardGroups from "../DashboardGroups";
+import DashboardGroups from "../components/DashboardGroups";
+import { useMyOrgs } from "@/hooks/useOrgQueries";
+import { useMeetsByUsersUUID } from "@/hooks/useMeetQueries";
+import { routes } from "@/constants/routes";
+import EmptyStateBox from "@/components/EmptyStateBox";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -21,27 +22,15 @@ const UserProfile = () => {
   ) as USER_TYPES | null;
 
   const auth = useSelector((state: RootState) => state.auth) as AuthUser | null;
-
-  const { data: orgsIAmMember } = useQuery({
-    queryKey: ["orgsIAmMember", user?.id],
-    queryFn: () => getAllOrganizationByMemberId((user?.id as number) || 0),
-    enabled: !!user?.id,
-  });
-  const { data: usersMeets } = useQuery({
-    queryKey: ["meets", user?.uuid],
-    queryFn: () =>
-      user?.uuid
-        ? getAllMeetsByUserId(user?.uuid)
-        : Promise.reject("User UUID is undefined"),
-    enabled: !!user?.uuid,
-  });
+  const { data: orgsIAmMember } = useMyOrgs(user?.id ?? null);
+  const { data: usersMeets } = useMeetsByUsersUUID(user?.uuid || "");
 
   if (!user) {
-    return <LoadingModal show={true} />;
+    return <LoadingModal show />;
   }
 
   const handleNavigate = () => {
-    navigate("/edit-avatar");
+    navigate(routes.userAvatarEdit);
   };
   const formatted = formatToMonthYear(auth?.created_at || "");
 
@@ -72,13 +61,16 @@ const UserProfile = () => {
           </div>
 
           <div className="flex flex-col text-right gap-2 ml-auto">
-            <Link to="/edit-profile" className="text-gradient text-sm ml-auto">
+            <Link
+              to={routes.userEdit}
+              className="text-gradient text-sm ml-auto"
+            >
               <Button>Edit profile</Button>
             </Link>
-            <Link to="/meet-config">
+            <Link to={routes.meetConfig}>
               <Button>Create a Meet</Button>
             </Link>
-            <Link to="/org-config">
+            <Link to={routes.orgConfig}>
               <Button>Create a Organization</Button>
             </Link>
           </div>
@@ -94,14 +86,11 @@ const UserProfile = () => {
             {usersMeets?.map((meet) => {
               return <GroupListingItem key={meet.id} meet={meet} />;
             })}
-            {usersMeets?.length === 0 && (
-              <div className="text-center">
-                <p className="text-xl font-semibold mb-4">No Meets Found</p>
-                <p className="text-muted-foreground">
-                  You have not created any meets yet.
-                </p>
-              </div>
-            )}
+            <EmptyStateBox
+              show={usersMeets?.length === 0}
+              title="No Meets Found"
+              description="You have not created any meets yet."
+            />
           </Card>
         </div>
       </div>
