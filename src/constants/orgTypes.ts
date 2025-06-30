@@ -1,7 +1,9 @@
 export type IMember = {
+  userId: string | number | undefined;
   username: string;
-  userId: number;
   status: number;
+  image?: string;
+  orgId: string | number;
 };
 
 export type IOrganization = {
@@ -23,7 +25,6 @@ export type IOrganization = {
   followers: number[];
   myMeets: number[];
   myTrips: number[];
-  //
   instagram?: string;
   facebook?: string;
   twitter?: string;

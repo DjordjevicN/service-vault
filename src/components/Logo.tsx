@@ -1,12 +1,12 @@
+import { routes } from "@/constants/routes";
 import logo from "../assets/logo.svg";
 import { logoutUser } from "@/store/userSlice";
 import { useDispatch } from "react-redux";
 
 const Logo = () => {
   const dispatch = useDispatch();
-
   const goHome = () => {
-    window.location.href = "/";
+    window.location.href = routes.home;
   };
   const handleLogout = () => {
     dispatch(logoutUser(null));

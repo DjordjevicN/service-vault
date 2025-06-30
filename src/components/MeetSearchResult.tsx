@@ -1,14 +1,15 @@
 import { MeetType } from "@/constants/meetTypes";
 import placeholder from "@/assets/placeholder.png";
 import { getDate } from "./utils/getDates";
+import { routes } from "@/constants/routes";
 const MeetSearchResult = ({ meet }: { meet: MeetType }) => {
   const handleNavigate = () => {
-    window.location.href = "/meet/" + meet.id;
+    window.location.href = `${routes.meet}/${meet.id}`;
   };
   return (
     <div
       className="flex w-[320px] gap-3 cursor-pointer items-center p-2 hover:bg-muted-foreground/10"
-      onClick={() => handleNavigate()}
+      onClick={handleNavigate}
     >
       <img
         className="w-16 h-16 object-cover"

@@ -79,7 +79,8 @@ export const fetchOrgById = async (id: number, dispatch: Dispatch) => {
   return data;
 };
 
-export const getOrgsByTheCountry = async (country: string) => {
+export const getOrgsByTheCountry = async (country: string | null) => {
+  if (!country) return;
   const { data, error } = await supabase
     .from("organization")
     .select("*")

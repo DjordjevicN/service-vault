@@ -1,16 +1,17 @@
-import DashboardGroups from "../DashboardGroups";
-import DashboardListing from "../DashboardListing";
+import DashboardGroups from "../components/DashboardGroups";
+import DashboardListing from "../components/DashboardListing";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useLoggedUser, useMeetIdsFromUser } from "@/hooks/useUser";
 import { useUsersMeets } from "@/hooks/useMeetQueries";
 import { AuthUser } from "@supabase/supabase-js";
-import { Card } from "../ui/card";
+import { Card } from "../components/ui/card";
 import { Link } from "react-router-dom";
-import { Button } from "../ui/Button";
+import { Button } from "../components/ui/Button";
 import { useMyOrgs } from "@/hooks/useOrgQueries";
-import MeetEmptyState from "../MeetEmptyState";
+import MeetEmptyState from "../components/MeetEmptyState";
+import { routes } from "@/constants/routes";
 
 const Dashboard = () => {
   const auth = useSelector((state: RootState) => state.auth as AuthUser | null);
@@ -24,7 +25,7 @@ const Dashboard = () => {
   useUsersMeets(meetIds);
 
   const handleRedirectToCalendar = () => {
-    window.location.href = "/calendar";
+    window.location.href = routes.calendar;
   };
 
   return (

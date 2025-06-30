@@ -1,20 +1,19 @@
-import UserRow from "./UserRow";
-import HostedByCard from "../HostedByCard";
-import clock from "../../assets/clock.svg";
-import location from "../../assets/gps.svg";
-import MeetDetailsAbout from "../MeetDetailsAbout";
-import Counter from "../Counter";
+import HostedByCard from "../components/HostedByCard";
+import clock from "../assets/clock.svg";
+import location from "../assets/gps.svg";
+import MeetDetailsAbout from "../components/MeetDetailsAbout";
+import Counter from "../components/Counter";
 import { useNavigate, useParams } from "react-router-dom";
-import placeholder from "../../assets/placeholder.png";
-import LoadingModal from "../LoadingModal";
-import MyMap from "../map/MyMap";
+import placeholder from "../assets/placeholder.png";
+import LoadingModal from "../components/LoadingModal";
+import MyMap from "../components/map/MyMap";
 import { googleMapsPinLink } from "@/constants/helperFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
-import shield from "../../assets/shield.svg";
-import moto from "../../assets/moto.svg";
-import money from "../../assets/money.svg";
+import shield from "../assets/shield.svg";
+import moto from "../assets/moto.svg";
+import money from "../assets/money.svg";
 import {
   useDeleteMeet,
   useMeetDetails,
@@ -23,20 +22,24 @@ import {
   useParticipants,
 } from "@/hooks/useMeetQueries";
 import { MeetType } from "@/constants/meetTypes";
-import ConfirmationModal from "../ConfirmationModal";
+import ConfirmationModal from "../components/ConfirmationModal";
 import { useState } from "react";
 import { AuthUser } from "@supabase/supabase-js";
-import { Card, CardContent } from "../ui/card";
-import MyDropdownMenu from "../myUiLibrary/MyDropdownMenu";
+import { Card, CardContent } from "../components/ui/card";
+import MyDropdownMenu from "../components/myUiLibrary/MyDropdownMenu";
 import { Country } from "country-state-city";
 import { ORG_MEMBER_STATUS } from "@/constants/orgMemberStatus";
 import { useOrgMembers } from "@/hooks/useOrgQueries";
 import { useUserAttend } from "@/hooks/useUser";
-import { Button } from "../ui/Button";
+import { Button } from "../components/ui/Button";
+import { routes } from "@/constants/routes";
+import EmptyStateBox from "@/components/EmptyStateBox";
+import CopyUrlButton from "@/components/CopyUrlButton";
+import UserRow from "./UserRow";
 
 const MeetDetails = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const user = useSelector(
@@ -86,7 +89,7 @@ const MeetDetails = () => {
   };
 
   const handleEditMeet = () => {
-    navigate(`/meet-config/${meet.id}`);
+    navigate(`${routes.meetConfig}/${meet.id}`);
   };
   const areThereAnyRules =
     meet?.rules && meet.rules.length > 0 && meet.rules[0] !== "";
@@ -94,8 +97,10 @@ const MeetDetails = () => {
   const isMaxRidersReached =
     meet?.maxRiders === 0 ? false : meet?.maxRiders === totalParticipants;
   const isUserAttending = meet && user?.attendingMeets?.includes(meet?.id);
+  const pendingParticipants = 0;
+  const confirmedParticipants = totalParticipants;
 
-  if (isMeetLoading) return <LoadingModal show={isMeetLoading} />;
+  if (isMeetLoading) return <LoadingModal show />;
   return (
     <div className="standardMaxWidth">
       <div className="mt-2">
@@ -170,16 +175,16 @@ const MeetDetails = () => {
                 <Counter label="total" count={totalParticipants} />
               </Card>
               <Card className="mt-2 w-full">
-                <Counter label="pending" count={totalParticipants} />
+                <Counter label="pending" count={pendingParticipants} />
               </Card>
               <Card className="mt-2 w-full">
-                <Counter label="confirmed" count={totalParticipants} />
+                <Counter label="confirmed" count={confirmedParticipants} />
               </Card>
             </div>
-            <Card className="mt-2">
-              <div className="overflow-auto">
-                {meet &&
-                  participants?.map((user) => (
+            {participants ? (
+              <Card className="mt-2">
+                <div className="overflow-auto">
+                  {participants.map((user) => (
                     <UserRow
                       key={user.id}
                       user={user}
@@ -187,8 +192,16 @@ const MeetDetails = () => {
                       updateUser={refetchMeetDetails}
                     />
                   ))}
-              </div>
-            </Card>
+                </div>
+              </Card>
+            ) : (
+              <EmptyStateBox
+                title="Wait for riders to join"
+                description="Send invites to your friends!"
+              >
+                <CopyUrlButton />
+              </EmptyStateBox>
+            )}
           </div>
 
           <div className="flex flex-col gap-2 mt-2">

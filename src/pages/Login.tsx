@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 
 import { Input } from "@/components/ui/Input";
-import { Label } from "../ui/label";
-import { Button } from "../ui/Button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/Button";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
 import {
   Card,
   CardContent,
@@ -11,11 +16,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../ui/card";
+} from "../components/ui/card";
 import { Loader2 } from "lucide-react";
 import { authSchema, registerSchema } from "@/validation/loginSchema";
 import { validateForm } from "@/validation/validateForm";
-import { CountrySelect } from "../CountrySelect";
+import { CountrySelect } from "../components/CountrySelect";
 import { useLogin, useRegister } from "@/hooks/useUser";
 
 const Login = () => {
@@ -49,19 +54,6 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen standardMaxWidth">
-      {/* <Card className="mb-10">
-        <h1 className="text-2xl font-bold">Built by riders, for riders.</h1>
-        <div className="text-muted-foreground">
-          <p>
-            We respect your inbox — no spam,{" "}
-            <span className="font-bold text-red-500">EVER</span>.
-          </p>
-          <p>
-            Your data stays with us; we'll{" "}
-            <span className="font-bold text-red-500">NEVER</span> sell it.
-          </p>
-        </div>
-      </Card> */}
       <Tabs defaultValue="login" className="w-[400px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login" onKeyDown={handleKeyDown}>

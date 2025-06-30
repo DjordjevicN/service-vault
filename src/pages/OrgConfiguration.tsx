@@ -7,7 +7,7 @@ import { resetOrgForm, setEntireOrgForm } from "@/store/orgFormSlice";
 import { useParams } from "react-router-dom";
 import OrgMedia from "@/forms/orgForms/OrgMedia";
 import OrgFormFinish from "@/forms/orgForms/OrgFormFinish";
-import TopSteper from "../TopSteper";
+import TopSteper from "../components/TopSteper";
 import { useOrgDetails } from "@/hooks/useOrgQueries";
 
 const OrgConfiguration = () => {
@@ -39,6 +39,7 @@ const OrgConfiguration = () => {
     if (!orgId) return;
     dispatch(setEntireOrgForm(organization));
   }, [orgId, dispatch, organization]);
+
   const stepLabels = ["Basic Info", "Location", "Socials", "Media", "Finish"];
   const maxSection = 4;
   return (

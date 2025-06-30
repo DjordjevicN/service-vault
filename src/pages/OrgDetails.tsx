@@ -1,139 +1,63 @@
-import { Card } from "../ui/card";
+import { Card } from "../components/ui/card";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  createNewMember,
-  deleteOrg,
-  fetchOrgById,
-  getOrgMembers,
-  removeMember,
-  updateMembersStatus,
-  updateOrg,
-} from "@/supabase/orgFetchers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { IMember, IOrganization } from "@/constants/orgTypes";
+import { IMember } from "@/constants/orgTypes";
 import placeholder from "@/assets/placeholder.png";
-import SocialMediaDisplay from "../SocialMediaDisplay";
-import DashboardListing from "../DashboardListing";
-import { getAllOrgMeets } from "@/supabase/meetFetchers";
+import SocialMediaDisplay from "../components/SocialMediaDisplay";
+import DashboardListing from "../components/DashboardListing";
 import {
   ORG_MEMBER_STATUS,
   ORG_MEMBER_STATUS_LABELS,
 } from "@/constants/orgMemberStatus";
 import { USER_TYPES } from "@/constants/userTypes";
 import { useState } from "react";
-import { Label } from "../ui/label";
+import { Label } from "../components/ui/label";
 import { Input } from "@/components/ui/Input";
-import { searchUsersByEmailOrUsername } from "@/supabase/userFetchers";
-import SearchUserResultItem from "../SearchUserResultItem";
-import { Button } from "../ui/Button";
-import LoadingModal from "../LoadingModal";
+import SearchUserResultItem from "../components/SearchUserResultItem";
+import { Button } from "../components/ui/Button";
+import LoadingModal from "../components/LoadingModal";
 import { useOrgDetails } from "@/hooks/useOrgQueries";
+import { routes } from "@/constants/routes";
+import EmptyStateBox from "@/components/EmptyStateBox";
+import {
+  useCreateMember,
+  useDeleteMember,
+  useMeetsByOrgId,
+  useOrgMembers,
+  useUpdateMemberStatus,
+  useUpdateOrganization,
+} from "@/hooks/useMeetQueries";
+import { useUserFinder } from "@/hooks/useUser";
+import OrgAdminActions from "@/components/OrgAdminActions";
 
 const OrgDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [isAdminZoneLocked, setIsAdminZoneLocked] = useState(true);
-  const [hideFollowers, setHideFollowers] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const [memberSearchValue, setMemberSearchValue] = useState("");
   const user = useSelector(
     (state: RootState) => state.user
   ) as USER_TYPES | null;
-  const [searchValue, setSearchValue] = useState("");
-
   const { data: organization, isLoading } = useOrgDetails(
     id ? Number(id) : null,
     dispatch
   );
-
-  const { data: allMeets } = useQuery({
-    queryKey: ["org meets", organization?.id],
-    queryFn: () =>
-      organization?.id
-        ? getAllOrgMeets(organization.id)
-        : Promise.reject("Organization ID is undefined"),
-    enabled: !!organization?.id,
-  });
-
-  const { data: members, refetch } = useQuery({
-    queryKey: ["orgMembers"],
-    queryFn: () => getOrgMembers(Number(id)),
-    enabled: !!id && !!organization,
-  });
-
-  const { mutate: updateStatus } = useMutation({
-    mutationFn: ({ id, status }: { id: number; status: number }) =>
-      updateMembersStatus(id, status),
-    onSuccess: () => {
-      console.log("Status updated successfully");
-      refetch();
-    },
-    onError: (error) => {
-      console.error("Error updating status:", error);
-    },
-  });
-
-  const { mutate: updateOrganization } = useMutation({
-    mutationFn: ({
-      orgId,
-      update,
-    }: {
-      orgId: number;
-      update: Partial<IOrganization>;
-    }) => updateOrg(orgId, update),
-    onSuccess: () => {
-      console.log("Organization updated successfully");
-      refetch();
-    },
-    onError: (error) => {
-      console.error("Error updating organization:", error);
-    },
-  });
-
-  const { mutate: createMember } = useMutation({
-    mutationFn: (member: IMember) => createNewMember(member),
-    onSuccess: () => {
-      console.log("New member created successfully");
-      refetch();
-    },
-    onError: (error) => {
-      console.error("Error creating new member:", error);
-    },
-  });
-
-  const { mutate: deleteMember } = useMutation({
-    mutationFn: (memberId: number) => removeMember(memberId),
-    onSuccess: () => {
-      console.log("Member removed successfully");
-      refetch();
-    },
-    onError: (error) => {
-      console.error("Error removing member:", error);
-    },
-  });
-
-  const handleStatusChange = (memberId: number, status: number) => {
-    updateStatus({ id: memberId, status });
-  };
-
-  const { data: foundUsers } = useQuery({
-    queryKey: ["user search", searchValue],
-    queryFn: () => searchUsersByEmailOrUsername(searchValue),
-    enabled: !!searchValue && searchValue.length > 3,
-  });
+  const { data: allMeets } = useMeetsByOrgId(organization?.id);
+  const { data: members, refetch } = useOrgMembers(Number(id));
+  const { mutate: updateStatus } = useUpdateMemberStatus(refetch);
+  const { mutate: updateOrganization } = useUpdateOrganization(refetch);
+  const { mutate: createMember } = useCreateMember(refetch);
+  const { mutate: deleteMember } = useDeleteMember(refetch);
+  const { data: foundUsers } = useUserFinder(searchValue);
 
   const handleSearchMembers = () => {
     if (!memberSearchValue || memberSearchValue.length < 3) return;
     const filteredMembers = members?.filter((member) =>
       member.username.toLowerCase().includes(memberSearchValue.toLowerCase())
     );
-    if (filteredMembers && filteredMembers.length > 0) {
-      return filteredMembers;
-    } else {
-      return [];
-    }
+    return filteredMembers && filteredMembers.length > 0 ? filteredMembers : [];
   };
 
   const isCurrentUserAlreadyMember = members?.some(
@@ -165,7 +89,7 @@ const OrgDetails = () => {
     if (!organization) return;
     const currentMembers = organization.members || [];
     const updatedMemberList = currentMembers.filter(
-      (member) => member !== userId
+      (member: IMember) => member.userId !== userId
     );
 
     updateOrganization({
@@ -176,35 +100,19 @@ const OrgDetails = () => {
     refetch();
   };
 
-  const { mutate: removeOrganization } = useMutation({
-    mutationFn: (orgId: number) => deleteOrg(orgId),
-    onSuccess: () => {
-      window.location.href = "/";
-    },
-  });
-
-  if (!organization) return;
-  const deleteOrganization = () => {
-    if (!organization.id) return;
-    if (!window.confirm("Are you sure you want to delete this organization?")) {
-      return;
-    }
-    removeOrganization(organization.id);
-  };
   const memberAdmin = members?.find(
-    (member) => member.userId === user?.id && member.status === 1
+    (member) =>
+      member.userId === user?.id && member.status === ORG_MEMBER_STATUS.ADMIN
   );
-
   const isAdmin = user && user.id === organization.admin;
 
   const handleOrgMeetCreation = () => {
     if (!organization) return;
     localStorage.setItem("orgId", String(organization.id));
-    navigate(`/meet-config`);
+    navigate(routes.meetConfig);
   };
   const membersToDisplay = () => {
     if (!members) return [];
-
     const filtered =
       memberSearchValue && memberSearchValue.length >= 3
         ? handleSearchMembers()
@@ -225,7 +133,7 @@ const OrgDetails = () => {
     });
   };
 
-  if (isLoading) return <LoadingModal show={true} />;
+  if (isLoading) return <LoadingModal show />;
   return (
     <div className="mt-2 standardMaxWidth">
       <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">
@@ -264,14 +172,31 @@ const OrgDetails = () => {
           </Card>
           {isAdmin || memberAdmin ? (
             <Card className="mt-2">
-              <div>
-                <Label htmlFor="org-search">Add New Member</Label>
-                <Input
-                  id="org-search"
-                  value={searchValue}
-                  onChange={(e) => setSearchValue(e.target.value)}
-                  placeholder="Search by email or username"
-                />
+              <div className="relative">
+                <div>
+                  <Label htmlFor="org-search">Add New Member</Label>
+                  <Input
+                    id="org-search"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                    placeholder="Search by email or username"
+                  />
+                </div>
+                <div>
+                  {foundUsers && (
+                    <div className="absolute w-full bg-card border rounded p-2 text-xs">
+                      {foundUsers?.map((user) => {
+                        return (
+                          <SearchUserResultItem
+                            user={user}
+                            key={user.id}
+                            onAdd={handleAddMember}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
             </Card>
           ) : null}
@@ -315,31 +240,8 @@ const OrgDetails = () => {
               )}
             </div>
             <div>
-              <div>
-                {foundUsers && (
-                  <div className="relative">
-                    <div className="absolute w-full bg-card border rounded p-2 text-xs">
-                      {foundUsers?.map((user) => {
-                        return (
-                          <SearchUserResultItem
-                            user={user}
-                            key={user.id}
-                            onAdd={handleAddMember}
-                          />
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-
               <div className="max-h-[300px] overflow-y-auto">
                 {membersToDisplay()?.map((member) => {
-                  if (
-                    member.status === ORG_MEMBER_STATUS.FOLLOWER &&
-                    hideFollowers
-                  )
-                    return;
                   return (
                     <div
                       key={member.id}
@@ -359,10 +261,10 @@ const OrgDetails = () => {
                           id={`status-${member.id}`}
                           value={member.status}
                           onChange={(e) =>
-                            handleStatusChange(
-                              member.id,
-                              Number(e.target.value)
-                            )
+                            updateStatus({
+                              id: member.id,
+                              status: Number(e.target.value),
+                            })
                           }
                         >
                           {Object.entries(ORG_MEMBER_STATUS_LABELS).map(
@@ -399,7 +301,7 @@ const OrgDetails = () => {
                 <Button onClick={handleOrgMeetCreation} className="w-fit">
                   Create Meet as an Organization
                 </Button>
-                <Link to={`/org-config/${id}`}>
+                <Link to={`${routes.orgConfig}/${id}`}>
                   <Button>Edit Organization</Button>
                 </Link>
               </div>
@@ -411,38 +313,15 @@ const OrgDetails = () => {
             {allMeets && allMeets.length > 0 ? (
               <DashboardListing meets={allMeets} />
             ) : (
-              <div className="flex flex-col items-center justify-center p-6 text-center">
-                <h2 className="text-xl font-semibold mb-4">No Meets Found</h2>
-                <p className="text-muted-foreground mb-2">
-                  This group did not create any meets yet.
-                </p>
-              </div>
+              <EmptyStateBox
+                title="No Meets Found"
+                description="This organization has not created any meets yet."
+              />
             )}
           </Card>
         </div>
       </div>
-      {isAdmin && (
-        <Card className="mt-2 border-red-400">
-          <div className="flex items-center gap-4">
-            <p>Admin Zone</p>
-            <Button
-              onClick={() => setIsAdminZoneLocked(!isAdminZoneLocked)}
-              className="w-fit text-red-400"
-              variant="ghost"
-            >
-              {isAdminZoneLocked ? "Unlock Admin Zone" : "Lock Admin Zone"}
-            </Button>
-            <Button
-              disabled={isAdminZoneLocked}
-              onClick={deleteOrganization}
-              className={`${isAdminZoneLocked ? "text-muted" : "text-white"}`}
-              variant={isAdminZoneLocked ? "ghost" : "destructive"}
-            >
-              Delete Organization
-            </Button>
-          </div>
-        </Card>
-      )}
+      <OrgAdminActions isAdmin={!!isAdmin} orgId={organization.id} />
     </div>
   );
 };

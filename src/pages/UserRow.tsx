@@ -1,6 +1,4 @@
 import { USER_TYPES } from "@/constants/userTypes";
-import Avatar from "../Avatar";
-
 import { useMutation } from "@tanstack/react-query";
 import { updateUserProfile } from "@/supabase/userFetchers";
 import { updateMeet } from "@/supabase/meetFetchers";
@@ -9,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { storeUser } from "@/store/userSlice";
 import { RootState } from "@/store";
 import { AuthUser } from "@supabase/supabase-js";
-import { Button } from "../ui/button";
+import Avatar from "@/components/Avatar";
+import { Button } from "@/components/ui/Button";
 
 const UserRow = ({
   user,

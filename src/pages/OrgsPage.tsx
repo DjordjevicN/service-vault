@@ -1,18 +1,17 @@
-import { Card } from "../ui/card";
-import { useQuery } from "@tanstack/react-query";
-import { getOrgsByTheCountry } from "@/supabase/orgFetchers";
-import SocialMediaDisplay from "../SocialMediaDisplay";
+import { Card } from "../components/ui/card";
+import SocialMediaDisplay from "../components/SocialMediaDisplay";
 import { useNavigate } from "react-router-dom";
-import LoadingModal from "../LoadingModal";
-import { Label } from "../ui/label";
-import { Input } from "../ui/Input";
+import LoadingModal from "../components/LoadingModal";
+import { Label } from "../components/ui/label";
+import { Input } from "../components/ui/Input";
 import { useState } from "react";
-import { getOrgSearchInformation } from "@/supabase/searchFetchers";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { USER_TYPES } from "@/constants/userTypes";
 import { Country } from "country-state-city";
+import { useOrgsByCountry, useOrgSearch } from "@/hooks/useOrgQueries";
+import { routes } from "@/constants/routes";
 
 const OrgsPage = () => {
   const navigate = useNavigate();
@@ -22,27 +21,20 @@ const OrgsPage = () => {
     (state: RootState) => state.user
   ) as USER_TYPES | null;
 
-  const { data: orgs, isLoading: orgsLoading } = useQuery({
-    queryKey: ["all Orgs"],
-    queryFn: () => getOrgsByTheCountry(user?.country || ""),
-    enabled: !!user?.country,
-  });
-
-  const { data: foundOrgs, isLoading: foundLoading } = useQuery({
-    queryKey: ["org search", debounceSearch],
-    queryFn: () => getOrgSearchInformation(debounceSearch),
-    enabled: !!debounceSearch && debounceSearch.length > 3,
-  });
+  const { data: orgs, isLoading: orgsLoading } = useOrgsByCountry(
+    user?.country || null
+  );
+  const { data: foundOrgs, isLoading: foundLoading } =
+    useOrgSearch(debounceSearch);
 
   const goToOrgDetails = (orgId: number) => {
-    navigate(`/org/${orgId}`);
+    navigate(`${routes.org}/${orgId}`);
   };
-  console.log(foundOrgs);
 
   const orgsToDisplay =
     searchValue && searchValue.length > 3 ? foundOrgs : orgs;
 
-  if (orgsLoading || foundLoading) return <LoadingModal show={true} />;
+  if (orgsLoading || foundLoading) return <LoadingModal show />;
   return (
     <div className="mt-2 standardMaxWidth">
       <Card>

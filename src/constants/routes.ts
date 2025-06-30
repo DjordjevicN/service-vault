@@ -1,0 +1,18 @@
+export const routes = {
+  home: "/",
+  calendar: "/calendar",
+  login: "/login",
+  org: "/org",
+  orgs: "/orgs",
+  orgDetails: "/org/:id",
+  orgConfig: "/org-config",
+  orgEdit: "/org-config/:orgId",
+  meet: "/meet",
+  meetDetails: "/meet/:id",
+  meetConfig: "/meet-config",
+  meetEdit: "/meet-config/:meetId",
+  trips: "/trips",
+  userProfile: "/profile",
+  userEdit: "/edit-profile",
+  userAvatarEdit: "/edit-avatar",
+};

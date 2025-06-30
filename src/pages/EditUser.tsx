@@ -1,6 +1,6 @@
 import UserProfileForm from "@/forms/UserProfileForm";
 import grom from "@/assets/grom.svg";
-import { Card } from "../ui/card";
+import { Card } from "../components/ui/card";
 import { EditUserTips } from "@/constants/tips";
 
 const EditUser = () => {
