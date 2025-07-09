@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import getCroppedImg from "@/components/utils/cropImage";
+import getCroppedImg from "@/shared/utils/cropImage";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Cropper from "react-easy-crop";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/Button";
+import { Card } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/Button";
 import { updateOrgForm } from "@/store/orgFormSlice";
-import StepController from "@/components/StepController";
+import StepController from "@/shared/components/StepController";
 
 const OrgMedia = ({
   section,

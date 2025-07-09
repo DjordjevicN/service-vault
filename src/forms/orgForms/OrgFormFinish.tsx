@@ -1,17 +1,17 @@
-import TextRow from "@/components/TextRow";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/card";
-import { IOrganization } from "@/constants/orgTypes";
+import { Button } from "@/shared/ui/Button";
+import { Card } from "@/shared/ui/card";
+import { IOrganization } from "@/shared/constants/orgTypes";
 import { RootState } from "@/store";
 import { createNewMember, createOrg, updateOrg } from "@/supabase/orgFetchers";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import placeholder from "@/assets/placeholder.png";
-import MyMap from "@/components/map/MyMap";
-import { USER_TYPES } from "@/constants/userTypes";
+import MyMap from "@/shared/map/MyMap";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { resetOrgForm } from "@/store/orgFormSlice";
-import StepController from "@/components/StepController";
+import TextRow from "@/shared/components/TextRow";
+import StepController from "@/shared/components/StepController";
 
 const OrgFormFinish = ({
   isUpdate,

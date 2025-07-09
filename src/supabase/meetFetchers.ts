@@ -1,4 +1,4 @@
-import { MeetType } from "@/constants/meetTypes";
+import { MeetType } from "@/shared/constants/meetTypes";
 import { supabase } from "@/lib/supabase";
 import { storeUserMeets } from "@/store/meetSlice";
 import { Dispatch } from "@reduxjs/toolkit";

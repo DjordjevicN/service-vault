@@ -1,13 +1,13 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/shared/ui/Button";
 import { Link } from "react-router-dom";
 import homepageBg from "@/assets/homepageBg.png";
-import Logo from "../components/Logo";
-import Footer from "../components/Footer";
-import { USER_TYPES } from "@/constants/userTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { AuthUser } from "@supabase/supabase-js";
-import PricingSection from "../components/PricingSection";
+import Logo from "@/shared/components/Logo";
+import PricingSection from "@/features/events/components/PricingSection";
+import Footer from "@/shared/components/Footer";
 
 const HomePage = () => {
   const user = useSelector(

@@ -1,16 +1,12 @@
-import HostedByCard from "../components/HostedByCard";
 import clock from "../assets/clock.svg";
 import location from "../assets/gps.svg";
-import MeetDetailsAbout from "../components/MeetDetailsAbout";
-import Counter from "../components/Counter";
 import { useNavigate, useParams } from "react-router-dom";
 import placeholder from "../assets/placeholder.png";
-import LoadingModal from "../components/LoadingModal";
-import MyMap from "../components/map/MyMap";
-import { googleMapsPinLink } from "@/constants/helperFunctions";
+import MyMap from "../shared/map/MyMap";
+import { googleMapsPinLink } from "@/shared/constants/helperFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { USER_TYPES } from "@/constants/userTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import shield from "../assets/shield.svg";
 import moto from "../assets/moto.svg";
 import money from "../assets/money.svg";
@@ -21,21 +17,25 @@ import {
   useOrganizerOrg,
   useParticipants,
 } from "@/hooks/useMeetQueries";
-import { MeetType } from "@/constants/meetTypes";
-import ConfirmationModal from "../components/ConfirmationModal";
+import { MeetType } from "@/shared/constants/meetTypes";
 import { useState } from "react";
 import { AuthUser } from "@supabase/supabase-js";
-import { Card, CardContent } from "../components/ui/card";
-import MyDropdownMenu from "../components/myUiLibrary/MyDropdownMenu";
+import { Card, CardContent } from "../shared/ui/card";
+import MyDropdownMenu from "../shared/myUiLibrary/MyDropdownMenu";
 import { Country } from "country-state-city";
-import { ORG_MEMBER_STATUS } from "@/constants/orgMemberStatus";
+import { ORG_MEMBER_STATUS } from "@/shared/constants/orgMemberStatus";
 import { useOrgMembers } from "@/hooks/useOrgQueries";
 import { useUserAttend } from "@/hooks/useUser";
-import { Button } from "../components/ui/Button";
-import { routes } from "@/constants/routes";
-import EmptyStateBox from "@/components/EmptyStateBox";
-import CopyUrlButton from "@/components/CopyUrlButton";
+import { Button } from "../shared/ui/Button";
+import { routes } from "@/shared/constants/routes";
 import UserRow from "./UserRow";
+import LoadingModal from "@/shared/components/LoadingModal";
+import HostedByCard from "@/features/events/components/HostedByCard";
+import MeetDetailsAbout from "@/features/events/components/MeetDetailsAbout";
+import Counter from "@/features/groups/components/Counter";
+import EmptyStateBox from "@/shared/components/EmptyStateBox";
+import CopyUrlButton from "@/shared/components/CopyUrlButton";
+import ConfirmationModal from "@/shared/components/ConfirmationModal";
 
 const MeetDetails = () => {
   const { id } = useParams();

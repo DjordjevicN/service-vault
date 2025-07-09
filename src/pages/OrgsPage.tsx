@@ -1,17 +1,17 @@
-import { Card } from "../components/ui/card";
-import SocialMediaDisplay from "../components/SocialMediaDisplay";
+import { Card } from "../shared/ui/card";
 import { useNavigate } from "react-router-dom";
-import LoadingModal from "../components/LoadingModal";
-import { Label } from "../components/ui/label";
-import { Input } from "../components/ui/Input";
+import { Label } from "../shared/ui/label";
+import { Input } from "../shared/ui/Input";
 import { useState } from "react";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { USER_TYPES } from "@/constants/userTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { Country } from "country-state-city";
 import { useOrgsByCountry, useOrgSearch } from "@/hooks/useOrgQueries";
-import { routes } from "@/constants/routes";
+import { routes } from "@/shared/constants/routes";
+import LoadingModal from "@/shared/components/LoadingModal";
+import SocialMediaDisplay from "@/features/groups/components/SocialMediaDisplay";
 
 const OrgsPage = () => {
   const navigate = useNavigate();

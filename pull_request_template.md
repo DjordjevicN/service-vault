@@ -1,5 +1,3 @@
-## Description
-
 ## Changes Made
 
 ## Screenshots (if applicable)

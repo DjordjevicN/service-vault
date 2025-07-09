@@ -2,13 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { updateMeetForm } from "@/store/meetFormSlice";
 
-import MyMap from "@/components/map/MyMap";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { CountrySelect } from "@/components/CountrySelect";
+import MyMap from "@/shared/map/MyMap";
+import { Input } from "@/shared/ui/Input";
+import { Label } from "@/shared/ui/label";
+import { Card } from "@/shared/ui/card";
 import { useUserLocation } from "@/hooks/useUserLocation";
-import StepController from "@/components/StepController";
+import { CountrySelect } from "@/shared/components/CountrySelect";
+import StepController from "@/shared/components/StepController";
 
 const LocationSection = ({
   section,

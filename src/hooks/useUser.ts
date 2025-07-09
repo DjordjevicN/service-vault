@@ -1,5 +1,5 @@
-import { MeetType } from "@/constants/meetTypes";
-import { USER_TYPES } from "@/constants/userTypes";
+import { MeetType } from "@/shared/constants/meetTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { storeAuth } from "@/store/authSlice";
 import { storeUser } from "@/store/userSlice";
 import { updateMeet } from "@/supabase/meetFetchers";

@@ -1,7 +1,7 @@
-import StepController from "@/components/StepController";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/label";
+import StepController from "@/shared/components/StepController";
+import { Card } from "@/shared/ui/card";
+import { Input } from "@/shared/ui/Input";
+import { Label } from "@/shared/ui/label";
 import { RootState } from "@/store";
 import { updateOrgForm } from "@/store/orgFormSlice";
 

@@ -1,19 +1,20 @@
 import { RootState } from "@/store";
 import { useSelector } from "react-redux";
-import { USER_TYPES } from "@/constants/userTypes";
-import Avatar from "../components/Avatar";
-import GroupListingItem from "../components/GroupListingItem";
+import { USER_TYPES } from "@/shared/constants/userTypes";
+
 import { Link, useNavigate } from "react-router-dom";
-import LoadingModal from "../components/LoadingModal";
-import { formatToMonthYear } from "../components/utils/dateFormating";
-import { Card } from "../components/ui/card";
+import { formatToMonthYear } from "../shared/utils/dateFormating";
+import { Card } from "../shared/ui/card";
 import { AuthUser } from "@supabase/supabase-js";
-import { Button } from "@/components/ui/Button";
-import DashboardGroups from "../components/DashboardGroups";
+import { Button } from "@/shared/ui/Button";
 import { useMyOrgs } from "@/hooks/useOrgQueries";
 import { useMeetsByUsersUUID } from "@/hooks/useMeetQueries";
-import { routes } from "@/constants/routes";
-import EmptyStateBox from "@/components/EmptyStateBox";
+import { routes } from "@/shared/constants/routes";
+import LoadingModal from "@/shared/components/LoadingModal";
+import Avatar from "@/shared/components/Avatar";
+import DashboardGroups from "@/features/groups/components/DashboardGroups";
+import GroupListingItem from "@/features/groups/components/GroupListingItem";
+import EmptyStateBox from "@/shared/components/EmptyStateBox";
 
 const UserProfile = () => {
   const navigate = useNavigate();

@@ -3,11 +3,12 @@ import { RootState } from "@/store";
 import { updateMeetForm } from "@/store/meetFormSlice";
 import TimePicker from "react-time-picker";
 import { useState } from "react";
-import MyDatePicker from "@/components/myUiLibrary/MyDatePicker";
-import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { getDate } from "@/components/utils/getDates";
-import StepController from "@/components/StepController";
+import MyDatePicker from "@/shared/myUiLibrary/MyDatePicker";
+import { Label } from "@/shared/ui/label";
+import { Card } from "@/shared/ui/card";
+
+import { getDate } from "date-fns";
+import StepController from "@/shared/components/StepController";
 
 const TimeAndDateSection = ({
   section,
@@ -23,7 +24,7 @@ const TimeAndDateSection = ({
   maxSection: number;
 }) => {
   const dispatch = useDispatch();
-  const { startTime, startDate, endDate } = useSelector(
+  const { startTime, startDate } = useSelector(
     (state: RootState) => state.meetForm
   );
 

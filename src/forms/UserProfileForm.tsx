@@ -1,15 +1,15 @@
-import { CountrySelect } from "@/components/CountrySelect";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/label";
-import { USER_TYPES } from "@/constants/userTypes";
+import { Button } from "@/shared/ui/Button";
+import { Card } from "@/shared/ui/card";
+import { Input } from "@/shared/ui/Input";
+import { Label } from "@/shared/ui/label";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { useCreateUser, useUpdateUser } from "@/hooks/useUser";
 import { RootState } from "@/store";
 import { AuthUser } from "@supabase/supabase-js";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { CountrySelect } from "@/shared/components/CountrySelect";
 const UserProfileForm = () => {
   const user = useSelector(
     (state: RootState) => state.user

@@ -1,4 +1,4 @@
-import { MeetType } from "@/constants/meetTypes";
+import { MeetType } from "@/shared/constants/meetTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Initial state

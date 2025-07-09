@@ -1,7 +1,6 @@
-import ImageUploaderCropper from "@/components/ImageUploaderCropper";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/card";
-import { USER_TYPES } from "@/constants/userTypes";
+import { Button } from "@/shared/ui/Button";
+import { Card } from "@/shared/ui/card";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { RootState } from "@/store";
 import { storeUser } from "@/store/userSlice";
 import { updateUserProfile } from "@/supabase/userFetchers";
@@ -9,6 +8,7 @@ import { AuthUser } from "@supabase/supabase-js";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ImageUploaderCropper from "@/shared/components/ImageUploaderCropper";
 
 const EditAvatar = () => {
   const dispatch = useDispatch();

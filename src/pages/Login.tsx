@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 
-import { Input } from "@/components/ui/Input";
-import { Label } from "../components/ui/label";
-import { Button } from "../components/ui/Button";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../components/ui/tabs";
+import { Input } from "@/shared/ui/Input";
+import { Label } from "../shared/ui/label";
+import { Button } from "../shared/ui/Button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../shared/ui/tabs";
 import {
   Card,
   CardContent,
@@ -16,12 +11,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../components/ui/card";
+} from "../shared/ui/card";
 import { Loader2 } from "lucide-react";
 import { authSchema, registerSchema } from "@/validation/loginSchema";
 import { validateForm } from "@/validation/validateForm";
-import { CountrySelect } from "../components/CountrySelect";
 import { useLogin, useRegister } from "@/hooks/useUser";
+import { CountrySelect } from "@/shared/components/CountrySelect";
 
 const Login = () => {
   const [email, setEmail] = useState("");

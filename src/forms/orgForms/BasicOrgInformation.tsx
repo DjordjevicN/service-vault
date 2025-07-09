@@ -1,8 +1,8 @@
-import StepController from "@/components/StepController";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/Input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import StepController from "@/shared/components/StepController";
+import { Card } from "@/shared/ui/card";
+import { Input } from "@/shared/ui/Input";
+import { Label } from "@/shared/ui/label";
+import { Textarea } from "@/shared/ui/textarea";
 import { RootState } from "@/store";
 import { updateOrgForm } from "@/store/orgFormSlice";
 import { useDispatch, useSelector } from "react-redux";

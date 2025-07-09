@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { updateMeetForm } from "@/store/meetFormSlice";
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/Button";
-import ImageUploaderCropper from "@/components/ImageUploaderCropper";
+import { Card } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/Button";
 import { RootState } from "@/store";
-import StepController from "@/components/StepController";
+import ImageUploaderCropper from "@/shared/components/ImageUploaderCropper";
+import StepController from "@/shared/components/StepController";
 
 const MediaSection = ({
   section,
