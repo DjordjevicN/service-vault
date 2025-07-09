@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { Card, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/shared/ui/card";
 import { updateOrgForm } from "@/store/orgFormSlice";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/shared/ui/label";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { searchUsersByEmailOrUsername } from "@/supabase/userFetchers";
 import SearchUserResultItem from "@/components/SearchUserResultItem";
-import { USER_TYPES } from "@/constants/userTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import OrgMemberConfigCard from "@/components/OrgMemberConfigCard";
 
 const OrgMembers = () => {

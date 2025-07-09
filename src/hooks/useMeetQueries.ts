@@ -20,7 +20,7 @@ import {
   updateOrg,
 } from "@/supabase/orgFetchers";
 import { Dispatch } from "@reduxjs/toolkit";
-import { IMember, IOrganization } from "@/constants/orgTypes";
+import { IMember, IOrganization } from "@/shared/constants/orgTypes";
 
 export const useMeetDetails = (id?: string) => {
   return useQuery({

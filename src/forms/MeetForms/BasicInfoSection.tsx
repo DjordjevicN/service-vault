@@ -1,14 +1,13 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import Select from "@/components/myUiLibrary/Select";
+import Select from "@/shared/myUiLibrary/Select";
 import { updateMeetForm } from "@/store/meetFormSlice";
-
-import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import StepController from "@/components/StepController";
-import { meetRideOptions } from "@/constants/meetConstants";
+import { Input } from "@/shared/ui/Input";
+import { Textarea } from "@/shared/ui/textarea";
+import { Card } from "@/shared/ui/card";
+import { Label } from "@/shared/ui/label";
+import { meetRideOptions } from "@/shared/constants/meetConstants";
+import StepController from "@/shared/components/StepController";
 
 const BasicInfoSection = ({
   section,

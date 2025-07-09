@@ -2,18 +2,19 @@ import placeholder from "@/assets/placeholder.png";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import MyMap from "@/components/map/MyMap";
+import MyMap from "@/shared/map/MyMap";
 import { useMutation } from "@tanstack/react-query";
 import { createMeet, updateMeet } from "@/supabase/meetFetchers";
 import { storeUserMeets } from "@/store/meetSlice";
-import { MeetType } from "@/constants/meetTypes";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/Button";
-import TextRow from "@/components/TextRow";
-import { getDate, getFormattedDate } from "@/components/utils/getDates";
-import { USER_TYPES } from "@/constants/userTypes";
-import { IOrganization } from "@/constants/orgTypes";
-import StepController from "@/components/StepController";
+import { MeetType } from "@/shared/constants/meetTypes";
+import { Card } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/Button";
+import { USER_TYPES } from "@/shared/constants/userTypes";
+import { IOrganization } from "@/shared/constants/orgTypes";
+import { getFormattedDate } from "@/shared/utils/dateFormating";
+import { routes } from "@/shared/constants/routes";
+import TextRow from "@/shared/components/TextRow";
+import StepController from "@/shared/components/StepController";
 const RuleRow = ({
   ruleNumber,
   rule,
@@ -54,6 +55,7 @@ const MeetFormFinish = ({
     (state: RootState) => state.user
   ) as USER_TYPES | null;
   const orgId = localStorage.getItem("orgId");
+
   const { mutate } = useMutation({
     mutationFn: (meet: MeetType) => createMeet(meet),
     onSuccess: (data) => {
@@ -63,7 +65,7 @@ const MeetFormFinish = ({
       }
       dispatch(storeUserMeets(data[0]));
       localStorage.removeItem("orgId");
-      navigate(`/meet/${data[0].id}`);
+      navigate(`${routes.meet}/${data[0].id}`);
     },
     onError: (error) => {
       console.error("Error creating meet:", error);
@@ -71,7 +73,8 @@ const MeetFormFinish = ({
   });
 
   const { mutate: updateMeetConfiguration } = useMutation({
-    mutationFn: (updatedMeet: MeetType) => updateMeet(meetForm.id, updatedMeet),
+    mutationFn: (updatedMeet: MeetType) =>
+      updateMeet(Number(meetForm.id), updatedMeet),
     onSuccess: (data) => {
       console.log("Meet updated successfully", data);
       if (!data) {
@@ -80,7 +83,7 @@ const MeetFormFinish = ({
       }
       dispatch(storeUserMeets(data[0]));
       localStorage.removeItem("orgId");
-      navigate(`/meet/${meetForm.id}`);
+      navigate(`${routes.meet}/${meetForm.id}`);
     },
     onError: (error) => {
       console.error("Error creating meet:", error);
@@ -93,13 +96,13 @@ const MeetFormFinish = ({
       return;
     }
     if (!user) {
-      navigate("/login");
+      navigate(routes.login);
       return;
     }
 
     const updatedMeetForm = {
       ...meetForm,
-      organizerId: orgId ? null : user.uuid,
+      organizerId: orgId ? 0 : user?.uuid ?? "",
       organizationId: orgId ? Number(orgId) : null,
       country: meetForm.country || user.country || "world",
       organizerName: orgId ? organization?.name : user.username,

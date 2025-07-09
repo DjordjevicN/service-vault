@@ -1,25 +1,20 @@
-import { Card } from "../components/ui/card";
+import { Card } from "../shared/ui/card";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { IMember } from "@/constants/orgTypes";
+import { IMember } from "@/shared/constants/orgTypes";
 import placeholder from "@/assets/placeholder.png";
-import SocialMediaDisplay from "../components/SocialMediaDisplay";
-import DashboardListing from "../components/DashboardListing";
 import {
   ORG_MEMBER_STATUS,
   ORG_MEMBER_STATUS_LABELS,
-} from "@/constants/orgMemberStatus";
-import { USER_TYPES } from "@/constants/userTypes";
+} from "@/shared/constants/orgMemberStatus";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { useState } from "react";
-import { Label } from "../components/ui/label";
-import { Input } from "@/components/ui/Input";
-import SearchUserResultItem from "../components/SearchUserResultItem";
-import { Button } from "../components/ui/Button";
-import LoadingModal from "../components/LoadingModal";
+import { Label } from "../shared/ui/label";
+import { Input } from "@/shared/ui/Input";
+import { Button } from "../shared/ui/Button";
 import { useOrgDetails } from "@/hooks/useOrgQueries";
-import { routes } from "@/constants/routes";
-import EmptyStateBox from "@/components/EmptyStateBox";
+import { routes } from "@/shared/constants/routes";
 import {
   useCreateMember,
   useDeleteMember,
@@ -29,7 +24,12 @@ import {
   useUpdateOrganization,
 } from "@/hooks/useMeetQueries";
 import { useUserFinder } from "@/hooks/useUser";
-import OrgAdminActions from "@/components/OrgAdminActions";
+import LoadingModal from "@/shared/components/LoadingModal";
+import SocialMediaDisplay from "@/features/groups/components/SocialMediaDisplay";
+import SearchUserResultItem from "@/features/groups/components/SearchUserResultItem";
+import DashboardListing from "@/shared/components/DashboardListing";
+import EmptyStateBox from "@/shared/components/EmptyStateBox";
+import OrgAdminActions from "@/features/groups/components/OrgAdminActions";
 
 const OrgDetails = () => {
   const dispatch = useDispatch();
@@ -104,7 +104,8 @@ const OrgDetails = () => {
     (member) =>
       member.userId === user?.id && member.status === ORG_MEMBER_STATUS.ADMIN
   );
-  const isAdmin = user && user.id === organization.admin;
+
+  const isAdmin = user && organization && user.id === organization.admin;
 
   const handleOrgMeetCreation = () => {
     if (!organization) return;
@@ -134,6 +135,7 @@ const OrgDetails = () => {
   };
 
   if (isLoading) return <LoadingModal show />;
+  if (!organization) return;
   return (
     <div className="mt-2 standardMaxWidth">
       <div className="grid grid-cols-[1fr_1fr] gap-2 mt-2">

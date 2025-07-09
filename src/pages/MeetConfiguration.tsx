@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { resetMeetForm, setEntireMeetForm } from "@/store/meetFormSlice";
 import { useParams } from "react-router-dom";
 import { useMeetDetails } from "@/hooks/useMeetQueries";
-import TopSteper from "../components/TopSteper";
+import TopSteper from "@/features/events/components/TopSteper";
 
 const MeetConfiguration = () => {
   const dispatch = useDispatch();

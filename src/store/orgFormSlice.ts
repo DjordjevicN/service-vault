@@ -1,4 +1,4 @@
-import { IOrganization } from "@/constants/orgTypes";
+import { IOrganization } from "@/shared/constants/orgTypes";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: IOrganization | null = {

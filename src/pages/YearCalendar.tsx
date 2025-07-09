@@ -9,16 +9,16 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { RootState } from "@/store";
-import LoadingModal from "../components/LoadingModal";
 import { useEffect, useRef, useState } from "react";
-import { USER_TYPES } from "@/constants/userTypes";
-import { Card } from "../components/ui/card";
-import CalendarCountryFilter from "@/components/CalendarCountryFilter";
-import CalendarEventSlip from "../components/CalendarEventSlip";
+import { USER_TYPES } from "@/shared/constants/userTypes";
+import { Card } from "../shared/ui/card";
 import { useSelector } from "react-redux";
-import TodaysEventsModal from "../components/TodaysEventsModal";
-import { MeetType } from "@/constants/meetTypes";
+import { MeetType } from "@/shared/constants/meetTypes";
 import { useMeetsFromCountries } from "@/hooks/useMeetQueries";
+import LoadingModal from "@/shared/components/LoadingModal";
+import TodaysEventsModal from "@/features/events/components/TodaysEventsModal";
+import CalendarCountryFilter from "@/shared/components/CalendarCountryFilter";
+import CalendarEventSlip from "@/shared/components/CalendarEventSlip";
 
 const YearCalendar = () => {
   const monthRefs = useRef<(HTMLDivElement | null)[]>([]);

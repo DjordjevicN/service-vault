@@ -2,10 +2,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 import { addRule, deleteRule, updateRule } from "@/store/meetFormSlice";
-import { Button } from "@/components/ui/Button";
-import { Textarea } from "@/components/ui/textarea";
-import { Card } from "@/components/ui/card";
-import StepController from "@/components/StepController";
+import { Button } from "@/shared/ui/Button";
+import { Textarea } from "@/shared/ui/textarea";
+import { Card } from "@/shared/ui/card";
+import StepController from "@/shared/components/StepController";
 
 const RulesSection = ({
   section,

@@ -1,17 +1,17 @@
-import DashboardGroups from "../components/DashboardGroups";
-import DashboardListing from "../components/DashboardListing";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { USER_TYPES } from "@/constants/userTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { useLoggedUser, useMeetIdsFromUser } from "@/hooks/useUser";
 import { useUsersMeets } from "@/hooks/useMeetQueries";
 import { AuthUser } from "@supabase/supabase-js";
-import { Card } from "../components/ui/card";
+import { Card } from "../shared/ui/card";
 import { Link } from "react-router-dom";
-import { Button } from "../components/ui/Button";
+import { Button } from "../shared/ui/Button";
 import { useMyOrgs } from "@/hooks/useOrgQueries";
-import MeetEmptyState from "../components/MeetEmptyState";
-import { routes } from "@/constants/routes";
+import { routes } from "@/shared/constants/routes";
+import DashboardGroups from "@/features/groups/components/DashboardGroups";
+import DashboardListing from "@/shared/components/DashboardListing";
+import MeetEmptyState from "@/features/events/components/MeetEmptyState";
 
 const Dashboard = () => {
   const auth = useSelector((state: RootState) => state.auth as AuthUser | null);

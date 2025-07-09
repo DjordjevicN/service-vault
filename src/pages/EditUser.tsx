@@ -1,7 +1,7 @@
 import UserProfileForm from "@/forms/UserProfileForm";
 import grom from "@/assets/grom.svg";
-import { Card } from "../components/ui/card";
-import { EditUserTips } from "@/constants/tips";
+import { Card } from "../shared/ui/card";
+import { EditUserTips } from "@/shared/constants/tips";
 
 const EditUser = () => {
   return (

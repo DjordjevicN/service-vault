@@ -1,14 +1,14 @@
-import { USER_TYPES } from "@/constants/userTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { useMutation } from "@tanstack/react-query";
 import { updateUserProfile } from "@/supabase/userFetchers";
 import { updateMeet } from "@/supabase/meetFetchers";
-import { MeetType } from "@/constants/meetTypes";
+import { MeetType } from "@/shared/constants/meetTypes";
 import { useDispatch, useSelector } from "react-redux";
 import { storeUser } from "@/store/userSlice";
 import { RootState } from "@/store";
 import { AuthUser } from "@supabase/supabase-js";
-import Avatar from "@/components/Avatar";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/shared/ui/Button";
+import Avatar from "@/shared/components/Avatar";
 
 const UserRow = ({
   user,

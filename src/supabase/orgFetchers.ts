@@ -1,4 +1,4 @@
-import { IMember, IOrganization } from "@/constants/orgTypes";
+import { IMember, IOrganization } from "@/shared/constants/orgTypes";
 import { supabase } from "@/lib/supabase";
 import { storeOrg } from "@/store/orgSlice";
 import { Dispatch } from "@reduxjs/toolkit";

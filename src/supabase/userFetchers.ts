@@ -1,4 +1,4 @@
-import { USER_TYPES } from "@/constants/userTypes";
+import { USER_TYPES } from "@/shared/constants/userTypes";
 import { supabase } from "@/lib/supabase";
 
 export const registerUser = async (email: string, password: string) => {
