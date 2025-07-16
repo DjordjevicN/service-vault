@@ -76,7 +76,7 @@ const HomePage = () => {
             </li>
           </ul>
         </div>
-        <div className="box-gradient-3 w-fit">
+        <div className="w-fit">
           <img className="max-w-[600px]" src={homepageBg} alt="" />
         </div>
       </div>
@@ -100,7 +100,7 @@ const HomePage = () => {
             </li>
           </ul>
         </div>
-        <div className="box-gradient-2 w-fit">
+        <div className="w-fit">
           <img className="max-w-[600px]" src={homepageBg} alt="" />
         </div>
       </div>
@@ -131,7 +131,7 @@ const HomePage = () => {
             </li>
           </ul>
         </div>
-        <div className="box-gradient-3 w-fit">
+        <div className="w-fit">
           <img className="max-w-[600px]" src={homepageBg} alt="" />
         </div>
       </div>
