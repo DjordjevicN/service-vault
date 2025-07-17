@@ -15,4 +15,5 @@ export const routes = {
   userProfile: "/profile",
   userEdit: "/edit-profile",
   userAvatarEdit: "/edit-avatar",
+  avatars: "/avatars",
 };

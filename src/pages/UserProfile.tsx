@@ -31,7 +31,7 @@ const UserProfile = () => {
   }
 
   const handleNavigate = () => {
-    navigate(routes.userAvatarEdit);
+    navigate(routes.avatars);
   };
   const formatted = formatToMonthYear(auth?.created_at || "");
 

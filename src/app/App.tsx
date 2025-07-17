@@ -19,6 +19,7 @@ const OrgsPage = lazy(() => import("../pages/OrgsPage"));
 const MeetDetails = lazy(() => import("../pages/MeetDetails"));
 const OrgDetails = lazy(() => import("../pages/OrgDetails"));
 const TopBar = lazy(() => import("../shared/components/TopBar"));
+const Avatars = lazy(() => import("../pages/Avatars"));
 
 const App = () => {
   const auth = useSelector((state: RootState) => state.auth);
@@ -43,6 +44,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <YearCalendar />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path={routes.avatars}
+            element={
+              <PrivateRoute>
+                <Avatars />
               </PrivateRoute>
             }
           />
